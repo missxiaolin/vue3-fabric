@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Layout>
-      <Header>
+      <Header v-if="show">
         <!-- logo -->
         <span class="logo">
           <a href="https://github.com/missxiaolin" target="_blank">
@@ -11,16 +11,53 @@
       </Header>
       <Content style="display: flex; height: calc(100vh - 64px)">
         <!-- 左侧菜单 -->
-        <div style="width: 380px; height: 100%; background: #fff; display: flex">
-          
+        <div v-if="show" style="width: 380px; height: 100%; background: #fff; display: flex">
+          <Menu
+            :active-name="menuActive"
+            accordion
+            @on-select="(activeIndex) => (menuActive = activeIndex)"
+            width="65px"
+          >
+            <MenuItem :name="1" class="menu-item">
+              <Icon type="md-book" size="24" />
+              <div>模版</div>
+            </MenuItem>
+            <MenuItem :name="2" class="menu-item">
+              <Icon type="md-images" size="24" />
+              <div>元素</div>
+            </MenuItem>
+            <MenuItem :name="3" class="menu-item">
+              <Icon type="md-reorder" size="24" />
+              <div>图层</div>
+            </MenuItem>
+          </Menu>
+          <div class="content">
+            <!-- 生成模板 -->
+            <div v-show="menuActive === 1" class="left-panel">
+              1
+            </div>
+            <!-- 常用元素 -->
+            <div v-show="menuActive === 2" class="left-panel">
+              2
+            </div>
+            <!-- 背景设置 -->
+            <div v-show="menuActive === 3" class="left-panel">
+              3
+            </div>
+          </div>
         </div>
         <!-- 画布区域 -->
         <div id="workspace" style="width: 100%; position: relative; background: #f1f1f1">
-
+          <div class="canvas-box">
+            <div class="inside-shadow"></div>
+            <canvas id="canvas" :class="ruler ? 'design-stage-grid' : ''"></canvas>
+          </div>
         </div>
         <!-- 属性区域 380-->
         <div style="width: 530px; height: 100%; padding: 10px; overflow-y: auto; background: #fff">
-          
+          <div v-if="show" style="padding-top: 10px">
+
+          </div>
         </div>
       </Content>
     </Layout>
@@ -28,12 +65,42 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+// @ts-nocheck # 忽略全文
 
+import { defineComponent } from 'vue';
+import { fabric } from 'fabric';
+
+// 功能组件
+import CanvasEventEmitter from '../utils/event/notifier';
+new CanvasEventEmitter()
+const canvas = {};
 export default defineComponent({
   name: 'HomeView',
+  provide: {
+    canvas,
+    fabric,
+  },
+  data() {
+    return {
+      canvas: null,
+      menuActive: 1,
+      show: false,
+      select: null,
+      ruler: false,
+    };
+  },
   components: {
   },
+  mounted() {
+    this.canvas = new fabric.Canvas('canvas', {
+      fireRightClick: true, // 启用右键，button的数字为3
+      stopContextMenu: true, // 禁止默认右键菜单
+      controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
+    });
+    canvas.c = this.canvas;
+    canvas.c.renderAll();
+    this.show = true;
+  }
 });
 </script>
 
