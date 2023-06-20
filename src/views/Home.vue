@@ -14,6 +14,14 @@
         <div style="width: 380px; height: 100%; background: #fff; display: flex">
           
         </div>
+        <!-- 画布区域 -->
+        <div id="workspace" style="width: 100%; position: relative; background: #f1f1f1">
+
+        </div>
+        <!-- 属性区域 380-->
+        <div style="width: 530px; height: 100%; padding: 10px; overflow-y: auto; background: #fff">
+          
+        </div>
       </Content>
     </Layout>
   </div>
