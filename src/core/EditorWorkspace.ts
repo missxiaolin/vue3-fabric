@@ -51,8 +51,8 @@ class EditorWorkspace {
       height,
       id: 'workspace',
     });
-    workspace.set('selectable', false);
-    workspace.set('hasControls', false);
+    workspace.set('selectable', false); // 当设置为false时，Object无法被选中编辑（无论是以像素点为基础或以组为基础），但是相应的事件仍然会触发。默认值为true。
+    workspace.set('hasControls', false); // 当属性为false时，Object的控制器将不会显示，与此同时将无法操作Object。默认值为true。
     workspace.hoverCursor = 'default';
     this.canvas.add(workspace);
     this.canvas.renderAll();
@@ -80,12 +80,11 @@ class EditorWorkspace {
     this.canvas.setWidth(width);
     this.canvas.setHeight(height);
     const center = this.canvas.getCenter();
-    this.canvas.setViewportTransform(fabric.iMatrix.concat());
-    this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), scale);
+    this.canvas.setViewportTransform(fabric.iMatrix.concat()); // 设置Canvas的变换。参数则属于context.transform的一种表现形式。
+    this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), scale); // 设置Canvas以指定的点为中心进行缩放。第一个参数即为指定的中心点；第二个参数为缩放级别，小于1即为缩小。
     if (!this.workspace) return;
     this.setCenterFromObject(this.workspace);
-
-    // 超出画布不展示
+    // 超出画布不展示 (深度复制Object。第一个参数是回调函数，该回调的第一个参数是复制出来的Object；第二个参数是一个数组，装载着你想要添加到输出的所有属性。)
     this.workspace.clone((cloned: fabric.Rect) => {
       this.canvas.clipPath = cloned;
       this.canvas.requestRenderAll();
