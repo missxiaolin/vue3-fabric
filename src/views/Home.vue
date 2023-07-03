@@ -18,10 +18,10 @@
             @on-select="(activeIndex) => (menuActive = activeIndex)"
             width="65px"
           >
-            <MenuItem :name="1" class="menu-item">
+            <!-- <MenuItem :name="1" class="menu-item">
               <Icon type="md-book" size="24" />
               <div>模版</div>
-            </MenuItem>
+            </MenuItem> -->
             <MenuItem :name="2" class="menu-item">
               <Icon type="md-images" size="24" />
               <div>元素</div>
@@ -33,9 +33,9 @@
           </Menu>
           <div class="content">
             <!-- 生成模板 -->
-            <div v-show="menuActive === 1" class="left-panel">
+            <!-- <div v-show="menuActive === 1" class="left-panel">
               1
-            </div>
+            </div> -->
             <!-- 常用元素 -->
             <div v-show="menuActive === 2" class="left-panel">
               2
@@ -57,6 +57,7 @@
         <div style="width: 530px; height: 100%; padding: 10px; overflow-y: auto; background: #fff">
           <div v-if="show" style="padding-top: 10px">
             <set-size></set-size>
+            <bg-bar></bg-bar>
           </div>
         </div>
       </Content>
@@ -70,8 +71,9 @@
 import { defineComponent } from 'vue';
 import { fabric } from 'fabric';
 
-// 左侧组件
+// 右侧组件
 import setSize from '@/components/setSize.vue';
+import bgBar from '@/components/bgBar.vue';
 
 // 功能组件
 import Editor from '../core';
@@ -90,14 +92,15 @@ export default defineComponent({
   data() {
     return {
       canvas: null,
-      menuActive: 1,
+      menuActive: 2,
       show: false,
       select: null,
       ruler: false,
     };
   },
   components: {
-    setSize
+    setSize,
+    bgBar
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
