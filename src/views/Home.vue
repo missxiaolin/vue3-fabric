@@ -56,7 +56,7 @@
         <!-- 属性区域 380-->
         <div style="width: 530px; height: 100%; padding: 10px; overflow-y: auto; background: #fff">
           <div v-if="show" style="padding-top: 10px">
-
+            <set-size></set-size>
           </div>
         </div>
       </Content>
@@ -70,15 +70,22 @@
 import { defineComponent } from 'vue';
 import { fabric } from 'fabric';
 
+// 左侧组件
+import setSize from '@/components/setSize.vue';
+
+// 功能组件
+import Editor from '../core';
+
 // 功能组件
 import CanvasEventEmitter from '../utils/event/notifier';
-new CanvasEventEmitter()
+const event = new CanvasEventEmitter();
 const canvas = {};
 export default defineComponent({
   name: 'HomeView',
   provide: {
     canvas,
     fabric,
+    event
   },
   data() {
     return {
@@ -90,6 +97,7 @@ export default defineComponent({
     };
   },
   components: {
+    setSize
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
@@ -98,6 +106,9 @@ export default defineComponent({
       controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
     });
     canvas.c = this.canvas;
+
+    canvas.editor = new Editor(canvas.c);
+
     canvas.c.renderAll();
     this.show = true;
   }
