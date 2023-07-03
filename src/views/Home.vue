@@ -38,7 +38,7 @@
             </div> -->
             <!-- 常用元素 -->
             <div v-show="menuActive === 2" class="left-panel">
-              2
+              <tools></tools>
             </div>
             <!-- 背景设置 -->
             <div v-show="menuActive === 3" class="left-panel">
@@ -71,6 +71,9 @@
 import { defineComponent } from 'vue';
 import { fabric } from 'fabric';
 
+// 左侧组件
+import tools from '@/components/tools.vue';
+
 // 右侧组件
 import setSize from '@/components/setSize.vue';
 import bgBar from '@/components/bgBar.vue';
@@ -100,7 +103,8 @@ export default defineComponent({
   },
   components: {
     setSize,
-    bgBar
+    bgBar,
+    tools
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
