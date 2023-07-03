@@ -31,6 +31,8 @@ class EditorWorkspace {
     this.dragMode = false;
     this._initBackground();
     this._initWorkspace();
+    this._initResizeObserve();
+    this._initDring();
   }
 
   /**
@@ -59,6 +61,17 @@ class EditorWorkspace {
 
     this.workspace = workspace;
     this.auto();
+  }
+
+  // 初始化监听器
+  _initResizeObserve() {
+    // ResizeObserver是可以监听到DOM元素，宽高的变化，需要注意的一点就是监听出变化结果是contentBox的宽度和高度
+    const resizeObserver = new ResizeObserver(
+      throttle(() => {
+        this.auto();
+      }, 50)
+    );
+    resizeObserver.observe(this.workspaceEl);
   }
 
   // 计算缩放比例
@@ -107,10 +120,40 @@ class EditorWorkspace {
     canvas.renderAll();
   }
 
+  setSize(width: number, height: number) {
+    this._initBackground();
+    this.option.width = width;
+    this.option.height = height;
+    // 重新设置workspace
+    this.workspace = this.canvas
+      .getObjects()
+      .find((item) => item.id === 'workspace') as fabric.Rect;
+    this.workspace.set('width', width);
+    this.workspace.set('height', height);
+    this.auto();
+  }
+
   // 自动缩放
   auto() {
     const scale = this._getScale();
     this.setZoomAuto(scale - 0.08);
+  }
+
+  // 拖拽模式
+  _initDring() {
+    const This = this;
+    this.canvas.on('mouse:down', function (this: ExtCanvas, opt) {
+
+    })
+    this.canvas.on('mouse:move', function (this: ExtCanvas, opt) {
+
+    })
+    this.canvas.on('mouse:up', function (this: ExtCanvas) {
+
+    })
+    this.canvas.on('mouse:wheel', function (this: fabric.Canvas, opt) {
+      
+    })
   }
 }
 
