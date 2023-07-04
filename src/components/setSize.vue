@@ -19,7 +19,7 @@
         ></InputNumber>
       </FormItem>
     </Form>
-    <Divider plain orientation="left">{{ $t("default_size") }}</Divider>
+    <!-- <Divider plain orientation="left">{{ $t("default_size") }}</Divider>
     <ButtonGroup vertical>
       <Button
         v-for="(item, i) in presetSize"
@@ -30,7 +30,7 @@
       >
         {{ item.label }}:{{ item.width }}x{{ item.height }}
       </Button>
-    </ButtonGroup>
+    </ButtonGroup> -->
   </div>
 </template>
 
