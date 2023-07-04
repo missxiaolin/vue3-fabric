@@ -1,9 +1,105 @@
 <template>
-  <div class="box">基础属性</div>
+  <div class="box" v-if="mixinState.mSelectMode === 'one'">
+    <!-- 字体属性 -->
+    <div v-show="textType.includes(mixinState.mSelectOneType)">
+      <Divider plain orientation="left">{{ $t("attributes.font") }}</Divider>
+      <div class="flex-view">
+        <div class="flex-item">
+          <div class="left font-selector">
+            <Select v-model="fontAttr.fontFamily" @on-change="changeFontFamily">
+              <Option
+                v-for="item in fontFamilyList"
+                :value="item.name"
+                :key="`font-${item.name}`"
+              >
+                <div class="font-item" v-if="!item.preview">
+                  {{ item.name }}
+                </div>
+                <div
+                  class="font-item"
+                  v-else
+                  :style="`background-image:url('${item.preview}');`"
+                >
+                  {{ !item.preview ? item : "" }}
+                  <span style="display: none">{{ item.name }}</span>
+                </div>
+              </Option>
+            </Select>
+          </div>
+          <div class="right">
+            <InputNumber
+              v-model="fontAttr.fontSize"
+              @on-change="(value) => changeCommon('fontSize', value)"
+              append="字号"
+              :min="1"
+            ></InputNumber>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup name="AttrBute">
+import { reactive, ref } from "vue";
+import fontList from "@/assets/fonts/font";
+import useSelect from "@/hooks/select";
+import FontFaceObserver from 'fontfaceobserver';
+import { Spin } from 'view-ui-plus';
 
+// 文字元素
+const textType = ["i-text", "textbox", "text"];
+// 字体属性
+const fontAttr = reactive({
+  fontSize: 0,
+  fontFamily: "",
+  lineHeight: 0,
+  charSpacing: 0,
+  fontWeight: "",
+  textBackgroundColor: "#fff",
+  textAlign: "",
+  fontStyle: "",
+  underline: false,
+  linethrough: false,
+  overline: false,
+});
+
+const { canvas, fabric, mixinState } = useSelect();
+console.log(fontList)
+// 字体下拉列表
+const fontFamilyList = ref([...fontList]);
+
+// 修改字体
+const changeFontFamily = (fontName) => {
+  if (!fontName) return;
+  // 跳过加载的属性;
+  const skipFonts = ['arial', 'Microsoft YaHei'];
+  if (skipFonts.includes(fontName)) {
+    const activeObject = canvas.c.getActiveObjects()[0];
+    activeObject && activeObject.set('fontFamily', fontName);
+    canvas.c.renderAll();
+    return;
+  }
+  Spin.show();
+  console.log(fontName)
+  // 字体加载
+  const font = new FontFaceObserver(fontName);
+  font
+    .load(null, 150000)
+    .then(() => {
+      const activeObject = canvas.c.getActiveObjects()[0];
+      activeObject && activeObject.set('fontFamily', fontName);
+      canvas.c.renderAll();
+      Spin.hide();
+    })
+    .catch((err) => {
+      console.log(err);
+      Spin.hide();
+    });
+};
+
+// 通用属性改变
+const changeCommon = (key, value) => {};
 </script>
 
 <style scoped lang="scss">
