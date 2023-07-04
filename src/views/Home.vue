@@ -58,6 +58,9 @@
           <div v-if="show" style="padding-top: 10px">
             <set-size></set-size>
             <bg-bar></bg-bar>
+            <div class="attr-item">
+              <lock></lock>
+            </div>
             <!-- 组对齐方式 -->
             <align></align>
             <!-- 居中对齐 -->
@@ -82,6 +85,7 @@ import tools from '@/components/tools.vue';
 // 右侧组件
 import setSize from '@/components/setSize.vue';
 import bgBar from '@/components/bgBar.vue';
+import lock from '@/components/lock.vue';
 import align from '@/components/align.vue';
 import centerAlign from '@/components/centerAlign.vue';
 import attribute from '@/components/attribute.vue';
@@ -113,6 +117,7 @@ export default defineComponent({
     setSize,
     bgBar,
     tools,
+    lock,
     align,
     attribute,
     centerAlign

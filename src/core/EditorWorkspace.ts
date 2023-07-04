@@ -142,15 +142,18 @@ class EditorWorkspace {
   // 拖拽模式
   _initDring() {
     const This = this;
+    // 点击
     this.canvas.on('mouse:down', function (this: ExtCanvas, opt) {
-
     })
+    // 移动
     this.canvas.on('mouse:move', function (this: ExtCanvas, opt) {
 
     })
+    // 鼠标松开
     this.canvas.on('mouse:up', function (this: ExtCanvas) {
 
     })
+    // 滚轮
     this.canvas.on('mouse:wheel', function (this: fabric.Canvas, opt) {
       
     })
