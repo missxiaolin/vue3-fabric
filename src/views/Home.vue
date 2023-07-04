@@ -42,7 +42,7 @@
             </div>
             <!-- 背景设置 -->
             <div v-show="menuActive === 3" class="left-panel">
-              3
+              <layer></layer>
             </div>
           </div>
         </div>
@@ -81,6 +81,8 @@
 import { defineComponent } from 'vue';
 import { fabric } from 'fabric';
 
+import layer from '@/components/layer.vue';
+
 // 左侧组件
 import tools from '@/components/tools.vue';
 
@@ -118,6 +120,7 @@ export default defineComponent({
     };
   },
   components: {
+    layer,
     setSize,
     bgBar,
     tools,

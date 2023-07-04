@@ -47,6 +47,15 @@ class Editor extends EventEmitter {
     });
   }
 
+  _workspaceSendToBack() {
+    const workspace = this.getWorkspace();
+    workspace && workspace.sendToBack();
+  }
+
+  getWorkspace() {
+    return this.canvas.getObjects().find((item) => item.id === 'workspace');
+  }
+
   /**
    * 复制
    * @param paramsActiveObeject 
@@ -56,6 +65,46 @@ class Editor extends EventEmitter {
     const activeObject = paramsActiveObeject || this.canvas.getActiveObject();
     if (!activeObject) return;
     this._copyObject(activeObject);
+  }
+
+  up() {
+    const actives = this.canvas.getActiveObjects();
+    if (actives && actives.length === 1) {
+      const activeObject = this.canvas.getActiveObjects()[0];
+      activeObject && activeObject.bringForward();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();
+    }
+  }
+
+  upTop() {
+    const actives = this.canvas.getActiveObjects();
+    if (actives && actives.length === 1) {
+      const activeObject = this.canvas.getActiveObjects()[0];
+      activeObject && activeObject.bringToFront();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();
+    }
+  }
+
+  down() {
+    const actives = this.canvas.getActiveObjects();
+    if (actives && actives.length === 1) {
+      const activeObject = this.canvas.getActiveObjects()[0];
+      activeObject && activeObject.sendBackwards();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();
+    }
+  }
+
+  downTop() {
+    const actives = this.canvas.getActiveObjects();
+    if (actives && actives.length === 1) {
+      const activeObject = this.canvas.getActiveObjects()[0];
+      activeObject && activeObject.sendToBack();
+      this.canvas.renderAll();
+      this._workspaceSendToBack();
+    }
   }
 }
 
