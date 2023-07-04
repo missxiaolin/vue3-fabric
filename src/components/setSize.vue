@@ -1,6 +1,6 @@
 <template>
   <div v-if="!mixinState.mSelectMode">
-    <Divider plain orientation="left">{{ $t("size") }}</Divider>
+    <Divider plain orientation="left">{{ $t("size") }}{{ mixinState.mSelectMode }}</Divider>
     <Form :label-width="40">
       <FormItem :label="$t('width')" prop="name">
         <InputNumber

@@ -1,5 +1,7 @@
 import { EventEmitter } from "events";
 import { Canvas } from "fabric/fabric-impl";
+import { fabric } from "fabric";
+import { SelectEvent } from "@/utils/event/types";
 
 /**
  * 发布订阅器
@@ -10,6 +12,11 @@ class CanvasEventEmitter extends EventEmitter {
 
   init(handler: CanvasEventEmitter["handler"]) {
     this.handler = handler;
+    if (this.handler) {
+      this.handler.on("selection:created", () => this.selected());
+      this.handler.on("selection:updated", () => this.selected());
+      this.handler.on("selection:cleared", () => this.selected());
+    }
   }
 
   /**
@@ -19,6 +26,15 @@ class CanvasEventEmitter extends EventEmitter {
   private selected() {
     if (!this.handler) {
       throw TypeError("还未初始化");
+    }
+    const actives = this.handler.getActiveObjects();
+    if (actives && actives.length === 1) {
+      this.emit(SelectEvent.ONE, actives);
+    } else if (actives && actives.length > 1) {
+      this.mSelectMode = "multiple";
+      this.emit(SelectEvent.MULTI, actives);
+    } else {
+      this.emit(SelectEvent.CANCEL);
     }
   }
 }

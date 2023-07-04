@@ -59,6 +59,7 @@
             <set-size></set-size>
             <bg-bar></bg-bar>
           </div>
+          <attribute v-if="show"></attribute>
         </div>
       </Content>
     </Layout>
@@ -77,6 +78,7 @@ import tools from '@/components/tools.vue';
 // 右侧组件
 import setSize from '@/components/setSize.vue';
 import bgBar from '@/components/bgBar.vue';
+import attribute from '@/components/attribute.vue';
 
 // 功能组件
 import Editor from '../core';
@@ -104,7 +106,8 @@ export default defineComponent({
   components: {
     setSize,
     bgBar,
-    tools
+    tools,
+    attribute
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
@@ -113,10 +116,11 @@ export default defineComponent({
       controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
     });
     canvas.c = this.canvas;
+    event.init(canvas.c);
 
     canvas.editor = new Editor(canvas.c);
-
     canvas.c.renderAll();
+
     this.show = true;
   }
 });
