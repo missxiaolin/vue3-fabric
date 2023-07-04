@@ -58,6 +58,10 @@
           <div v-if="show" style="padding-top: 10px">
             <set-size></set-size>
             <bg-bar></bg-bar>
+            <!-- 组对齐方式 -->
+            <align></align>
+            <!-- 居中对齐 -->
+            <center-align></center-align>
           </div>
           <attribute v-if="show"></attribute>
         </div>
@@ -78,6 +82,8 @@ import tools from '@/components/tools.vue';
 // 右侧组件
 import setSize from '@/components/setSize.vue';
 import bgBar from '@/components/bgBar.vue';
+import align from '@/components/align.vue';
+import centerAlign from '@/components/centerAlign.vue';
 import attribute from '@/components/attribute.vue';
 
 // 功能组件
@@ -107,7 +113,9 @@ export default defineComponent({
     setSize,
     bgBar,
     tools,
-    attribute
+    align,
+    attribute,
+    centerAlign
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
