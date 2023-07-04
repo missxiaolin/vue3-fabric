@@ -189,7 +189,24 @@ export default {
     };
   },
   created() {
-    
+    // 线条绘制
+    this.drawHandler = initializeLineDrawing(this.canvas.c, defaultPosition);
+    this.canvas.c.on('drop', (opt) => {
+      // 画布元素距离浏览器左侧和顶部的距离
+      const offset = {
+        left: this.canvas.c.getSelectionElement().getBoundingClientRect().left,
+        top: this.canvas.c.getSelectionElement().getBoundingClientRect().top,
+      };
+      // 鼠标坐标转换成画布的坐标（未经过缩放和平移的坐标）
+      const point = {
+        x: opt.e.x - offset.left,
+        y: opt.e.y - offset.top,
+      };
+      // 转换后的坐标，restorePointerVpt 不受视窗变换的影响
+      const pointerVpt = this.canvas.c.restorePointerVpt(point);
+      dragOption.left = pointerVpt.x;
+      dragOption.top = pointerVpt.y;
+    });
   },
   methods: {
     // 拖拽开始时就记录当前打算创建的元素类型
@@ -316,7 +333,16 @@ export default {
       this.canvas.c.setActiveObject(polygon);
     },
     drawingLineModeSwitch(isArrow) {
-      
+      this.isArrow = isArrow;
+      this.isDrawingLineMode = !this.isDrawingLineMode;
+      this.drawHandler.setMode(this.isDrawingLineMode);
+      this.drawHandler.setArrow(isArrow);
+      this.canvas.c.forEachObject((obj) => {
+        if (obj.id !== 'workspace') {
+          obj.selectable = !this.isDrawingLineMode;
+          obj.evented = !this.isDrawingLineMode;
+        }
+      });
     },
   },
 };
