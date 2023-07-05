@@ -6,7 +6,11 @@
       <div class="flex-view">
         <div class="flex-item">
           <div class="left font-selector">
-            <Select v-model="fontAttr.fontFamily" @on-change="changeFontFamily">
+            <Select
+              v-model="fontAttr.fontFamily"
+              @on-change="changeFontFamily"
+              placeholder="请选择"
+            >
               <Option
                 v-for="item in fontFamilyList"
                 :value="item.name"
@@ -21,6 +25,7 @@
                   :style="`background-image:url('${item.preview}');`"
                 >
                   {{ !item.preview ? item : "" }}
+                  <!-- 解决无法选中问题 -->
                   <span style="display: none">{{ item.name }}</span>
                 </div>
               </Option>
@@ -41,12 +46,14 @@
 </template>
 
 <script setup name="AttrBute">
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted, inject } from "vue";
 import fontList from "@/assets/fonts/font";
 import useSelect from "@/hooks/select";
-import FontFaceObserver from 'fontfaceobserver';
-import { Spin } from 'view-ui-plus';
+import FontFaceObserver from "fontfaceobserver";
+import { Spin } from "view-ui-plus";
+import axios from "axios";
 
+const event = inject("event");
 // 文字元素
 const textType = ["i-text", "textbox", "text"];
 // 字体属性
@@ -65,7 +72,6 @@ const fontAttr = reactive({
 });
 
 const { canvas, fabric, mixinState } = useSelect();
-console.log(fontList)
 // 字体下拉列表
 const fontFamilyList = ref([...fontList]);
 
@@ -73,22 +79,21 @@ const fontFamilyList = ref([...fontList]);
 const changeFontFamily = (fontName) => {
   if (!fontName) return;
   // 跳过加载的属性;
-  const skipFonts = ['arial', 'Microsoft YaHei'];
+  const skipFonts = ["arial", "Microsoft YaHei"];
   if (skipFonts.includes(fontName)) {
     const activeObject = canvas.c.getActiveObjects()[0];
-    activeObject && activeObject.set('fontFamily', fontName);
+    activeObject && activeObject.set("fontFamily", fontName);
     canvas.c.renderAll();
     return;
   }
   Spin.show();
-  console.log(fontName)
   // 字体加载
   const font = new FontFaceObserver(fontName);
   font
     .load(null, 150000)
     .then(() => {
       const activeObject = canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set('fontFamily', fontName);
+      activeObject && activeObject.set("fontFamily", fontName);
       canvas.c.renderAll();
       Spin.hide();
     })
@@ -100,6 +105,26 @@ const changeFontFamily = (fontName) => {
 
 // 通用属性改变
 const changeCommon = (key, value) => {};
+
+const getFreeFontList = () => {
+  // axios.get(`/font/free-font.json`).then((res) => {
+  //   fontFamilyList.value = [
+  //     ...fontFamilyList.value,
+  //     ...Object.entries(res.data).map(([, value]) => value),
+  //   ];
+  // });
+};
+
+const init = () => {
+  // 获取字体数据
+  getFreeFontList();
+
+  // event.on('selectCancel', selectCancel);
+  // event.on('selectOne', getObjectAttr);
+  // canvas.c.on('object:modified', getObjectAttr);
+};
+
+onMounted(init);
 </script>
 
 <style scoped lang="scss">
