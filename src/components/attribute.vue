@@ -61,7 +61,9 @@
       <div class="flex-view">
         <div class="flex-item">
           <ButtonGroup class="button-group">
-            <Button @click="changeFontWeight('fontWeight', fontAttr.fontWeight)">
+            <Button
+              @click="changeFontWeight('fontWeight', fontAttr.fontWeight)"
+            >
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path
                   d="M793.99865 476a244 244 0 0 0 54-130.42C862.75865 192.98 743.01865 64 593.85865 64H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h63.74v576H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h418.64c141.6 0 268.28-103.5 282-244.8 9.48-96.9-32.78-184.12-101.66-239.2zM418.33865 224h175.52a96 96 0 0 1 0 192h-175.52z m175.52 576h-175.52V576h175.52a112 112 0 0 1 0 224z"
@@ -77,7 +79,9 @@
                 ></path>
               </svg>
             </Button>
-            <Button @click="changeLineThrough('linethrough', fontAttr.linethrough)">
+            <Button
+              @click="changeLineThrough('linethrough', fontAttr.linethrough)"
+            >
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path
                   d="M893.088 501.792H125.344a32 32 0 0 0 0 64h767.744a32 32 0 0 0 0-64zM448 448h112V208h288V96H160v112h288zM448 640h112v288H448z"
@@ -117,7 +121,7 @@
       <!-- 背景 -->
       <div class="flex-view">
         <div class="flex-item">
-          <span class="label">{{ $t('background') }}</span>
+          <span class="label">{{ $t("background") }}</span>
           <div class="content">
             <ColorPicker
               v-model="fontAttr.textBackgroundColor"
@@ -130,7 +134,21 @@
     </div>
     <!-- 通用属性 -->
     <div v-show="baseType.includes(mixinState.mSelectOneType)">
-      <Divider plain orientation="left">{{ $t('attributes.exterior') }}</Divider>
+      <Divider plain orientation="left">{{
+        $t("attributes.exterior")
+      }}</Divider>
+      <!-- 多边形边数 -->
+      <Row v-if="mixinState.mSelectOneType === 'polygon'" :gutter="12">
+        <Col flex="0.5">
+          <InputNumber
+            v-model="baseAttr.points.length"
+            :min="3"
+            :max="30"
+            @on-change="changeEdge"
+            append="边数"
+          ></InputNumber>
+        </Col>
+      </Row>
       <!-- 颜色 -->
       <colorSelector
         :color="baseAttr.fill"
@@ -156,7 +174,7 @@
       <!-- 旋转 -->
       <div class="flex-view">
         <div class="flex-item">
-          <span class="label">{{ $t('attributes.angle') }}</span>
+          <span class="label">{{ $t("attributes.angle") }}</span>
           <div class="content slider-box">
             <Slider
               v-model="baseAttr.angle"
@@ -169,7 +187,7 @@
       <!-- 透明度 -->
       <div class="flex-view">
         <div class="flex-item">
-          <span class="label">{{ $t('attributes.opacity') }}</span>
+          <span class="label">{{ $t("attributes.opacity") }}</span>
           <div class="content slider-box">
             <Slider
               v-model="baseAttr.opacity"
@@ -179,12 +197,12 @@
         </div>
       </div>
       <!-- 边框 -->
-      <Divider plain orientation="left">{{ $t('attributes.stroke') }}</Divider>
+      <Divider plain orientation="left">{{ $t("attributes.stroke") }}</Divider>
       <!-- 背景、线条宽度 -->
       <Row :gutter="12">
         <Col flex="1">
           <div class="ivu-col__box">
-            <span class="label">{{ $t('color') }}</span>
+            <span class="label">{{ $t("color") }}</span>
             <div class="content">
               <ColorPicker
                 v-model="baseAttr.stroke"
@@ -203,14 +221,97 @@
           ></InputNumber>
         </Col>
       </Row>
+      <!-- 边框 -->
+      <Row :gutter="12">
+        <Col flex="1">
+          <div class="ivu-col__box">
+            <span class="label">{{ $t("attributes.stroke") }}</span>
+            <div class="content">
+              <Select
+                v-model="baseAttr.strokeDashArray"
+                @on-change="borderSet"
+                placeholder="请选择"
+              >
+                <Option
+                  v-for="item in strokeDashList"
+                  :value="item.label"
+                  :key="`stroke-${item.label}`"
+                >
+                  {{ item.label }}
+                </Option>
+              </Select>
+            </div>
+          </div>
+        </Col>
+      </Row>
+
+      <!-- 阴影 -->
+      <Divider plain orientation="left">{{ $t("attributes.shadow") }}</Divider>
+      <!-- 模糊 -->
+      <Row :gutter="12">
+        <Col flex="1">
+          <div class="ivu-col__box">
+            <span class="label">{{ $t("color") }}</span>
+            <div class="content">
+              <ColorPicker
+                v-model="baseAttr.shadow.color"
+                @on-change="(value) => changeCommon('color', value)"
+                alpha
+              />
+            </div>
+          </div>
+        </Col>
+        <Col flex="1">
+          <InputNumber
+            v-model="baseAttr.shadow.blur"
+            :defaultValue="0"
+            @on-change="(value) => changeShadow('blur', value)"
+            :append="$t('attributes.blur')"
+            :min="0"
+          ></InputNumber>
+        </Col>
+      </Row>
+      <!-- 阴影设置 -->
+      <Row :gutter="12">
+        <Col flex="1">
+          <InputNumber
+            v-model="baseAttr.shadow.offsetX"
+            :defaultValue="0"
+            @on-change="(value) => changeShadow('offsetX', value)"
+            :append="$t('attributes.offset_x')"
+          ></InputNumber>
+        </Col>
+        <Col flex="1">
+          <InputNumber
+            v-model="baseAttr.shadow.offsetY"
+            :defaultValue="0"
+            @on-change="(value) => changeShadow('offsetY', value)"
+            :append="$t('attributes.offset_y')"
+          ></InputNumber>
+        </Col>
+      </Row>
+
+      <!-- ID属性 -->
+      <Divider plain orientation="left">{{ $t("attributes.id") }}</Divider>
+      <div class="flex-view">
+        <div class="flex-item">
+          <span class="label">{{ $t("attributes.id") }}</span>
+          <div class="content slider-box">
+            <Input
+              v-model="baseAttr.id"
+              @on-change="changeCommon('id', baseAttr.id)"
+            ></Input>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup name="AttrBute">
 import { reactive, ref, onMounted, inject, getCurrentInstance } from "vue";
-import InputNumber from '@/components/inputNumber';
-import colorSelector from '@/components/colorSelector.vue';
+import InputNumber from "@/components/inputNumber";
+import colorSelector from "@/components/colorSelector.vue";
 import fontList from "@/assets/fonts/font";
 import useSelect from "@/hooks/select";
 import FontFaceObserver from "fontfaceobserver";
@@ -222,17 +323,17 @@ const event = inject("event");
 
 // 通用元素
 const baseType = [
-  'text',
-  'i-text',
-  'textbox',
-  'rect',
-  'circle',
-  'triangle',
-  'polygon',
-  'image',
-  'group',
-  'line',
-  'arrow',
+  "text",
+  "i-text",
+  "textbox",
+  "rect",
+  "circle",
+  "triangle",
+  "polygon",
+  "image",
+  "group",
+  "line",
+  "arrow",
 ];
 // 文字元素
 const textType = ["i-text", "textbox", "text"];
@@ -270,7 +371,81 @@ const fontAttr = reactive({
   overline: false,
 });
 // 字体对齐方式
-const textAlignList = ['left', 'center', 'right'];
+const textAlignList = ["left", "center", "right"];
+const strokeDashList = [
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [],
+      strokeLineCap: "butt",
+    },
+    label: "Stroke",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [1, 10],
+      strokeLineCap: "butt",
+    },
+    label: "Dash-1",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [1, 10],
+      strokeLineCap: "round",
+    },
+    label: "Dash-2",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [15, 15],
+      strokeLineCap: "square",
+    },
+    label: "Dash-3",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [15, 15],
+      strokeLineCap: "round",
+    },
+    label: "Dash-4",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [25, 25],
+      strokeLineCap: "square",
+    },
+    label: "Dash-5",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [25, 25],
+      strokeLineCap: "round",
+    },
+    label: "Dash-6",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [1, 8, 16, 8, 1, 20],
+      strokeLineCap: "square",
+    },
+    label: "Dash-7",
+  },
+  {
+    value: {
+      strokeUniform: true,
+      strokeDashArray: [1, 8, 16, 8, 1, 20],
+      strokeLineCap: "round",
+    },
+    label: "Dash-8",
+  },
+];
 // 对齐图标
 const textAlignListSvg = [
   '<svg t="1650441458823" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3554" width="18" height="18"><path d="M198.4 198.4h341.333333c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533334 19.2v57.6c0 8.533333-2.133333 14.933333-8.533334 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-341.333333c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z m0 170.666667h569.6c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-569.6c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z m0 170.666666h454.4c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-454.4c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533334z m0 170.666667h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-6.4-8.533333-12.8-8.533333-19.2v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 4.266667-4.266667 12.8-8.533333 19.2-8.533333z" p-id="3555"></path></svg>',
@@ -348,13 +523,13 @@ const getObjectAttr = (e) => {
 const changeCommon = (key, value) => {
   const activeObject = canvas.c.getActiveObjects()[0];
   // 透明度特殊转换
-  if (key === 'opacity') {
+  if (key === "opacity") {
     activeObject && activeObject.set(key, value / 100);
     canvas.c.renderAll();
     return;
   }
   // 旋转角度适配
-  if (key === 'angle') {
+  if (key === "angle") {
     activeObject.rotate(value);
     canvas.c.renderAll();
     return;
@@ -376,13 +551,31 @@ const getFreeFontList = () => {
 };
 
 const selectCancel = () => {
-  baseAttr.fill = '';
+  baseAttr.fill = "";
   update?.proxy?.$forceUpdate();
+};
+
+// 边框设置
+const borderSet = (key) => {
+  const activeObject = canvas.c.getActiveObjects()[0];
+  if (activeObject) {
+    const stroke = strokeDashList.find((item) => item.label === key);
+    activeObject.set(stroke.value);
+    canvas.c.renderAll();
+  }
+};
+
+// 阴影设置
+const changeShadow = () => {
+  const activeObject = canvas.c.getActiveObjects()[0];
+  activeObject &&
+    activeObject.set("shadow", new fabric.Shadow(baseAttr.shadow));
+  canvas.c.renderAll();
 };
 
 // 加粗
 const changeFontWeight = (key, value) => {
-  const nValue = value === 'normal' ? 'bold' : 'normal';
+  const nValue = value === "normal" ? "bold" : "normal";
   fontAttr.fontWeight = nValue;
   const activeObject = canvas.c.getActiveObjects()[0];
   activeObject && activeObject.set(key, nValue);
@@ -391,7 +584,7 @@ const changeFontWeight = (key, value) => {
 
 // 斜体
 const changeFontStyle = (key, value) => {
-  const nValue = value === 'normal' ? 'italic' : 'normal';
+  const nValue = value === "normal" ? "italic" : "normal";
   fontAttr.fontStyle = nValue;
   const activeObject = canvas.c.getActiveObjects()[0];
   activeObject && activeObject.set(key, nValue);
@@ -420,9 +613,9 @@ const init = () => {
   // 获取字体数据
   getFreeFontList();
 
-  event.on('selectCancel', selectCancel);
-  event.on('selectOne', getObjectAttr);
-  canvas.c.on('object:modified', getObjectAttr);
+  event.on("selectCancel", selectCancel);
+  event.on("selectOne", getObjectAttr);
+  canvas.c.on("object:modified", getObjectAttr);
 };
 
 onMounted(init);
