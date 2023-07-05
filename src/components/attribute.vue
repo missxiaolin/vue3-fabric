@@ -47,6 +47,7 @@
 
 <script setup name="AttrBute">
 import { reactive, ref, onMounted, inject, getCurrentInstance } from "vue";
+import InputNumber from '@/components/inputNumber';
 import fontList from "@/assets/fonts/font";
 import useSelect from "@/hooks/select";
 import FontFaceObserver from "fontfaceobserver";

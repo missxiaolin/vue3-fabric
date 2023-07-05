@@ -6,6 +6,7 @@ import VueLazyLoad from "vue3-lazyload";
 import ViewUiPlus from "view-ui-plus";
 import "view-ui-plus/dist/styles/viewuiplus.css";
 import "./assets/fonts/font.css"
+import "./assets/css/index.scss"
 
 import i18n from './language/index';
 
