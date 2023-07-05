@@ -128,12 +128,39 @@
         </div>
       </div>
     </div>
+    <!-- 通用属性 -->
+    <div v-show="baseType.includes(mixinState.mSelectOneType)">
+      <Divider plain orientation="left">{{ $t('attributes.exterior') }}</Divider>
+      <!-- 颜色 -->
+      <colorSelector
+        :color="baseAttr.fill"
+        @change="(value) => changeCommon('fill', value)"
+      ></colorSelector>
+      <!-- 2边间距移动 -->
+      <Row :gutter="12">
+        <Col flex="1">
+          <InputNumber
+            v-model="baseAttr.left"
+            @on-change="(value) => changeCommon('left', value)"
+            :append="$t('attributes.left')"
+          ></InputNumber>
+        </Col>
+        <Col flex="1">
+          <InputNumber
+            v-model="baseAttr.top"
+            @on-change="(value) => changeCommon('top', value)"
+            :append="$t('attributes.top')"
+          ></InputNumber>
+        </Col>
+      </Row>
+    </div>
   </div>
 </template>
 
 <script setup name="AttrBute">
 import { reactive, ref, onMounted, inject, getCurrentInstance } from "vue";
 import InputNumber from '@/components/inputNumber';
+import colorSelector from '@/components/colorSelector.vue';
 import fontList from "@/assets/fonts/font";
 import useSelect from "@/hooks/select";
 import FontFaceObserver from "fontfaceobserver";
@@ -142,6 +169,21 @@ const update = getCurrentInstance();
 import axios from "axios";
 
 const event = inject("event");
+
+// 通用元素
+const baseType = [
+  'text',
+  'i-text',
+  'textbox',
+  'rect',
+  'circle',
+  'triangle',
+  'polygon',
+  'image',
+  'group',
+  'line',
+  'arrow',
+];
 // 文字元素
 const textType = ["i-text", "textbox", "text"];
 // 通用属性
