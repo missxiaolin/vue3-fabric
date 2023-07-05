@@ -46,16 +46,36 @@
 </template>
 
 <script setup name="AttrBute">
-import { reactive, ref, onMounted, inject } from "vue";
+import { reactive, ref, onMounted, inject, getCurrentInstance } from "vue";
 import fontList from "@/assets/fonts/font";
 import useSelect from "@/hooks/select";
 import FontFaceObserver from "fontfaceobserver";
 import { Spin } from "view-ui-plus";
+const update = getCurrentInstance();
 import axios from "axios";
 
 const event = inject("event");
 // 文字元素
 const textType = ["i-text", "textbox", "text"];
+// 通用属性
+const baseAttr = reactive({
+  id: "",
+  opacity: 0,
+  angle: 0,
+  fill: "#fff",
+  left: 0,
+  top: 0,
+  strokeWidth: 0,
+  strokeDashArray: [],
+  stroke: "#fff",
+  shadow: {
+    color: "#fff",
+    blur: 0,
+    offsetX: 0,
+    offsetY: 0,
+  },
+  points: {},
+});
 // 字体属性
 const fontAttr = reactive({
   fontSize: 0,
@@ -103,8 +123,49 @@ const changeFontFamily = (fontName) => {
     });
 };
 
+const getObjectAttr = (e) => {
+  const activeObject = canvas.c.getActiveObject();
+  // 不是当前obj，跳过
+  if (e && e.target && e.target !== activeObject) return;
+  if (activeObject) {
+    // base
+    baseAttr.id = activeObject.get("id");
+    baseAttr.opacity = activeObject.get("opacity") * 100;
+    baseAttr.fill = activeObject.get("fill");
+    baseAttr.left = activeObject.get("left");
+    baseAttr.top = activeObject.get("top");
+    baseAttr.stroke = activeObject.get("stroke");
+    baseAttr.strokeWidth = activeObject.get("strokeWidth");
+    baseAttr.shadow = activeObject.get("shadow") || {};
+    baseAttr.angle = activeObject.get("angle") || 0;
+    baseAttr.points = activeObject.get("points") || {};
+
+    const textTypes = ["i-text", "text", "textbox"];
+    if (textTypes.includes(activeObject.type)) {
+      fontAttr.fontSize = activeObject.get("fontSize");
+      fontAttr.fontFamily = activeObject.get("fontFamily");
+      fontAttr.lineHeight = activeObject.get("lineHeight");
+      fontAttr.textAlign = activeObject.get("textAlign");
+      fontAttr.underline = activeObject.get("underline");
+      fontAttr.linethrough = activeObject.get("linethrough");
+      fontAttr.charSpacing = activeObject.get("charSpacing");
+      fontAttr.overline = activeObject.get("overline");
+      fontAttr.fontStyle = activeObject.get("fontStyle");
+      fontAttr.textBackgroundColor = activeObject.get("textBackgroundColor");
+      fontAttr.fontWeight = activeObject.get("fontWeight");
+    }
+  }
+};
+
 // 通用属性改变
-const changeCommon = (key, value) => {};
+const changeCommon = (key, value) => {
+  const activeObject = canvas.c.getActiveObjects()[0];
+  activeObject && activeObject.set(key, value);
+  canvas.c.renderAll();
+
+  // 更新属性
+  getObjectAttr();
+};
 
 const getFreeFontList = () => {
   // axios.get(`/font/free-font.json`).then((res) => {
@@ -115,13 +176,18 @@ const getFreeFontList = () => {
   // });
 };
 
+const selectCancel = () => {
+  baseAttr.fill = '';
+  update?.proxy?.$forceUpdate();
+};
+
 const init = () => {
   // 获取字体数据
   getFreeFontList();
 
-  // event.on('selectCancel', selectCancel);
-  // event.on('selectOne', getObjectAttr);
-  // canvas.c.on('object:modified', getObjectAttr);
+  event.on('selectCancel', selectCancel);
+  event.on('selectOne', getObjectAttr);
+  canvas.c.on('object:modified', getObjectAttr);
 };
 
 onMounted(init);
