@@ -153,6 +153,56 @@
           ></InputNumber>
         </Col>
       </Row>
+      <!-- 旋转 -->
+      <div class="flex-view">
+        <div class="flex-item">
+          <span class="label">{{ $t('attributes.angle') }}</span>
+          <div class="content slider-box">
+            <Slider
+              v-model="baseAttr.angle"
+              :max="360"
+              @on-input="(value) => changeCommon('angle', value)"
+            ></Slider>
+          </div>
+        </div>
+      </div>
+      <!-- 透明度 -->
+      <div class="flex-view">
+        <div class="flex-item">
+          <span class="label">{{ $t('attributes.opacity') }}</span>
+          <div class="content slider-box">
+            <Slider
+              v-model="baseAttr.opacity"
+              @on-input="(value) => changeCommon('opacity', value)"
+            ></Slider>
+          </div>
+        </div>
+      </div>
+      <!-- 边框 -->
+      <Divider plain orientation="left">{{ $t('attributes.stroke') }}</Divider>
+      <!-- 背景、线条宽度 -->
+      <Row :gutter="12">
+        <Col flex="1">
+          <div class="ivu-col__box">
+            <span class="label">{{ $t('color') }}</span>
+            <div class="content">
+              <ColorPicker
+                v-model="baseAttr.stroke"
+                @on-change="(value) => changeCommon('stroke', value)"
+                alpha
+              />
+            </div>
+          </div>
+        </Col>
+        <Col flex="1">
+          <InputNumber
+            v-model="baseAttr.strokeWidth"
+            @on-change="(value) => changeCommon('strokeWidth', value)"
+            :append="$t('width')"
+            :min="0"
+          ></InputNumber>
+        </Col>
+      </Row>
     </div>
   </div>
 </template>
@@ -297,6 +347,18 @@ const getObjectAttr = (e) => {
 // 通用属性改变
 const changeCommon = (key, value) => {
   const activeObject = canvas.c.getActiveObjects()[0];
+  // 透明度特殊转换
+  if (key === 'opacity') {
+    activeObject && activeObject.set(key, value / 100);
+    canvas.c.renderAll();
+    return;
+  }
+  // 旋转角度适配
+  if (key === 'angle') {
+    activeObject.rotate(value);
+    canvas.c.renderAll();
+    return;
+  }
   activeObject && activeObject.set(key, value);
   canvas.c.renderAll();
 
