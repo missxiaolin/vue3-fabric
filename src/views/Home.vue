@@ -67,6 +67,8 @@
             <align></align>
             <!-- 居中对齐 -->
             <center-align></center-align>
+            <!-- 翻转 -->
+            <flip></flip>
           </div>
           <attribute v-if="show"></attribute>
         </div>
@@ -95,6 +97,7 @@ import dele from '@/components/del.vue';
 import clone from '@/components/clone.vue';
 import centerAlign from '@/components/centerAlign.vue';
 import attribute from '@/components/attribute.vue';
+import flip from '@/components/flip.vue';
 
 // 功能组件
 import Editor from '../core';
@@ -129,6 +132,7 @@ export default defineComponent({
     clone,
     align,
     attribute,
+    flip,
     centerAlign
   },
   mounted() {
