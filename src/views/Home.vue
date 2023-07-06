@@ -9,9 +9,11 @@
           </a>
         </span>
 
-        <div style="float: right">
+        <div class="top-right">
           <!-- 预览 -->
           <previewCurrent />
+          <save></save>
+          <lang></lang>
         </div>
       </Header>
       <Content style="display: flex; height: calc(100vh - 64px)">
@@ -92,6 +94,8 @@ import layer from '@/components/layer.vue';
 
 // 顶部组件
 import previewCurrent from '@/components/previewCurrent';
+import lang from '@/components/lang.vue';
+import save from '@/components/save.vue';
 
 // 左侧组件
 import tools from '@/components/tools.vue';
@@ -142,7 +146,10 @@ export default defineComponent({
     attribute,
     flip,
     centerAlign,
-    previewCurrent
+    // 顶部组件
+    previewCurrent,
+    lang,
+    save
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
@@ -276,5 +283,12 @@ export default defineComponent({
   background-position: var(--offsetX) var(--offsetY),
     calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
   background-size: calc(var(--size) * 2) calc(var(--size) * 2);
+}
+.top-right {
+  display: flex;
+  flex-direction: row;
+  float: right;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 </style>

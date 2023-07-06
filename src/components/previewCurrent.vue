@@ -1,7 +1,9 @@
 <template>
-  <Button type="text" @click="preview">
-    {{ $t("preview") }}
-  </Button>
+  <div class="preview-box">
+    <Button type="text" @click="preview">
+      {{ $t("preview") }}
+    </Button>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -39,4 +41,11 @@ const preview = () => {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.preview-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 10px;
+}
+</style>
