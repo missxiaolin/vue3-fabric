@@ -8,6 +8,11 @@
             <Icon type="logo-github" :size="30" />
           </a>
         </span>
+
+        <div style="float: right">
+          <!-- 预览 -->
+          <previewCurrent />
+        </div>
       </Header>
       <Content style="display: flex; height: calc(100vh - 64px)">
         <!-- 左侧菜单 -->
@@ -85,6 +90,9 @@ import { fabric } from 'fabric';
 
 import layer from '@/components/layer.vue';
 
+// 顶部组件
+import previewCurrent from '@/components/previewCurrent';
+
 // 左侧组件
 import tools from '@/components/tools.vue';
 
@@ -133,7 +141,8 @@ export default defineComponent({
     align,
     attribute,
     flip,
-    centerAlign
+    centerAlign,
+    previewCurrent
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
