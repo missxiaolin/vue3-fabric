@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Layout>
-      <Header v-if="show">
+      <Header v-if="state.show">
         <!-- logo -->
         <span class="logo">
           <a href="https://github.com/missxiaolin" target="_blank">
@@ -21,11 +21,14 @@
       </Header>
       <Content style="display: flex; height: calc(100vh - 64px)">
         <!-- 左侧菜单 -->
-        <div v-if="show" style="width: 380px; height: 100%; background: #fff; display: flex">
+        <div
+          v-if="state.show"
+          style="width: 380px; height: 100%; background: #fff; display: flex"
+        >
           <Menu
-            :active-name="menuActive"
+            :active-name="state.menuActive"
             accordion
-            @on-select="(activeIndex) => (menuActive = activeIndex)"
+            @on-select="(activeIndex) => (state.menuActive = activeIndex)"
             width="65px"
           >
             <!-- <MenuItem :name="1" class="menu-item">
@@ -47,28 +50,43 @@
               1
             </div> -->
             <!-- 常用元素 -->
-            <div v-show="menuActive === 2" class="left-panel">
+            <div v-show="state.menuActive === 2" class="left-panel">
               <tools></tools>
             </div>
             <!-- 背景设置 -->
-            <div v-show="menuActive === 3" class="left-panel">
+            <div v-show="state.menuActive === 3" class="left-panel">
               <layer></layer>
             </div>
           </div>
         </div>
         <!-- 画布区域 -->
-        <div id="workspace" style="width: 100%; position: relative; background: #f1f1f1">
+        <div
+          id="workspace"
+          style="width: 100%; position: relative; background: #f1f1f1"
+        >
           <div class="canvas-box">
             <div class="inside-shadow"></div>
-            <canvas id="canvas" :class="ruler ? 'design-stage-grid' : ''"></canvas>
+            <canvas
+              id="canvas"
+              :class="ruler ? 'design-stage-grid' : ''"
+            ></canvas>
           </div>
         </div>
         <!-- 属性区域 380-->
-        <div style="width: 530px; height: 100%; padding: 10px; overflow-y: auto; background: #fff">
-          <div v-if="show" style="padding-top: 10px">
+        <div
+          style="
+            width: 530px;
+            height: 100%;
+            padding: 10px;
+            overflow-y: auto;
+            background: #fff;
+          "
+        >
+          <div v-if="state.show" style="padding-top: 10px">
             <set-size></set-size>
             <bg-bar></bg-bar>
             <replaceImg></replaceImg>
+            <filters></filters>
             <div class="attr-item">
               <lock></lock>
               <dele></dele>
@@ -81,102 +99,90 @@
             <!-- 翻转 -->
             <flip></flip>
           </div>
-          <attribute v-if="show"></attribute>
+          <attribute v-if="state.show"></attribute>
         </div>
       </Content>
     </Layout>
   </div>
 </template>
 
-<script lang="ts">
+<script name="Home" setup>
 // @ts-nocheck # 忽略全文
+import { reactive, onMounted, watch, provide } from "vue";
+import { defineComponent } from "vue";
+import { fabric } from "fabric";
 
-import { defineComponent } from 'vue';
-import { fabric } from 'fabric';
-
-import layer from '@/components/layer.vue';
+import layer from "@/components/layer.vue";
 
 // 顶部组件
-import previewCurrent from '@/components/previewCurrent';
-import lang from '@/components/lang.vue';
-import save from '@/components/save.vue';
+import previewCurrent from "@/components/previewCurrent";
+import lang from "@/components/lang.vue";
+import save from "@/components/save.vue";
 // 导入元素
-import importJson from '@/components/importJson.vue';
-import importFile from '@/components/importFile.vue';
+import importJson from "@/components/importJson.vue";
+import importFile from "@/components/importFile.vue";
 
 // 左侧组件
-import tools from '@/components/tools.vue';
+import tools from "@/components/tools.vue";
 
 // 右侧组件
-import setSize from '@/components/setSize.vue';
-import bgBar from '@/components/bgBar.vue';
-import lock from '@/components/lock.vue';
-import align from '@/components/align.vue';
-import dele from '@/components/del.vue';
-import clone from '@/components/clone.vue';
-import centerAlign from '@/components/centerAlign.vue';
-import attribute from '@/components/attribute.vue';
-import flip from '@/components/flip.vue';
-import replaceImg from '@/components/replaceImg.vue';
+import setSize from "@/components/setSize.vue";
+import bgBar from "@/components/bgBar.vue";
+import lock from "@/components/lock.vue";
+import align from "@/components/align.vue";
+import dele from "@/components/del.vue";
+import clone from "@/components/clone.vue";
+import centerAlign from "@/components/centerAlign.vue";
+import attribute from "@/components/attribute.vue";
+import flip from "@/components/flip.vue";
+import replaceImg from "@/components/replaceImg.vue";
+import filters from "@/components/filters.vue";
 
 // 功能组件
-import Editor from '../core';
+import Editor from "../core";
 
 // 功能组件
-import CanvasEventEmitter from '../utils/event/notifier';
+import CanvasEventEmitter from "../utils/event/notifier";
 const event = new CanvasEventEmitter();
 const canvas = {};
-export default defineComponent({
-  name: 'HomeView',
-  provide: {
-    canvas,
-    fabric,
-    event
-  },
-  data() {
-    return {
-      canvas: null,
-      menuActive: 2,
-      show: false,
-      select: null,
-      ruler: false,
-    };
-  },
-  components: {
-    layer,
-    setSize,
-    bgBar,
-    tools,
-    lock,
-    dele,
-    clone,
-    align,
-    attribute,
-    flip,
-    centerAlign,
-    replaceImg,
-    // 顶部组件
-    previewCurrent,
-    lang,
-    save,
-    importJson,
-    importFile
-  },
-  mounted() {
-    this.canvas = new fabric.Canvas('canvas', {
-      fireRightClick: true, // 启用右键，button的数字为3
-      stopContextMenu: true, // 禁止默认右键菜单
-      controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
-    });
-    canvas.c = this.canvas;
-    event.init(canvas.c);
 
-    canvas.editor = new Editor(canvas.c);
-    canvas.c.renderAll();
-
-    this.show = true;
-  }
+const state = reactive({
+  menuActive: 2,
+  show: false,
+  select: null,
+  ruler: false,
 });
+
+onMounted(() => {
+  const _canvas = new fabric.Canvas("canvas", {
+    fireRightClick: true, // 启用右键，button的数字为3
+    stopContextMenu: true, // 禁止默认右键菜单
+    controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
+  });
+  canvas.c = _canvas;
+  event.init(canvas.c);
+
+  canvas.editor = new Editor(canvas.c);
+  canvas.c.renderAll();
+
+  state.show = true;
+});
+
+watch(
+  () => state.ruler,
+  (value) => {
+    if (!canvas.c.ruler) return;
+    if (value) {
+      canvas.c.ruler.enable();
+    } else {
+      canvas.c.ruler.disable();
+    }
+  }
+);
+
+provide("fabric", fabric);
+provide("event", event);
+provide("canvas", canvas);
 </script>
 
 <style lang="scss" scoped>
@@ -290,7 +296,13 @@ export default defineComponent({
       transparent 75%,
       var(--color) 0
     ),
-    linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0);
+    linear-gradient(
+      45deg,
+      var(--color) 25%,
+      transparent 0,
+      transparent 75%,
+      var(--color) 0
+    );
   background-position: var(--offsetX) var(--offsetY),
     calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
   background-size: calc(var(--size) * 2) calc(var(--size) * 2);
