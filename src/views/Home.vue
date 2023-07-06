@@ -8,7 +8,8 @@
             <Icon type="logo-github" :size="30" />
           </a>
         </span>
-
+        <!-- 导入 -->
+        <import-json></import-json>
         <div class="top-right">
           <!-- 预览 -->
           <previewCurrent />
@@ -96,6 +97,8 @@ import layer from '@/components/layer.vue';
 import previewCurrent from '@/components/previewCurrent';
 import lang from '@/components/lang.vue';
 import save from '@/components/save.vue';
+// 导入元素
+import importJson from '@/components/importJson.vue';
 
 // 左侧组件
 import tools from '@/components/tools.vue';
@@ -149,7 +152,8 @@ export default defineComponent({
     // 顶部组件
     previewCurrent,
     lang,
-    save
+    save,
+    importJson
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
