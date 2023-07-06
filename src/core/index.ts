@@ -109,6 +109,11 @@ class Editor extends EventEmitter {
       this._workspaceSendToBack();
     }
   }
+
+  // 导出json 
+  getJson() {
+    return this.canvas.toJSON(['id', 'gradientAngle', 'selectable', 'hasControls']);
+  }
 }
 
 export default Editor;
