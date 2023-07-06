@@ -10,6 +10,8 @@
         </span>
         <!-- 导入 -->
         <import-json></import-json>
+        <Divider type="vertical" />
+        <import-file></import-file>
         <div class="top-right">
           <!-- 预览 -->
           <previewCurrent />
@@ -99,6 +101,7 @@ import lang from '@/components/lang.vue';
 import save from '@/components/save.vue';
 // 导入元素
 import importJson from '@/components/importJson.vue';
+import importFile from '@/components/importFile.vue';
 
 // 左侧组件
 import tools from '@/components/tools.vue';
@@ -153,7 +156,8 @@ export default defineComponent({
     previewCurrent,
     lang,
     save,
-    importJson
+    importJson,
+    importFile
   },
   mounted() {
     this.canvas = new fabric.Canvas('canvas', {
