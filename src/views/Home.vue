@@ -68,6 +68,7 @@
           <div v-if="show" style="padding-top: 10px">
             <set-size></set-size>
             <bg-bar></bg-bar>
+            <replaceImg></replaceImg>
             <div class="attr-item">
               <lock></lock>
               <dele></dele>
@@ -116,6 +117,7 @@ import clone from '@/components/clone.vue';
 import centerAlign from '@/components/centerAlign.vue';
 import attribute from '@/components/attribute.vue';
 import flip from '@/components/flip.vue';
+import replaceImg from '@/components/replaceImg.vue';
 
 // 功能组件
 import Editor from '../core';
@@ -152,6 +154,7 @@ export default defineComponent({
     attribute,
     flip,
     centerAlign,
+    replaceImg,
     // 顶部组件
     previewCurrent,
     lang,
