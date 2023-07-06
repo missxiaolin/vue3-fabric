@@ -66,10 +66,7 @@
         >
           <div class="canvas-box">
             <div class="inside-shadow"></div>
-            <canvas
-              id="canvas"
-              :class="ruler ? 'design-stage-grid' : ''"
-            ></canvas>
+            <canvas id="canvas" :class="state.ruler ? 'design-stage-grid' : ''"></canvas>
           </div>
         </div>
         <!-- 属性区域 380-->
