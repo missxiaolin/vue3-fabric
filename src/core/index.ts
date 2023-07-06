@@ -4,6 +4,8 @@ import { v4 as uuid } from 'uuid';
 
 import initControls from './initControls';
 import InitCenterAlign from './initCenterAlign';
+import initHotkeys from './initHotKeys';
+
 
 /**
  * 主逻辑程序代码
@@ -18,6 +20,7 @@ class Editor extends EventEmitter {
     this.canvas = canvas;
     this.editorWorkspace = null;
 
+    // initHotkeys(canvas, this);
     // 初始化canvas
     initControls(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
