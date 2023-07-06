@@ -46,6 +46,5 @@ const preview = () => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-right: 10px;
 }
 </style>
