@@ -3,16 +3,16 @@
     <Divider plain orientation="left">{{ $t("size") }}{{ mixinState.mSelectMode }}</Divider>
     <Form :label-width="40">
       <FormItem :label="$t('width')" prop="name">
+        <!-- :max="2000" -->
         <InputNumber
-          :max="2000"
           :min="1"
           v-model="width"
           @on-change="setSize"
         ></InputNumber>
       </FormItem>
       <FormItem :label="$t('height')" prop="name">
+        <!-- :max="2000" -->
         <InputNumber
-          :max="2000"
           :min="1"
           v-model="height"
           @on-change="setSize"
