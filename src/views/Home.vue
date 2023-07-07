@@ -12,7 +12,12 @@
         <import-json></import-json>
         <Divider type="vertical" />
         <import-file></import-file>
-
+        <Divider type="vertical" />
+        <!-- 标尺开关 -->
+        <Tooltip :content="$t('grid')">
+          <iSwitch v-model="state.ruler" size="small" class="switch"></iSwitch>
+        </Tooltip>
+        <Divider type="vertical" />
         <history></history>
         <div class="top-right">
           <!-- 预览 -->
