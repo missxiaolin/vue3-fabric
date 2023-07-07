@@ -5063,14 +5063,3 @@ void transform(CanvasRenderingContext2D, boolean)：当渲染Object时对Context
 fabric.Point translateToCenterPoint(fabric.Point, String, String)：将指定的坐标点从原点平移到中点坐标（基于Object的维度）。第一个参数的X/Y坐标分别对应第二和第三个参数；第二个参数即水平原点，可选值为'left', 'center' or 'right'；第三个参数即垂直原点，可选值为'top', 'center' or 'bottom'。
 fabric.Point translateToOriginPoint(fabric.Point, String, String)：将指定的坐标点从中点坐标平移到原点（基于Object的维度）。第一个参数的X/Y坐标分别对应第二和第三个参数；第二个参数即水平原点，可选值为'left', 'center' or 'right'；第三个参数即垂直原点，可选值为'top', 'center' or 'bottom'。
 ```
-
-
-
-
-
-
-
-
-
-
-

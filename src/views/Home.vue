@@ -74,6 +74,7 @@
           <div class="canvas-box">
             <div class="inside-shadow"></div>
             <canvas id="canvas" :class="state.ruler ? 'design-stage-grid' : ''"></canvas>
+            <dragMode></dragMode>
           </div>
         </div>
         <!-- 属性区域 380-->
@@ -144,6 +145,9 @@ import flip from "@/components/flip.vue";
 import replaceImg from "@/components/replaceImg.vue";
 import filters from "@/components/filters.vue";
 import group from '@/components/group.vue';
+
+// 主区域组件
+import dragMode from '@/components/dragMode.vue';
 
 // 功能组件
 import Editor from "../core";

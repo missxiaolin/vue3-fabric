@@ -139,24 +139,77 @@ class EditorWorkspace {
     this.setZoomAuto(scale - 0.08);
   }
 
+  // 开始拖拽
+  startDring() {
+    this.dragMode = true;
+    this.canvas.defaultCursor = 'grab';
+  }
+  endDring() {
+    this.dragMode = false;
+    this.canvas.defaultCursor = 'default';
+  }
+
   // 拖拽模式
   _initDring() {
     const This = this;
     // 点击
     this.canvas.on('mouse:down', function (this: ExtCanvas, opt) {
+      const evt = opt.e;
+      if (evt.altKey || This.dragMode) {
+        This.canvas.defaultCursor = 'grabbing';
+        This.canvas.discardActiveObject();
+        This._setDring();
+        this.selection = false;
+        this.isDragging = true;
+        this.lastPosX = evt.clientX;
+        this.lastPosY = evt.clientY;
+        this.requestRenderAll();
+      }
     })
     // 移动
     this.canvas.on('mouse:move', function (this: ExtCanvas, opt) {
-
+      if (this.isDragging) {
+        This.canvas.discardActiveObject();
+        // 光标
+        This.canvas.defaultCursor = 'grabbing';
+        const { e } = opt;
+        if (!this.viewportTransform) return;
+        const vpt = this.viewportTransform;
+        vpt[4] += e.clientX - this.lastPosX;
+        vpt[5] += e.clientY - this.lastPosY;
+        this.lastPosX = e.clientX;
+        this.lastPosY = e.clientY;
+        this.requestRenderAll();
+      }
     })
     // 鼠标松开
     this.canvas.on('mouse:up', function (this: ExtCanvas) {
-
+      if (!this.viewportTransform) return;
+      this.setViewportTransform(this.viewportTransform);
+      this.isDragging = false;
+      this.selection = true;
+      this.getObjects().forEach((obj) => {
+        if (obj.id !== 'workspace' && obj.hasControls) {
+          obj.selectable = true;
+        }
+      });
+      this.requestRenderAll();
+      This.canvas.defaultCursor = 'default';
     })
     // 滚轮
     this.canvas.on('mouse:wheel', function (this: fabric.Canvas, opt) {
       
     })
+  }
+
+  _setDring() {
+    this.canvas.selection = false;
+    this.canvas.defaultCursor = 'grab';
+    this.canvas.getObjects().forEach((obj) => {
+      obj.selectable = false;
+    });
+    this.canvas.renderAll();
+    this.canvas.requestRenderAll();
   }
 }
 
