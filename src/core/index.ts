@@ -5,6 +5,8 @@ import { v4 as uuid } from 'uuid';
 import initControls from './initControls';
 import InitCenterAlign from './initCenterAlign';
 import initHotkeys from './initHotKeys';
+import initRuler from './ruler';
+import type CanvasRuler from './ruler/ruler';
 
 
 /**
@@ -14,7 +16,7 @@ class Editor extends EventEmitter {
   canvas: fabric.Canvas;
   editorWorkspace: EditorWorkspace | null;
   centerAlign: InitCenterAlign;
-  
+  ruler: CanvasRuler;
   constructor(canvas: fabric.Canvas) {
     super();
     this.canvas = canvas;
@@ -24,6 +26,7 @@ class Editor extends EventEmitter {
     // 初始化canvas
     initControls(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
+    this.ruler = initRuler(canvas);
   }
 
   /**
