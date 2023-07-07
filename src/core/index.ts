@@ -20,8 +20,9 @@ class Editor extends EventEmitter {
     super();
     this.canvas = canvas;
     this.editorWorkspace = null;
-
-    // initHotkeys(canvas, this);
+    
+    // @ts-ignore 
+    initHotkeys(canvas, this);
     // 初始化canvas
     initControls(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
