@@ -63,7 +63,6 @@ class CanvasRuler {
   public options: Required<RulerOptions>;
 
   constructor(_options: RulerOptions) {
-    console.log('ceshi555')
     // 合并默认配置
     this.options = Object.assign(
       {

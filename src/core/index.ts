@@ -1,13 +1,12 @@
 import { EventEmitter } from "events";
 import type EditorWorkspace from "./EditorWorkspace";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
-import initControls from './initControls';
-import InitCenterAlign from './initCenterAlign';
-import initHotkeys from './initHotKeys';
-import initRuler from './ruler';
-import type CanvasRuler from './ruler/ruler';
-
+import initControls from "./initControls";
+import InitCenterAlign from "./initCenterAlign";
+import initHotkeys from "./initHotKeys";
+import initRuler from "./ruler";
+import type CanvasRuler from "./ruler/ruler";
 
 /**
  * 主逻辑程序代码
@@ -31,7 +30,7 @@ class Editor extends EventEmitter {
 
   /**
    * 单个对象复制
-   * @param activeObject 
+   * @param activeObject
    */
   _copyObject(activeObject: fabric.Object) {
     // 间距设置
@@ -59,13 +58,13 @@ class Editor extends EventEmitter {
   }
 
   getWorkspace() {
-    return this.canvas.getObjects().find((item) => item.id === 'workspace');
+    return this.canvas.getObjects().find((item) => item.id === "workspace");
   }
 
   /**
    * 复制
-   * @param paramsActiveObeject 
-   * @returns 
+   * @param paramsActiveObeject
+   * @returns
    */
   clone(paramsActiveObeject: fabric.ActiveSelection | fabric.Object) {
     const activeObject = paramsActiveObeject || this.canvas.getActiveObject();
@@ -113,9 +112,37 @@ class Editor extends EventEmitter {
     }
   }
 
-  // 导出json 
+  // 导出json
   getJson() {
-    return this.canvas.toJSON(['id', 'gradientAngle', 'selectable', 'hasControls']);
+    return this.canvas.toJSON([
+      "id",
+      "gradientAngle",
+      "selectable",
+      "hasControls",
+    ]);
+  }
+
+
+  /**
+   * @description: 拖拽添加到画布
+   * @param {Event} event
+   * @param {Object} item
+   */
+  dragAddItem(event: DragEvent, item: fabric.Object) {
+    const { left, top } = this.canvas
+      .getSelectionElement()
+      .getBoundingClientRect();
+    if (event.x < left || event.y < top || item.width === undefined) return;
+
+    const point = {
+      x: event.x - left,
+      y: event.y - top,
+    };
+    const pointerVpt = this.canvas.restorePointerVpt(point);
+    item.left = pointerVpt.x - item.width / 2;
+    item.top = pointerVpt.y;
+    this.canvas.add(item);
+    this.canvas.requestRenderAll();
   }
 }
 
