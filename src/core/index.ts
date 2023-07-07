@@ -28,6 +28,37 @@ class Editor extends EventEmitter {
     this.ruler = initRuler(canvas);
   }
 
+  // 多选对象复制
+  _copyActiveSelection(activeObject: fabric.Object) {
+    // 间距设置
+    const grid = 10;
+    const canvas = this.canvas;
+    activeObject?.clone((cloned: fabric.Object) => {
+      // 再次进行克隆，处理选择多个对象的情况
+      cloned.clone((clonedObj: fabric.ActiveSelection) => {
+        canvas.discardActiveObject();
+        if (clonedObj.left === undefined || clonedObj.top === undefined) return;
+        // 将克隆的画布重新赋值
+        clonedObj.canvas = canvas;
+        // 设置位置信息
+        clonedObj.set({
+          left: clonedObj.left + grid,
+          top: clonedObj.top + grid,
+          evented: true,
+          id: uuid(),
+        });
+        clonedObj.forEachObject((obj: fabric.Object) => {
+          obj.id = uuid();
+          canvas.add(obj);
+        });
+        // 解决不可选择问题
+        clonedObj.setCoords();
+        canvas.setActiveObject(clonedObj);
+        canvas.requestRenderAll();
+      });
+    });
+  }
+
   /**
    * 单个对象复制
    * @param activeObject
@@ -121,7 +152,6 @@ class Editor extends EventEmitter {
       "hasControls",
     ]);
   }
-
 
   /**
    * @description: 拖拽添加到画布
