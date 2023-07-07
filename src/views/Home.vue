@@ -12,6 +12,8 @@
         <import-json></import-json>
         <Divider type="vertical" />
         <import-file></import-file>
+
+        <history></history>
         <div class="top-right">
           <!-- 预览 -->
           <previewCurrent />
@@ -115,6 +117,7 @@ import layer from "@/components/layer.vue";
 import previewCurrent from "@/components/previewCurrent";
 import lang from "@/components/lang.vue";
 import save from "@/components/save.vue";
+import history from '@/components/history.vue';
 // 导入元素
 import importJson from "@/components/importJson.vue";
 import importFile from "@/components/importFile.vue";
