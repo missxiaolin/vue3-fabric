@@ -219,6 +219,31 @@ class EditorWorkspace {
     this.canvas.renderAll();
     this.canvas.requestRenderAll();
   }
+
+  // 放大
+  big() {
+    let zoomRatio = this.canvas.getZoom();
+    zoomRatio += 0.05;
+    const center = this.canvas.getCenter();
+    this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoomRatio);
+  }
+
+  // 缩小
+  small() {
+    let zoomRatio = this.canvas.getZoom();
+    zoomRatio -= 0.05;
+    const center = this.canvas.getCenter();
+    this.canvas.zoomToPoint(
+      new fabric.Point(center.left, center.top),
+      zoomRatio < 0 ? 0.01 : zoomRatio
+    );
+  }
+
+  // 1:1 放大
+  one() {
+    this.setZoomAuto(0.8 - 0.08);
+    this.canvas.requestRenderAll();
+  }
 }
 
 export default EditorWorkspace;
