@@ -198,7 +198,15 @@ class EditorWorkspace {
     })
     // 滚轮
     this.canvas.on('mouse:wheel', function (this: fabric.Canvas, opt) {
-      
+      const delta = opt.e.deltaY;
+      let zoom = this.getZoom();
+      zoom *= 0.999 ** delta;
+      if (zoom > 20) zoom = 20;
+      if (zoom < 0.01) zoom = 0.01;
+      const center = this.getCenter();
+      this.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
+      opt.e.preventDefault();
+      opt.e.stopPropagation();
     })
   }
 
