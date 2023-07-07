@@ -89,6 +89,7 @@
           <div v-if="state.show" style="padding-top: 10px">
             <set-size></set-size>
             <bg-bar></bg-bar>
+            <group></group>
             <replaceImg></replaceImg>
             <filters></filters>
             <div class="attr-item">
@@ -142,6 +143,7 @@ import attribute from "@/components/attribute.vue";
 import flip from "@/components/flip.vue";
 import replaceImg from "@/components/replaceImg.vue";
 import filters from "@/components/filters.vue";
+import group from '@/components/group.vue';
 
 // 功能组件
 import Editor from "../core";

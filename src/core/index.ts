@@ -153,6 +153,35 @@ class Editor extends EventEmitter {
     ]);
   }
 
+  group() {
+    // 组合元素
+    const activeObj = this.canvas.getActiveObject() as fabric.ActiveSelection;
+    if (!activeObj) return;
+    const activegroup = activeObj.toGroup();
+    const objectsInGroup = activegroup.getObjects();
+    activegroup.clone((newgroup: fabric.Group) => {
+      newgroup.set("id", uuid());
+      this.canvas.remove(activegroup);
+      objectsInGroup.forEach((object) => {
+        this.canvas.remove(object);
+      });
+      this.canvas.add(newgroup);
+      this.canvas.setActiveObject(newgroup);
+    });
+  }
+
+  // 拆分组
+  unGroup() {
+    const activeObject = this.canvas.getActiveObject() as fabric.Group;
+    if (!activeObject) return;
+    // 先获取当前选中的对象，然后打散
+    activeObject.toActiveSelection();
+    activeObject.getObjects().forEach((item: fabric.Object) => {
+      item.set("id", uuid());
+    });
+    this.canvas.discardActiveObject().renderAll();
+  }
+
   /**
    * @description: 拖拽添加到画布
    * @param {Event} event
