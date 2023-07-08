@@ -65,7 +65,11 @@
           ></path>
         </svg>
       </span>
-      <span @click="() => addCircle()" :draggable="true" @dragend="onDragend('circle')">
+      <span
+        @click="() => addCircle()"
+        :draggable="true"
+        @dragend="onDragend('circle')"
+      >
         <svg
           t="1650855860236"
           class="icon"
@@ -82,7 +86,11 @@
           ></path>
         </svg>
       </span>
-      <span @click="() => addTriangle()" :draggable="true" @dragend="onDragend('triangle')">
+      <span
+        @click="() => addTriangle()"
+        :draggable="true"
+        @dragend="onDragend('triangle')"
+      >
         <svg
           t="1650874633978"
           class="icon"
@@ -100,7 +108,11 @@
         </svg>
       </span>
       <!-- 多边形按钮 -->
-      <span @click="() => addPolygon()" :draggable="true" @dragend="onDragend('polygon')">
+      <span
+        @click="() => addPolygon()"
+        :draggable="true"
+        @dragend="onDragend('polygon')"
+      >
         <svg
           t="1650874633978"
           class="icon"
@@ -118,9 +130,12 @@
         </svg>
       </span>
     </div>
-    <Divider plain orientation="left">{{ $t('draw_elements') }}</Divider>
+    <Divider plain orientation="left">{{ $t("draw_elements") }}</Divider>
     <div class="tool-box">
-      <span @click="drawingLineModeSwitch(false)" :class="isDrawingLineMode && !isArrow && 'bg'">
+      <span
+        @click="drawingLineModeSwitch(false)"
+        :class="isDrawingLineMode && !isArrow && 'bg'"
+      >
         <svg
           t="1673022047861"
           class="icon"
@@ -143,7 +158,10 @@
           ></path>
         </svg>
       </span>
-      <span @click="drawingLineModeSwitch(true)" :class="isDrawingLineMode && isArrow && 'bg'">
+      <span
+        @click="drawingLineModeSwitch(true)"
+        :class="isDrawingLineMode && isArrow && 'bg'"
+      >
         <!-- <svg t="1673022047861" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4206" width="20" height="20"><path d="M187.733333 1024h-170.666666c-10.24 0-17.066667-6.826667-17.066667-17.066667v-170.666666c0-10.24 6.826667-17.066667 17.066667-17.066667h170.666666c10.24 0 17.066667 6.826667 17.066667 17.066667v170.666666c0 10.24-6.826667 17.066667-17.066667 17.066667zM34.133333 989.866667h136.533334v-136.533334H34.133333v136.533334zM1006.933333 204.8h-170.666666c-10.24 0-17.066667-6.826667-17.066667-17.066667v-170.666666c0-10.24 6.826667-17.066667 17.066667-17.066667h170.666666c10.24 0 17.066667 6.826667 17.066667 17.066667v170.666666c0 10.24-6.826667 17.066667-17.066667 17.066667zM853.333333 170.666667h136.533334V34.133333h-136.533334v136.533334z" fill="" p-id="4207"></path><path d="M187.733333 853.333333c-3.413333 0-10.24 0-13.653333-3.413333-6.826667-6.826667-6.826667-17.066667 0-23.893333l648.533333-648.533334c6.826667-6.826667 17.066667-6.826667 23.893334 0s6.826667 17.066667 0 23.893334l-648.533334 648.533333c0 3.413333-6.826667 3.413333-10.24 3.413333z" fill="" p-id="4208"></path></svg> -->
         <svg
           t="1673026778912"
@@ -168,8 +186,8 @@
 
 <script>
 import { v4 as uuid } from "uuid";
-import { getPolygonVertices } from '@/utils/math';
-import initializeLineDrawing from '@/core/initializeLineDrawing';
+import { getPolygonVertices } from "@/utils/math";
+import initializeLineDrawing from "@/core/initializeLineDrawing";
 
 // 默认属性
 const defaultPosition = { shadow: "", fontFamily: "arial" };
@@ -191,7 +209,7 @@ export default {
   created() {
     // 线条绘制
     this.drawHandler = initializeLineDrawing(this.canvas.c, defaultPosition);
-    this.canvas.c.on('drop', (opt) => {
+    this.canvas.c.on("drop", (opt) => {
       // 画布元素距离浏览器左侧和顶部的距离
       const offset = {
         left: this.canvas.c.getSelectionElement().getBoundingClientRect().left,
@@ -222,13 +240,13 @@ export default {
         case "rect":
           this.addRect(dragOption);
           break;
-        case 'circle':
+        case "circle":
           this.addCircle(dragOption);
           break;
-        case 'triangle':
+        case "triangle":
           this.addTriangle(dragOption);
           break;
-        case 'polygon':
+        case "polygon":
           this.addPolygon(dragOption);
           break;
         default:
@@ -260,7 +278,37 @@ export default {
       if (!option) {
         text.center();
       }
+      
       this.canvas.c.setActiveObject(text);
+
+      // let width = text.width;
+      // let height = text.height;
+      // let fontSize = text.fontSize;
+      // let This = this;
+      // const obj = this.canvas.c.getActiveObject();
+      // // 计算文本宽度并调整字体大小以适应新宽度
+      // this.canvas.c.on("text:changed", function (opt) {
+      //   let t1 = opt.target;
+      //   console.log(t1.type);
+      //   if (t1.type == "textbox") {
+      //     while (t1.width > width && fontSize > 1) {
+      //       fontSize--;
+      //       obj.set("fontSize", fontSize);
+      //       obj.set("width", width);
+      //       obj.set("height", height);
+      //       This.canvas.c.renderAll();
+      //     }
+
+      //     // 当增加文字大小时，逐渐增大文字大小以适应已知的高度
+      //     while (t1.height < height && fontSize < 100) {
+      //       fontSize++;
+      //       obj.set("fontSize", fontSize);
+      //       obj.set("width", width);
+      //       obj.set("height", height);
+      //       This.canvas.c.renderAll();
+      //     }
+      //   }
+      // });
     },
     addRect(option) {
       const rect = new this.fabric.Rect({
@@ -283,9 +331,9 @@ export default {
         ...defaultPosition,
         ...option,
         radius: 150,
-        fill: '#57606B',
+        fill: "#57606B",
         id: uuid(),
-        name: '圆形',
+        name: "圆形",
       });
       this.canvas.c.add(circle);
       if (!option) {
@@ -298,9 +346,9 @@ export default {
         ...defaultPosition,
         width: 400,
         height: 400,
-        fill: '#92706B',
+        fill: "#92706B",
         id: uuid(),
-        name: '三角形',
+        name: "三角形",
       });
       this.canvas.c.add(triangle);
       if (!option) {
@@ -312,9 +360,9 @@ export default {
       const polygon = new this.fabric.Polygon(getPolygonVertices(5, 200), {
         ...defaultPosition,
         ...option,
-        fill: '#ccc',
+        fill: "#ccc",
         id: uuid(),
-        name: '多边形',
+        name: "多边形",
       });
       polygon.set({
         // 创建完设置宽高，不然宽高会变成自动的值
@@ -338,7 +386,7 @@ export default {
       this.drawHandler.setMode(this.isDrawingLineMode);
       this.drawHandler.setArrow(isArrow);
       this.canvas.c.forEachObject((obj) => {
-        if (obj.id !== 'workspace') {
+        if (obj.id !== "workspace") {
           obj.selectable = !this.isDrawingLineMode;
           obj.evented = !this.isDrawingLineMode;
         }
