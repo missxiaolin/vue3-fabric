@@ -285,7 +285,7 @@ export default {
       // let height = text.height;
       // let fontSize = text.fontSize;
       // let This = this;
-      // const obj = this.canvas.c.getActiveObject();
+      const obj = this.canvas.c.getActiveObject();
       // // 计算文本宽度并调整字体大小以适应新宽度
       // this.canvas.c.on("text:changed", function (opt) {
       //   let t1 = opt.target;
@@ -308,6 +308,10 @@ export default {
       //       This.canvas.c.renderAll();
       //     }
       //   }
+      // });
+      // 监听修改事件
+      // obj.on('modified', function (opt) {
+      //   console.log(opt)
       // });
     },
     addRect(option) {
