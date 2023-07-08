@@ -1,5 +1,7 @@
 <template>
   <div class="box" v-if="mixinState.mSelectMode === 'one'">
+    <!-- 计算文字大小用 -->
+    <div id="myDiv"></div>
     <!-- 字体属性 -->
     <div v-show="textType.includes(mixinState.mSelectOneType)">
       <Divider plain orientation="left">{{ $t("attributes.font") }}</Divider>
@@ -484,9 +486,53 @@ const changeFontFamily = (fontName) => {
       Spin.hide();
     });
 };
+function adjustFontSize(activeObject, text, width, height, fontSize, lineHeight) {
+  let div = document.getElementById('myDiv'); // 获取目标div元素
 
+  div.style.lineHeight = lineHeight
+  div.style.fontSize = `${fontSize}px`
+  div.innerText = text
+  if (div.offsetWidth > width || div.offsetHeight > height) {
+    fontSize--
+    adjustFontSize(activeObject, text, width, height, fontSize, lineHeight)
+  } else {
+    activeObject.set("fontSize", fontSize);
+    activeObject.set("width", width);
+    activeObject.set("height", height);
+    fontAttr.fontSize = fontSize
+    canvas.c.renderAll();
+  }
+}
 const getObjectAttr = (e) => {
   const activeObject = canvas.c.getActiveObject();
+  
+  // if (activeObject) {
+  //   if (activeObject.type == "textbox") {
+  //     let width = activeObject.width;
+  //     let height = activeObject.height;
+  //     let fontSize = activeObject.fontSize;
+  //     let lineHeight = activeObject.lineHeight;
+  //     // 计算文本宽度并调整字体大小以适应新宽度
+  //     canvas.c.on("text:changed", function (opt) {
+  //       let t1 = opt.target;
+  //       adjustFontSize(
+  //         activeObject,
+  //         t1.text,
+  //         width,
+  //         height,
+  //         fontSize,
+  //         lineHeight
+  //       );
+  //     });
+  //     // 监听修改事件
+  //     activeObject.on("modified", function (opt) {
+  //       if (opt && opt.target) {
+  //         width = opt.target.width;
+  //         height = opt.target.height;
+  //       }
+  //     });
+  //   }
+  // }
   // 不是当前obj，跳过
   if (e && e.target && e.target !== activeObject) return;
   if (activeObject) {
@@ -763,5 +809,11 @@ onMounted(init);
     text-align: center;
     filter: invert(100%);
   }
+}
+#myDiv {
+  position: fixed;
+  left: -2000000px;
+  top: -20000000px;
+  z-index: 1111111;
 }
 </style>

@@ -280,39 +280,6 @@ export default {
       }
       
       this.canvas.c.setActiveObject(text);
-
-      // let width = text.width;
-      // let height = text.height;
-      // let fontSize = text.fontSize;
-      // let This = this;
-      const obj = this.canvas.c.getActiveObject();
-      // // 计算文本宽度并调整字体大小以适应新宽度
-      // this.canvas.c.on("text:changed", function (opt) {
-      //   let t1 = opt.target;
-      //   console.log(t1.type);
-      //   if (t1.type == "textbox") {
-      //     while (t1.width > width && fontSize > 1) {
-      //       fontSize--;
-      //       obj.set("fontSize", fontSize);
-      //       obj.set("width", width);
-      //       obj.set("height", height);
-      //       This.canvas.c.renderAll();
-      //     }
-
-      //     // 当增加文字大小时，逐渐增大文字大小以适应已知的高度
-      //     while (t1.height < height && fontSize < 100) {
-      //       fontSize++;
-      //       obj.set("fontSize", fontSize);
-      //       obj.set("width", width);
-      //       obj.set("height", height);
-      //       This.canvas.c.renderAll();
-      //     }
-      //   }
-      // });
-      // 监听修改事件
-      // obj.on('modified', function (opt) {
-      //   console.log(opt)
-      // });
     },
     addRect(option) {
       const rect = new this.fabric.Rect({
