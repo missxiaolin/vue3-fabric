@@ -32,8 +32,10 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
-, "src/core/objects/Arrow.js"  ],
+    "tests/**/*.tsx",
+    "src/core/objects/Arrow.js",
+    "src/components/svgIcon/index.ts",
+  ],
   "exclude": [
     "node_modules"
   ]
