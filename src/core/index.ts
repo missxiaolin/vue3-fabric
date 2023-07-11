@@ -2,6 +2,9 @@ import { EventEmitter } from "events";
 import type EditorWorkspace from "./EditorWorkspace";
 import { v4 as uuid } from "uuid";
 
+// 对齐辅助线
+import initAligningGuidelines from './initAligningGuidelines';
+
 import initControls from "./initControls";
 import InitCenterAlign from "./initCenterAlign";
 import initHotkeys from "./initHotKeys";
@@ -21,6 +24,7 @@ class Editor extends EventEmitter {
     this.canvas = canvas;
     this.editorWorkspace = null;
     
+    initAligningGuidelines(canvas);
     // @ts-ignore 
     initHotkeys(canvas, this);
     // 初始化canvas
