@@ -3,11 +3,12 @@ import { createI18n } from 'vue-i18n';
 // import en from 'view-ui-plus/dist/locale/en-US'; //新版本把'iview'改成'view-design'
 // import US from './en.json';
 import CN from './zh';
+import US from './en';
 import { getLocal, setLocal } from '../utils/local';
 import { LANG } from '@/config/constants/app';
 
 const messages = {
-//   en: Object.assign(US, en), //将自己的英文包和iview提供的结合
+  en: US, //将自己的英文包和iview提供的结合
   zh: CN, //将自己的中文包和iview提供的结合
 };
 
