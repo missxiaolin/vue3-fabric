@@ -1,3 +1,4 @@
+// @ts-nocheck # 忽略全文
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-multi-assign */
 // noinspection NestedAssignmentJS

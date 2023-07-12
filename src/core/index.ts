@@ -10,6 +10,7 @@ import initControls from "./initControls";
 import InitCenterAlign from "./initCenterAlign";
 import initHotkeys from "./initHotKeys";
 import initRuler from "./ruler";
+import EditorGroupText from './EditorGroupText';
 import type CanvasRuler from "./ruler/ruler";
 
 /**
@@ -25,15 +26,17 @@ class Editor extends EventEmitter {
     this.canvas = canvas;
     this.editorWorkspace = null;
 
-    initAligningGuidelines(canvas);
+    
     // @ts-ignore 
     initHotkeys(canvas, this);
     // 初始化canvas
     initControls(canvas);
     initControlsRotate(canvas);
+    new EditorGroupText(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
+    initAligningGuidelines(canvas);
     this.ruler = initRuler(canvas);
-    
+   
   }
 
   // 多选对象复制
