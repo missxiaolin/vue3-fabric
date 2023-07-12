@@ -11,6 +11,7 @@ import InitCenterAlign from "./initCenterAlign";
 import initHotkeys from "./initHotKeys";
 import initRuler from "./ruler";
 import EditorGroupText from './EditorGroupText';
+import EditorGroupImg from "./EditorGroupImg";
 import type CanvasRuler from "./ruler/ruler";
 
 /**
@@ -25,7 +26,6 @@ class Editor extends EventEmitter {
     super();
     this.canvas = canvas;
     this.editorWorkspace = null;
-
     
     // @ts-ignore 
     initHotkeys(canvas, this);
@@ -33,6 +33,7 @@ class Editor extends EventEmitter {
     initControls(canvas);
     initControlsRotate(canvas);
     new EditorGroupText(canvas);
+    // new EditorGroupImg(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
     initAligningGuidelines(canvas);
     this.ruler = initRuler(canvas);

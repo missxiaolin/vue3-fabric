@@ -3,9 +3,9 @@ import { fabric } from "fabric";
 import { v4 as uuid } from "uuid";
 
 /**
- * 组内文字编辑
+ * 主要用于组的图片更换
  */
-class EditorGroupText {
+class EditorGroupImg {
   canvas: fabric.Canvas;
   isDown: boolean;
   constructor(canvas: fabric.Canvas) {
@@ -14,16 +14,14 @@ class EditorGroupText {
     this.isDown = false;
   }
 
-  // 组内文本输入
   _init() {
     this.canvas.on("mouse:down", (opt) => {
       this.isDown = true;
       if (opt.target && opt.target.type === "group") {
-        const textObject = this._getGroupTextObj(opt) as fabric.IText;
-        if (textObject) {
-          this._bedingEditingEvent(textObject, opt);
-          this.canvas.setActiveObject(textObject);
-          textObject.enterEditing();
+        const imageObject = this._getGroupImgObj(opt) as fabric.Image;
+        if (imageObject) {
+          this._bedingEditingEvent(imageObject, opt);
+          this.canvas.setActiveObject(imageObject);
         } else {
           this.canvas.setActiveObject(opt.target);
         }
@@ -36,37 +34,52 @@ class EditorGroupText {
 
     this.canvas.on("mouse:move", (opt) => {
       if (this.isDown && opt.target && opt.target.type === "group") {
-        const textObject = this._getGroupTextObj(opt);
-        if (textObject) {
-          // todo bug 文字编辑结束后，点击组内其他元素可单独拖动
+        const imageObject = this._getGroupImgObj(opt);
+        if (imageObject) {
+          // todo bug 图片编辑结束后，点击组内其他元素可单独拖动
         }
       }
     });
   }
 
-  // 获取点击区域内的组内文字元素
-  _getGroupTextObj(opt: fabric.IEvent<MouseEvent>) {
+  /**
+   * 获取点击区域内的组内图片元素
+   * @param opt
+   * @returns
+   */
+  _getGroupImgObj(opt: fabric.IEvent<MouseEvent>) {
+    if (!opt) {
+      return;
+    }
     const pointer = this.canvas.getPointer(opt.e, true);
     const clickObj = this.canvas._searchPossibleTargets(
       opt.target?._objects,
       pointer
     );
-    if (clickObj && this.isText(clickObj)) {
+    if (clickObj && this.isImage(clickObj)) {
       return clickObj;
     }
     return false;
   }
 
+  /**
+   * 判断图片元素
+   * @param obj
+   * @returns
+   */
+  isImage(obj: fabric.Object) {
+    return obj.type && ["image"].includes(obj.type);
+  }
+
   // 绑定编辑取消事件
   _bedingEditingEvent(
-    textObject: fabric.IText,
+    imageObject: fabric.Image,
     opt: fabric.IEvent<MouseEvent>
   ) {
     if (!opt.target) return;
     const left = opt.target.left;
     const top = opt.target.top;
     const ids = this._unGroup() || [];
-
     const resetGroup = () => {
       const groupArr = this.canvas
         .getObjects()
@@ -84,7 +97,7 @@ class EditorGroupText {
       this.canvas.discardActiveObject().renderAll();
     };
     // 绑定取消事件
-    textObject.on("editing:exited", resetGroup);
+    imageObject.on("editing:exited", resetGroup);
   }
 
   // 拆分组合并返回ID
@@ -100,10 +113,6 @@ class EditorGroupText {
     activeObj.toActiveSelection();
     return ids;
   }
-
-  isText(obj: fabric.Object) {
-    return obj.type && ["i-text", "text", "textbox"].includes(obj.type);
-  }
 }
 
-export default EditorGroupText;
+export default EditorGroupImg;
