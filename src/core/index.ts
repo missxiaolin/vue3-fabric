@@ -1,10 +1,11 @@
+// @ts-nocheck # 忽略全文
 import { EventEmitter } from "events";
 import type EditorWorkspace from "./EditorWorkspace";
 import { v4 as uuid } from "uuid";
 
 // 对齐辅助线
 import initAligningGuidelines from './initAligningGuidelines';
-
+import initControlsRotate from '@/core/initControlsRotate';
 import initControls from "./initControls";
 import InitCenterAlign from "./initCenterAlign";
 import initHotkeys from "./initHotKeys";
@@ -23,14 +24,16 @@ class Editor extends EventEmitter {
     super();
     this.canvas = canvas;
     this.editorWorkspace = null;
-    
+
     initAligningGuidelines(canvas);
     // @ts-ignore 
     initHotkeys(canvas, this);
     // 初始化canvas
     initControls(canvas);
+    initControlsRotate(canvas);
     this.centerAlign = new InitCenterAlign(canvas);
     this.ruler = initRuler(canvas);
+    
   }
 
   // 多选对象复制

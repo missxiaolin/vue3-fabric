@@ -14,6 +14,7 @@ import vfe from "vfe";
 
 const canvas = inject("canvas") as vfe.ICanvas;
 const getImgUrl = () => {
+  canvas.editor.ruler.hideGuideline();
   const workspace = canvas.c
     .getObjects()
     .find((item: any) => item.id === "workspace");

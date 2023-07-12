@@ -27,7 +27,10 @@ class CanvasEventEmitter extends EventEmitter {
     if (!this.handler) {
       throw TypeError("还未初始化");
     }
-    const actives = this.handler.getActiveObjects();
+    const actives = this.handler
+      .getActiveObjects()
+      .filter((item) => !(item instanceof fabric.GuideLine)); // 过滤掉辅助线
+
     if (actives && actives.length === 1) {
       this.emit(SelectEvent.ONE, actives);
     } else if (actives && actives.length > 1) {
