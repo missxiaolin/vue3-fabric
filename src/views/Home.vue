@@ -58,7 +58,7 @@
             </div> -->
             <!-- 常用元素 -->
             <div v-show="state.menuActive === 2" class="left-panel">
-              <!-- <tools></tools> -->
+              <tools></tools>
             </div>
             <!-- 背景设置 -->
             <div v-show="state.menuActive === 3" class="left-panel">
@@ -132,7 +132,7 @@ import { fabric } from "fabric";
 // import importFile from "@/components/importFile.vue";
 
 // 左侧组件
-// import tools from "@/components/tools.vue";
+import tools from "@/components/tools.vue";
 
 // 右侧组件
 import setSize from "@/components/setSize.vue";
