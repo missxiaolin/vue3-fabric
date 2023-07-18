@@ -35,12 +35,12 @@
 </template>
 
 <script setup name="CanvasSize">
+import { Modal } from 'view-ui-plus';
 import { ref, onMounted, reactive } from "vue";
 import useSelect from "@/hooks/select";
-import EditorWorkspace from "../core/EditorWorkspace";
 import { useI18n } from "vue-i18n";
 
-const { canvas, mixinState } = useSelect();
+const { canvas, mixinState, canvasEditor } = useSelect();
 const { t } = useI18n();
 
 let width = ref(900);

@@ -18,8 +18,9 @@ export default function useSelect() {
     mSelectActive: [],
   });
 
-  const fabric: any = inject('fabric');
-  const canvas: any = inject('canvas');
+  const fabric = inject('fabric');
+  const canvas = inject('canvas');
+  const canvasEditor = inject('canvasEditor');
   const event: any = inject('event');
 
   const selectOne = (e: any) => {
@@ -57,6 +58,7 @@ export default function useSelect() {
   return {
     fabric,
     canvas,
+    canvasEditor,
     mixinState: state,
   };
 }
