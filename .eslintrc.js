@@ -10,6 +10,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     './.eslintrc-auto-import.json',
+    './mixins/select.ts',
   ],
   parser: 'vue-eslint-parser',
   parserOptions: {

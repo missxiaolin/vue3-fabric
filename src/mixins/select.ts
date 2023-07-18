@@ -1,3 +1,4 @@
+// @ts-nocheck # 忽略全文
 import { SelectEvent, SelectMode, SelectOneType } from '@/utils/event/types';
 
 interface Data {
