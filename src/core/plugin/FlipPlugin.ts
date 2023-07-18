@@ -2,10 +2,11 @@
 import { fabric } from 'fabric';
 import type Editor from '../core';
 import { SelectEvent, SelectMode } from '@/utils/event/types';
-import { Ref } from 'vue';
+import { Ref, ref } from 'vue';
 
 import { t } from '@/language/index';
 import event from '@/utils/event/notifier';
+
 
 export default class FlipPlugin {
   public canvas: fabric.Canvas;

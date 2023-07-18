@@ -41,5 +41,5 @@ class CanvasEventEmitter extends EventEmitter {
     }
   }
 }
-
-export default CanvasEventEmitter;
+export default new CanvasEventEmitter();
+export { CanvasEventEmitter };

@@ -9,7 +9,7 @@
           </a>
         </span>
         <!-- 导入 -->
-        <!-- <import-json></import-json> -->
+        <import-json></import-json>
         <Divider type="vertical" />
         <!-- <import-file></import-file> -->
         <Divider type="vertical" />
@@ -128,7 +128,7 @@ import { fabric } from "fabric";
 // import save from "@/components/save.vue";
 // import history from '@/components/history.vue';
 // 导入元素
-// import importJson from "@/components/importJson.vue";
+import importJson from "@/components/importJson.vue";
 // import importFile from "@/components/importFile.vue";
 
 // 左侧组件
@@ -156,11 +156,28 @@ import setSize from "@/components/setSize.vue";
 
 // 功能组件
 import Editor, {
-  WorkspacePlugin
+  DringPlugin,
+  AlignGuidLinePlugin,
+  ControlsPlugin,
+  ControlsRotatePlugin,
+  CenterAlignPlugin,
+  LayerPlugin,
+  CopyPlugin,
+  MoveHotKeyPlugin,
+  DeleteHotKeyPlugin,
+  GroupPlugin,
+  DrawLinePlugin,
+  GroupTextEditorPlugin,
+  GroupAlignPlugin,
+  WorkspacePlugin,
+  DownFontPlugin,
+  HistoryPlugin,
+  FlipPlugin,
+  RulerPlugin,
 } from '@/core';
 
 // 功能组件
-import CanvasEventEmitter from "../utils/event/notifier";
+import { CanvasEventEmitter } from '@/utils/event/notifier';
 const event = new CanvasEventEmitter();
 let canvas = {};
 
@@ -182,8 +199,24 @@ onMounted(() => {
   });
   // 初始化编辑器
   canvasEditor.init(canvas);
-
+  canvasEditor.use(DringPlugin);
+  canvasEditor.use(AlignGuidLinePlugin);
+  canvasEditor.use(ControlsPlugin);
+  canvasEditor.use(ControlsRotatePlugin);
+  canvasEditor.use(CenterAlignPlugin);
+  canvasEditor.use(LayerPlugin);
+  canvasEditor.use(CopyPlugin);
+  canvasEditor.use(MoveHotKeyPlugin);
+  canvasEditor.use(DeleteHotKeyPlugin);
+  canvasEditor.use(GroupPlugin);
+  canvasEditor.use(DrawLinePlugin);
+  canvasEditor.use(GroupTextEditorPlugin);
+  canvasEditor.use(GroupAlignPlugin);
   canvasEditor.use(WorkspacePlugin);
+  canvasEditor.use(DownFontPlugin);
+  canvasEditor.use(HistoryPlugin);
+  canvasEditor.use(FlipPlugin);
+  canvasEditor.use(RulerPlugin);
 
   event.init(canvas);
   state.show = true;
