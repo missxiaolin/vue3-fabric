@@ -65,9 +65,10 @@ let presetSize = reactive([
 ]);
 
 onMounted(() => {
-  canvas.editor.editorWorkspace = new EditorWorkspace(canvas.c, {
-    width: width.value,
-    height: height.value,
+  canvasEditor.setSize(width.value, height.value);
+  canvasEditor.on('sizeChange', (width, height) => {
+    width.value = width;
+    height.value = height;
   });
 });
 
@@ -77,6 +78,6 @@ const setSizeBy = (w, h) => {
   setSize();
 };
 const setSize = () => {
-  canvas.editor.editorWorkspace.setSize(width.value, height.value);
+  canvasEditor.setSize(width.value, height.value);
 };
 </script>

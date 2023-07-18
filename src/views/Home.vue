@@ -156,6 +156,7 @@ import setSize from "@/components/setSize.vue";
 
 // 功能组件
 import Editor, {
+  WorkspacePlugin
 } from '@/core';
 
 // 功能组件
@@ -170,8 +171,6 @@ const state = reactive({
   ruler: false,
 });
 
-console.log(Editor)
-
 // 创建编辑器
 const canvasEditor = new Editor();
 
@@ -184,9 +183,9 @@ onMounted(() => {
   // 初始化编辑器
   canvasEditor.init(canvas);
 
-  // canvas.editor = new Editor(canvas.c);
-  // canvas.c.renderAll();
+  canvasEditor.use(WorkspacePlugin);
 
+  event.init(canvas);
   state.show = true;
 });
 
