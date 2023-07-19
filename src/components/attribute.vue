@@ -311,7 +311,7 @@
 </template>
 
 <script setup name="AttrBute">
-import { reactive, ref, onMounted, inject, getCurrentInstance } from "vue";
+import { reactive, ref, onMounted, inject, getCurrentInstance, onBeforeUnmount } from "vue";
 import InputNumber from "@/components/inputNumber";
 import colorSelector from "@/components/colorSelector.vue";
 import fontList from "@/assets/fonts/font";
@@ -455,7 +455,7 @@ const textAlignListSvg = [
   '<svg t="1650441519862" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3854" width="18" height="18"><path d="M454.4 283.733333v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h341.333334c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-341.333334c-8.533333 0-14.933333-2.133333-19.2-8.533334-4.266667-4.266667-8.533333-10.666667-8.533333-19.2z m-226.133333 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h569.6c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333H256c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533333-19.2z m113.066666 170.666667v-57.6c0-8.533333 2.133333-14.933333 8.533334-19.2 6.4-6.4 12.8-8.533333 19.2-8.533334h454.4c8.533333 0 14.933333 2.133333 19.2 8.533334 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533333h-454.4c-8.533333 0-14.933333-2.133333-19.2-8.533333-6.4-4.266667-8.533333-10.666667-8.533334-19.2z m-170.666666 170.666666v-57.6c0-8.533333 2.133333-14.933333 8.533333-19.2 6.4-6.4 12.8-8.533333 19.2-8.533333h625.066667c8.533333 0 14.933333 2.133333 19.2 8.533333 6.4 6.4 8.533333 12.8 8.533333 19.2v57.6c0 8.533333-2.133333 14.933333-8.533333 19.2-6.4 6.4-12.8 8.533333-19.2 8.533334h-625.066667c-8.533333 0-14.933333-2.133333-19.2-8.533334-6.4-4.266667-8.533333-10.666667-8.533333-19.2z" p-id="3855"></path></svg>',
 ];
 
-const { canvas, fabric, mixinState } = useSelect();
+const { canvas, fabric, mixinState, canvasEditor } = useSelect();
 // 字体下拉列表
 const fontFamilyList = ref([...fontList]);
 
@@ -476,9 +476,9 @@ const changeFontFamily = (fontName) => {
   font
     .load(null, 150000)
     .then(() => {
-      const activeObject = canvas.c.getActiveObjects()[0];
-      activeObject && activeObject.set("fontFamily", fontName);
-      canvas.c.renderAll();
+      const activeObject = canvasEditor.canvas.getActiveObjects()[0];
+      activeObject && activeObject.set('fontFamily', fontName);
+      canvasEditor.canvas.renderAll();
       Spin.hide();
     })
     .catch((err) => {
@@ -486,6 +486,7 @@ const changeFontFamily = (fontName) => {
       Spin.hide();
     });
 };
+
 function adjustFontSize(activeObject, text, width, height, fontSize, lineHeight) {
   let div = document.getElementById('myDiv'); // 获取目标div元素
 
@@ -500,12 +501,11 @@ function adjustFontSize(activeObject, text, width, height, fontSize, lineHeight)
     activeObject.set("width", width);
     activeObject.set("height", height);
     fontAttr.fontSize = fontSize
-    canvas.c.renderAll();
+    canvasEditor.canvas.renderAll();
   }
 }
 const getObjectAttr = (e) => {
-  const activeObject = canvas.c.getActiveObject();
-  
+  const activeObject = canvasEditor.canvas.getActiveObject();
   // if (activeObject) {
   //   if (activeObject.type == "textbox") {
   //     let width = activeObject.width;
@@ -537,51 +537,51 @@ const getObjectAttr = (e) => {
   if (e && e.target && e.target !== activeObject) return;
   if (activeObject) {
     // base
-    baseAttr.id = activeObject.get("id");
-    baseAttr.opacity = activeObject.get("opacity") * 100;
-    baseAttr.fill = activeObject.get("fill");
-    baseAttr.left = activeObject.get("left");
-    baseAttr.top = activeObject.get("top");
-    baseAttr.stroke = activeObject.get("stroke");
-    baseAttr.strokeWidth = activeObject.get("strokeWidth");
-    baseAttr.shadow = activeObject.get("shadow") || {};
-    baseAttr.angle = activeObject.get("angle") || 0;
-    baseAttr.points = activeObject.get("points") || {};
+    baseAttr.id = activeObject.get('id');
+    baseAttr.opacity = activeObject.get('opacity') * 100;
+    baseAttr.fill = activeObject.get('fill');
+    baseAttr.left = activeObject.get('left');
+    baseAttr.top = activeObject.get('top');
+    baseAttr.stroke = activeObject.get('stroke');
+    baseAttr.strokeWidth = activeObject.get('strokeWidth');
+    baseAttr.shadow = activeObject.get('shadow') || {};
+    baseAttr.angle = activeObject.get('angle') || 0;
+    baseAttr.points = activeObject.get('points') || {};
 
-    const textTypes = ["i-text", "text", "textbox"];
+    const textTypes = ['i-text', 'text', 'textbox'];
     if (textTypes.includes(activeObject.type)) {
-      fontAttr.fontSize = activeObject.get("fontSize");
-      fontAttr.fontFamily = activeObject.get("fontFamily");
-      fontAttr.lineHeight = activeObject.get("lineHeight");
-      fontAttr.textAlign = activeObject.get("textAlign");
-      fontAttr.underline = activeObject.get("underline");
-      fontAttr.linethrough = activeObject.get("linethrough");
-      fontAttr.charSpacing = activeObject.get("charSpacing");
-      fontAttr.overline = activeObject.get("overline");
-      fontAttr.fontStyle = activeObject.get("fontStyle");
-      fontAttr.textBackgroundColor = activeObject.get("textBackgroundColor");
-      fontAttr.fontWeight = activeObject.get("fontWeight");
+      fontAttr.fontSize = activeObject.get('fontSize');
+      fontAttr.fontFamily = activeObject.get('fontFamily');
+      fontAttr.lineHeight = activeObject.get('lineHeight');
+      fontAttr.textAlign = activeObject.get('textAlign');
+      fontAttr.underline = activeObject.get('underline');
+      fontAttr.linethrough = activeObject.get('linethrough');
+      fontAttr.charSpacing = activeObject.get('charSpacing');
+      fontAttr.overline = activeObject.get('overline');
+      fontAttr.fontStyle = activeObject.get('fontStyle');
+      fontAttr.textBackgroundColor = activeObject.get('textBackgroundColor');
+      fontAttr.fontWeight = activeObject.get('fontWeight');
     }
   }
 };
 
 // 通用属性改变
 const changeCommon = (key, value) => {
-  const activeObject = canvas.c.getActiveObjects()[0];
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   // 透明度特殊转换
-  if (key === "opacity") {
+  if (key === 'opacity') {
     activeObject && activeObject.set(key, value / 100);
-    canvas.c.renderAll();
+    canvasEditor.canvas.renderAll();
     return;
   }
   // 旋转角度适配
-  if (key === "angle") {
+  if (key === 'angle') {
     activeObject.rotate(value);
-    canvas.c.renderAll();
+    canvasEditor.canvas.renderAll();
     return;
   }
   activeObject && activeObject.set(key, value);
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 
   // 更新属性
   getObjectAttr();
@@ -603,68 +603,73 @@ const selectCancel = () => {
 
 // 边框设置
 const borderSet = (key) => {
-  const activeObject = canvas.c.getActiveObjects()[0];
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   if (activeObject) {
     const stroke = strokeDashList.find((item) => item.label === key);
     activeObject.set(stroke.value);
-    canvas.c.renderAll();
+    canvasEditor.canvas.renderAll();
   }
 };
 
 // 阴影设置
 const changeShadow = () => {
-  const activeObject = canvas.c.getActiveObjects()[0];
-  activeObject &&
-    activeObject.set("shadow", new fabric.Shadow(baseAttr.shadow));
-  canvas.c.renderAll();
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
+  activeObject && activeObject.set('shadow', new fabric.Shadow(baseAttr.shadow));
+  canvasEditor.canvas.renderAll();
 };
 
 // 加粗
 const changeFontWeight = (key, value) => {
-  const nValue = value === "normal" ? "bold" : "normal";
+  const nValue = value === 'normal' ? 'bold' : 'normal';
   fontAttr.fontWeight = nValue;
-  const activeObject = canvas.c.getActiveObjects()[0];
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   activeObject && activeObject.set(key, nValue);
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 };
 
 // 斜体
 const changeFontStyle = (key, value) => {
-  const nValue = value === "normal" ? "italic" : "normal";
+  const nValue = value === 'normal' ? 'italic' : 'normal';
   fontAttr.fontStyle = nValue;
-  const activeObject = canvas.c.getActiveObjects()[0];
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   activeObject && activeObject.set(key, nValue);
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 };
 
 // 中划
 const changeLineThrough = (key, value) => {
   const nValue = value === false;
   fontAttr.linethrough = nValue;
-  const activeObject = canvas.c.getActiveObjects()[0];
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   activeObject && activeObject.set(key, nValue);
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 };
 
 // 下划
 const changeUnderline = (key, value) => {
   const nValue = value === false;
   fontAttr.underline = nValue;
-  const activeObject = canvas.c.getActiveObjects()[0];
+  const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   activeObject && activeObject.set(key, nValue);
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 };
 
 const init = () => {
   // 获取字体数据
   getFreeFontList();
 
-  event.on("selectCancel", selectCancel);
-  event.on("selectOne", getObjectAttr);
-  canvas.c.on("object:modified", getObjectAttr);
+  event.on('selectCancel', selectCancel);
+  event.on('selectOne', getObjectAttr);
+  canvasEditor.canvas.on('object:modified', getObjectAttr);
 };
 
 onMounted(init);
+
+onBeforeUnmount(() => {
+  event.off('selectCancel', selectCancel);
+  event.off('selectOne', getObjectAttr);
+  canvasEditor.canvas.off('object:modified', getObjectAttr);
+});
 </script>
 
 <style scoped lang="scss">

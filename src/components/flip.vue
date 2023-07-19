@@ -61,16 +61,16 @@
 <script setup name="Flip">
 import useSelect from "@/hooks/select";
 
-const { canvas, mixinState } = useSelect();
+const { canvas, mixinState, canvasEditor } = useSelect();
 
 // 非单选时，禁止镜像操作
 const notSelectOneMode = () => {
   return mixinState.mSelectMode !== "one";
 };
 const flip = (type) => {
-  const activeObject = canvas.c.getActiveObject();
+  const activeObject = canvasEditor.canvas.getActiveObject();
   activeObject.set(`flip${type}`, !activeObject[`flip${type}`]).setCoords();
-  canvas.c.requestRenderAll();
+  canvasEditor.canvas.requestRenderAll();
 };
 </script>
 

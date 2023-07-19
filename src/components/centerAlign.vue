@@ -81,12 +81,11 @@
 </template>
 
 <script setup name="Align">
-import useSelect from "@/hooks/select";
-
-const { canvas, mixinState } = useSelect();
+import useSelect from '@/hooks/select';
+const { canvas, mixinState, canvasEditor } = useSelect();
 
 const position = (name) => {
-  canvas.editor.centerAlign.position(name);
+  canvasEditor.position(name);
 };
 </script>
 
