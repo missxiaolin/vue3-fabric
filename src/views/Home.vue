@@ -82,8 +82,8 @@
               id="canvas"
               :class="state.ruler ? 'design-stage-grid' : ''"
             ></canvas>
-            <!-- <dragMode></dragMode> -->
-            <!-- <zoom></zoom> -->
+            <dragMode></dragMode>
+            <zoom></zoom>
             <!-- <mouseMenu></mouseMenu> -->
           </div>
         </div>
@@ -99,7 +99,7 @@
         >
           <div v-if="state.show" style="padding-top: 10px">
             <set-size></set-size>
-            <!-- <bg-bar></bg-bar> -->
+            <bg-bar></bg-bar>
             <!-- <group></group> -->
             <!-- <replaceImg></replaceImg> -->
             <!-- <filters></filters> -->
@@ -144,7 +144,7 @@ import tools from "@/components/tools.vue";
 
 // 右侧组件
 import setSize from "@/components/setSize.vue";
-// import bgBar from "@/components/bgBar.vue";
+import bgBar from "@/components/bgBar.vue";
 // import lock from "@/components/lock.vue";
 // import align from "@/components/align.vue";
 // import dele from "@/components/del.vue";
@@ -157,8 +157,8 @@ import setSize from "@/components/setSize.vue";
 // import group from '@/components/group.vue';
 
 // 主区域组件
-// import dragMode from '@/components/dragMode.vue';
-// import zoom from '@/components/zoom.vue';
+import dragMode from '@/components/dragMode.vue';
+import zoom from '@/components/zoom.vue';
 // 右键菜单
 // import mouseMenu from '@/components/contextMenu/index.vue';
 

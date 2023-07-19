@@ -54,21 +54,21 @@
 </template>
 
 <script setup name="Zoom">
-import useSelect from "@/hooks/select";
+import useSelect from '@/hooks/select';
 
-const { canvas } = useSelect();
+const { canvas, canvasEditor } = useSelect();
 
 const rSet = () => {
-  canvas.editor.editorWorkspace.one();
+  canvasEditor.one();
 };
 const big = () => {
-  canvas.editor.editorWorkspace.big();
+  canvasEditor.big();
 };
 const small = () => {
-  canvas.editor.editorWorkspace.small();
+  canvasEditor.small();
 };
 const setViewport = () => {
-  canvas.editor.editorWorkspace.auto();
+  canvasEditor.auto();
 };
 </script>
 <style scoped lang="scss">
