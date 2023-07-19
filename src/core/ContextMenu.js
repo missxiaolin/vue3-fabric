@@ -1,5 +1,5 @@
 // 右键菜单
-// import '@/styles/contextMenu.css';
+import '@/assets/css/contextMenu.css';
 
 class ContextMenu {
   constructor(container, items) {

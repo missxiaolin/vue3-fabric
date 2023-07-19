@@ -84,7 +84,6 @@
             ></canvas>
             <dragMode></dragMode>
             <zoom></zoom>
-            <!-- <mouseMenu></mouseMenu> -->
           </div>
         </div>
         <!-- 属性区域 380-->
@@ -159,8 +158,6 @@ import group from '@/components/group.vue';
 // 主区域组件
 import dragMode from '@/components/dragMode.vue';
 import zoom from '@/components/zoom.vue';
-// 右键菜单
-// import mouseMenu from '@/components/contextMenu/index.vue';
 
 // 功能组件
 import Editor, {
