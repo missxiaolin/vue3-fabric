@@ -11,14 +11,19 @@
         <!-- 导入 -->
         <import-json></import-json>
         <Divider type="vertical" />
-        <!-- <import-file></import-file> -->
+        <import-file></import-file>
         <Divider type="vertical" />
         <!-- 标尺开关 -->
-        <!-- <Tooltip :content="$t('grid')">
-          <iSwitch v-model="state.ruler" size="small" class="switch"></iSwitch>
-        </Tooltip> -->
+        <Tooltip :content="$t('grid')">
+          <iSwitch
+            v-model="state.ruler"
+            size="small"
+            class="switch"
+            @on-change="rulerSwitch"
+          ></iSwitch>
+        </Tooltip>
         <Divider type="vertical" />
-        <!-- <history></history> -->
+        <history></history>
         <div class="top-right">
           <!-- 预览 -->
           <!-- <previewCurrent /> -->
@@ -73,7 +78,10 @@
         >
           <div class="canvas-box">
             <div class="inside-shadow"></div>
-            <canvas id="canvas" :class="state.ruler ? 'design-stage-grid' : ''"></canvas>
+            <canvas
+              id="canvas"
+              :class="state.ruler ? 'design-stage-grid' : ''"
+            ></canvas>
             <!-- <dragMode></dragMode> -->
             <!-- <zoom></zoom> -->
             <!-- <mouseMenu></mouseMenu> -->
@@ -126,10 +134,10 @@ import { fabric } from "fabric";
 // import previewCurrent from "@/components/previewCurrent";
 // import lang from "@/components/lang.vue";
 // import save from "@/components/save.vue";
-// import history from '@/components/history.vue';
+import history from '@/components/history.vue';
 // 导入元素
 import importJson from "@/components/importJson.vue";
-// import importFile from "@/components/importFile.vue";
+import importFile from "@/components/importFile.vue";
 
 // 左侧组件
 import tools from "@/components/tools.vue";
@@ -174,10 +182,10 @@ import Editor, {
   HistoryPlugin,
   FlipPlugin,
   RulerPlugin,
-} from '@/core';
+} from "@/core";
 
 // 功能组件
-import { CanvasEventEmitter } from '@/utils/event/notifier';
+import { CanvasEventEmitter } from "@/utils/event/notifier";
 const event = new CanvasEventEmitter();
 let canvas = {};
 
@@ -222,22 +230,18 @@ onMounted(() => {
   state.show = true;
 });
 
-watch(
-  () => state.ruler,
-  (value) => {
-    if (!canvas.c.ruler) return;
-    if (value) {
-      canvas.c.ruler.enable();
-    } else {
-      canvas.c.ruler.disable();
-    }
+const rulerSwitch = (val) => {
+  if (val) {
+    canvasEditor.rulerEnable();
+  } else {
+    canvasEditor.rulerDisable();
   }
-);
+};
 
 provide("fabric", fabric);
 provide("event", event);
 provide("canvas", canvas);
-provide('canvasEditor', canvasEditor);
+provide("canvasEditor", canvasEditor);
 </script>
 
 <style lang="scss" scoped>

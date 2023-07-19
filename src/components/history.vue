@@ -2,104 +2,37 @@
   <div style="display: inline-block">
     <!-- 后退 -->
     <Tooltip :content="$t('history.revocation') + `(${undoStack.length})`">
-      <Button @click="undo" type="text" size="small" :disabled="!canUndo">
+      <Button @click="undo" type="text" size="small" :disabled="undoStack.length === 0">
         <Icon type="ios-undo" size="20" />
       </Button>
     </Tooltip>
 
     <!-- 重做 -->
     <Tooltip :content="$t('history.redo') + `(${redoStack.length})`">
-      <Button @click="redo" type="text" size="small" :disabled="!canRedo">
+      <Button @click="redo" type="text" size="small" :disabled="redoStack.length === 0">
         <Icon type="ios-redo" size="20" />
       </Button>
     </Tooltip>
 
     <span class="time" v-if="history.length">
-      {{ useDateFormat(history[0].timestamp, "HH:mm:ss").value }}
+      {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts" name="History">
-import { inject, ref, onMounted, onUnmounted } from "vue";
-import { useRefHistory, useDateFormat } from "@vueuse/core";
-import { keyNames, hotkeys } from "@/core/initHotKeys";
-import type { fabric } from "fabric";
-import * as vfe from "vfe";
-
-const {
-  undo: _undo,
-  redo: _redo,
-  canRedo,
-  canUndo,
-  commit,
-  pause,
-  resume,
-  clear,
-  history,
-  source,
-  redoStack,
-  undoStack,
-  isTracking,
-} = useRefHistory(ref(), {
-  capacity: 50,
-});
-
-const canvas = inject<vfe.ICanvas>("canvas");
-
-const save = (event: fabric.IEvent) => {
-  // 过滤选择元素事件
-  const isSelect = event.action === undefined && event.e;
-  if (isSelect || !canvas) return;
-
-  // 丢弃workspace创建前的记录
-  if (!canvas.editor.editorWorkspace) {
-    source.value = canvas.editor.getJson();
-    commit();
-    clear();
-    return;
-  }
-
-  if (isTracking.value) {
-    source.value = canvas.editor.getJson();
-  }
-};
+import { inject, ref, onMounted, onUnmounted, reactive } from "vue";
+import { useDateFormat } from '@vueuse/core';
+import useSelect from '@/hooks/select';
+const { canvasEditor } = useSelect();
+const { history, redoStack, undoStack } = reactive(canvasEditor.getHistory());
 
 // 后退
 const undo = () => {
-  _undo();
-  renderCanvas();
+  canvasEditor.undo();
 };
 // 重做
 const redo = () => {
-  _redo();
-  renderCanvas();
+  canvasEditor.redo();
 };
-
-const renderCanvas = () => {
-  if (!canvas) return;
-  pause();
-  canvas.c.clear();
-  canvas.c.loadFromJSON(source.value, () => {
-    canvas.c.renderAll();
-    resume();
-  });
-};
-
-onMounted(() => {
-  canvas?.c.on({
-    "object:added": save,
-    "object:modified": save,
-    "selection:updated": save,
-  });
-  hotkeys(keyNames.ctrlz, undo);
-});
-
-onUnmounted(() => {
-  canvas?.c.off({
-    "object:added": save,
-    "object:modified": save,
-    "selection:updated": save,
-  });
-});
 </script>
