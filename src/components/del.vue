@@ -8,21 +8,9 @@
 import useSelect from "@/hooks/select";
 import { debounce } from "lodash-es";
 
-const { canvas, mixinState } = useSelect();
+const { canvas, mixinState, canvasEditor } = useSelect();
 
-// 删除控件2种方案都可以
 const del = debounce(function () {
-  const activeObject = canvas.c.getActiveObjects();
-  if (activeObject) {
-    activeObject.map((item) => canvas.c.remove(item));
-  }
-  canvas.c.requestRenderAll();
-  canvas.c.discardActiveObject();
-
-//   const activeObject = canvas.c.getActiveObject();
-//   if (activeObject) {
-//     canvas.c.remove(activeObject);
-//   }
-//   canvas.c.renderAll();
+  canvasEditor.del();
 }, 300);
 </script>

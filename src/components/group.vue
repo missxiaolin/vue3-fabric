@@ -48,10 +48,10 @@
 </template>
 
 <script setup name="Group">
-import { computed } from 'vue'
+import { computed } from "vue";
 import useSelect from "@/hooks/select";
 
-const { canvas, mixinState } = useSelect();
+const { canvas, mixinState, canvasEditor } = useSelect();
 
 // 单选且等于组元素
 let isGroup = computed(
@@ -62,12 +62,13 @@ let isGroup = computed(
 let isMultiple = computed(() => mixinState.mSelectMode === "multiple");
 // 拆分组
 const unGroup = () => {
-  canvas.editor.unGroup();
+  canvasEditor.unGroup();
 };
 const group = () => {
-  canvas.editor.group();
+  canvasEditor.group();
 };
 </script>
+
 <style scoped lang="scss">
 .box {
   display: flex;

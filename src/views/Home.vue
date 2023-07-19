@@ -100,13 +100,13 @@
           <div v-if="state.show" style="padding-top: 10px">
             <set-size></set-size>
             <bg-bar></bg-bar>
-            <!-- <group></group> -->
-            <!-- <replaceImg></replaceImg> -->
+            <group></group>
+            <replaceImg></replaceImg>
             <!-- <filters></filters> -->
             <div class="attr-item">
-              <!-- <lock></lock> -->
-              <!-- <dele></dele> -->
-              <!-- <clone></clone> -->
+              <lock></lock>
+              <dele></dele>
+              <clone></clone>
             </div>
             <!-- 组对齐方式 -->
             <!-- <align></align> -->
@@ -145,16 +145,16 @@ import tools from "@/components/tools.vue";
 // 右侧组件
 import setSize from "@/components/setSize.vue";
 import bgBar from "@/components/bgBar.vue";
-// import lock from "@/components/lock.vue";
+import lock from "@/components/lock.vue";
 // import align from "@/components/align.vue";
-// import dele from "@/components/del.vue";
-// import clone from "@/components/clone.vue";
+import dele from "@/components/del.vue";
+import clone from "@/components/clone.vue";
 // import centerAlign from "@/components/centerAlign.vue";
 // import attribute from "@/components/attribute.vue";
 // import flip from "@/components/flip.vue";
-// import replaceImg from "@/components/replaceImg.vue";
+import replaceImg from "@/components/replaceImg.vue";
 // import filters from "@/components/filters.vue";
-// import group from '@/components/group.vue';
+import group from '@/components/group.vue';
 
 // 主区域组件
 import dragMode from '@/components/dragMode.vue';

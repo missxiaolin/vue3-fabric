@@ -1,3 +1,4 @@
+<!-- 锁定元素 -->
 <template>
   <Tooltip :content="$t('quick.lock')" v-if="mixinState.mSelectMode === 'one'">
     <Button
@@ -11,11 +12,12 @@
 </template>
 
 <script setup name="Lock">
+import { inject, ref } from "vue";
 import useSelect from "@/hooks/select";
-import { onBeforeUnmount, onMounted, inject, ref } from "vue";
+import { onBeforeUnmount, onMounted } from "vue";
 
 const event = inject("event");
-const { canvas, mixinState } = useSelect();
+const { mixinState, canvasEditor } = useSelect();
 const lockAttrs = [
   "lockMovementX",
   "lockMovementY",
@@ -35,7 +37,7 @@ const lock = () => {
   mixinState.mSelectActive.selectable = false;
 
   isLock.value = true;
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 };
 const unLock = () => {
   // 修改自定义属性
@@ -47,7 +49,7 @@ const unLock = () => {
   mixinState.mSelectActive.selectable = true;
 
   isLock.value = false;
-  canvas.c.renderAll();
+  canvasEditor.canvas.renderAll();
 };
 
 const doLock = (isLock) => {
