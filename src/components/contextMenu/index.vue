@@ -19,14 +19,14 @@
 </template>
 
 <script name="MouseMenu" setup>
-import { reactive, ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { reactive, ref, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { isEmpty, debounce } from "lodash-es";
 import useSelect from "@/hooks/select";
 import menuItem from "./menuItem.vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const { canvas } = useSelect();
+const { mixinState, canvasEditor } = useSelect();
 const canvasDom = document.getElementById("canvas") || null;
 // 菜单
 const menuList = [
@@ -131,33 +131,33 @@ const handleMenu = (e) => {
   const activeObject = canvas.c.getActiveObjects();
   switch (active) {
     case "copy":
-      canvas.editor.clone();
+      canvasEditor.clone();
       break;
     case "delete":
       activeObject && activeObject.map((item) => canvas.c.remove(item));
-      canvas.c.requestRenderAll();
-      canvas.c.discardActiveObject();
+      canvasEditor.canvas.requestRenderAll();
+      canvasEditor.canvas.discardActiveObject();
       break;
     case "center":
-      canvas.editor.centerAlign.position("center");
+      canvasEditor.centerAlign.position("center");
       break;
     case "group":
-      canvas.editor.group();
+      canvasEditor.group();
       break;
     case "unGroup":
-      canvas.editor.unGroup();
+      canvasEditor.unGroup();
       break;
     case "up":
-      canvas.editor.up();
+      canvasEditor.up();
       break;
     case "down":
-      canvas.editor.down();
+      canvasEditor.down();
       break;
     case "upTop":
-      canvas.editor.upTop();
+      canvasEditor.upTop();
       break;
     case "downTop":
-      canvas.editor.downTop();
+      canvasEditor.downTop();
       break;
     default:
       break;
@@ -167,7 +167,7 @@ const handleMenu = (e) => {
 
 const init = () => {
   if (!isEmpty(canvas) && !isEmpty(canvas.c)) {
-    canvas.c.on("mouse:down", handleMouseUp);
+    canvasEditor.canvas.on("mouse:down", handleMouseUp);
   } else {
     hideMenu();
   }
