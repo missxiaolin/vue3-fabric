@@ -26,9 +26,9 @@
         <history></history>
         <div class="top-right">
           <!-- 预览 -->
-          <!-- <previewCurrent /> -->
-          <!-- <save></save> -->
-          <!-- <lang></lang> -->
+          <previewCurrent />
+          <save></save>
+          <lang></lang>
         </div>
       </Header>
       <Content style="display: flex; height: calc(100vh - 64px)">
@@ -131,9 +131,9 @@ import { fabric } from "fabric";
 // import layer from "@/components/layer.vue";
 
 // 顶部组件
-// import previewCurrent from "@/components/previewCurrent";
-// import lang from "@/components/lang.vue";
-// import save from "@/components/save.vue";
+import previewCurrent from "@/components/previewCurrent";
+import lang from "@/components/lang.vue";
+import save from "@/components/save.vue";
 import history from '@/components/history.vue';
 // 导入元素
 import importJson from "@/components/importJson.vue";

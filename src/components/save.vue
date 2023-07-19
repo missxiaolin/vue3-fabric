@@ -28,82 +28,30 @@
 
 <script setup name="save-bar">
 import { Modal } from "view-ui-plus";
-import { clipboardText } from "@/utils/utils.ts";
 import useSelect from "@/hooks/select";
-import { v4 as uuid } from "uuid";
+
 import { debounce } from "lodash-es";
 import { useI18n } from "vue-i18n";
 import { downloadFile } from "@/utils/utils";
 
 const { t } = useI18n();
 
-const { canvas } = useSelect();
+const { canvas, canvasEditor } = useSelect();
 const cbMap = {
   clipboard() {
-    const jsonStr = canvas.editor.getJson();
-    clipboardText(JSON.stringify(jsonStr, null, "\t"));
+    canvasEditor.clipboard();
   },
 
   saveJson() {
-    const dataUrl = canvas.editor.getJson();
-    const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, "\t")
-    )}`;
-    downloadFile({
-      file: fileStr,
-      fileName: uuid(),
-      fileExt: "json",
-    });
+    canvasEditor.saveJson();
   },
 
   saveSvg() {
-    const workspace = canvas.c
-      .getObjects()
-      .find((item) => item.id === "workspace");
-    const { left, top, width, height } = workspace;
-    const dataUrl = canvas.c.toSVG({
-      width,
-      height,
-      viewBox: {
-        x: left,
-        y: top,
-        width,
-        height,
-      },
-    });
-    const fileStr = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-      dataUrl
-    )}`;
-    downloadFile({
-      file: fileStr,
-      fileName: uuid(),
-      fileExt: "svg",
-    });
+    canvasEditor.saveSvg();
   },
 
   saveImg() {
-    const workspace = canvas.c
-      .getObjects()
-      .find((item) => item.id === "workspace");
-    canvas.editor.ruler.hideGuideline();
-    const { left, top, width, height } = workspace;
-    const option = {
-      name: "New Image",
-      format: "png",
-      quality: 1,
-      left,
-      top,
-      width,
-      height,
-    };
-    canvas.c.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    const dataUrl = canvas.c.toDataURL(option);
-    downloadFile({
-      file: dataUrl,
-      fileName: uuid(),
-      fileExt: "png",
-    });
-    canvas.editor.ruler.showGuideline();
+    canvasEditor.saveImg();
   },
 };
 
@@ -115,13 +63,7 @@ const saveWith = debounce(function (type) {
  * @desc clear canvas 清空画布
  */
 const clear = () => {
-  canvas.c.getObjects().forEach((obj) => {
-    if (obj.id !== "workspace") {
-      canvas.c.remove(obj);
-    }
-  });
-  canvas.c.discardActiveObject();
-  canvas.c.renderAll();
+  canvasEditor.clear();
 };
 
 const beforeClear = () => {
