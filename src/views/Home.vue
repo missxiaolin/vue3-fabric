@@ -67,7 +67,7 @@
             </div>
             <!-- 背景设置 -->
             <div v-show="state.menuActive === 3" class="left-panel">
-              <!-- <layer></layer> -->
+              <layer></layer>
             </div>
           </div>
         </div>
@@ -128,7 +128,7 @@ import { reactive, onMounted, watch, provide } from "vue";
 import { defineComponent } from "vue";
 import { fabric } from "fabric";
 
-// import layer from "@/components/layer.vue";
+import layer from "@/components/layer.vue";
 
 // 顶部组件
 import previewCurrent from "@/components/previewCurrent";

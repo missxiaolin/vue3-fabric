@@ -48,15 +48,17 @@
 <script setup name="Layer">
 import { ref, onMounted } from "vue";
 import useSelect from "@/hooks/select";
-const { canvas, fabric, mixinState } = useSelect();
+const { canvas, canvasEditor, fabric, mixinState } = useSelect();
 
 const list = ref([]);
+
 // 是否选中元素
 const isSelect = (item) => {
   return (
     item.id === mixinState.mSelectId || mixinState.mSelectIds.includes(item.id)
   );
 };
+
 // 图层类型图标
 const iconType = (type) => {
   const iconType = {
@@ -80,7 +82,6 @@ const iconType = (type) => {
     '<svg t="1650855578257" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17630" width="16" height="16"><path d="M620.606061 0a62.060606 62.060606 0 0 1 62.060606 62.060606v188.943515C874.945939 273.997576 1024 437.651394 1024 636.121212c0 214.217697-173.661091 387.878788-387.878788 387.878788-198.469818 0-362.123636-149.054061-385.117091-341.333333H62.060606a62.060606 62.060606 0 0 1-62.060606-62.060606V62.060606a62.060606 62.060606 0 0 1 62.060606-62.060606h558.545455z m62.060606 297.937455V620.606061a62.060606 62.060606 0 0 1-62.060606 62.060606H297.937455C320.636121 849.159758 463.39103 977.454545 636.121212 977.454545c188.509091 0 341.333333-152.824242 341.333333-341.333333 0-172.730182-128.294788-315.485091-294.787878-338.183757zM620.606061 46.545455H62.060606a15.515152 15.515152 0 0 0-15.406545 13.699878L46.545455 62.060606v558.545455a15.515152 15.515152 0 0 0 13.699878 15.406545L62.060606 636.121212h186.181818c0-214.217697 173.661091-387.878788 387.878788-387.878788V62.060606a15.515152 15.515152 0 0 0-13.699879-15.406545L620.606061 46.545455z m15.515151 248.242424c-188.509091 0-341.333333 152.824242-341.333333 341.333333h325.818182a15.515152 15.515152 0 0 0 15.406545-13.699879L636.121212 620.606061V294.787879z" p-id="17631"></path></svg>';
   return iconType[type] || defaultIcon;
 };
-
 const textType = (type, item) => {
   if (type.includes("text")) {
     return item.name || item.text;
@@ -96,13 +97,12 @@ const textType = (type, item) => {
   };
   return typeText[type] || "默认元素";
 };
-
 // 选中元素
 const select = (id) => {
-  const info = canvas.c.getObjects().find((item) => item.id === id);
-  canvas.c.discardActiveObject();
-  canvas.c.setActiveObject(info);
-  canvas.c.requestRenderAll();
+  const info = canvasEditor.canvas.getObjects().find((item) => item.id === id);
+  canvasEditor.canvas.discardActiveObject();
+  canvasEditor.canvas.setActiveObject(info);
+  canvasEditor.canvas.requestRenderAll();
 };
 
 // 按钮类型
@@ -117,24 +117,25 @@ const btnIconType = (type) => {
   };
   return iconType[type];
 };
-
 const up = () => {
-  canvas.editor.up();
+  canvasEditor.up();
 };
 const upTop = () => {
-  canvas.editor.upTop();
+  canvasEditor.upTop();
 };
 const down = () => {
-  canvas.editor.down();
+  canvasEditor.down();
 };
 const downTop = () => {
-  canvas.editor.downTop();
+  canvasEditor.downTop();
 };
 
 const getList = () => {
   // 不改原数组 反转
   list.value = [
-    ...canvas.c.getObjects().filter((item) => {
+    ...canvasEditor.canvas.getObjects().filter((item) => {
+      // return item;
+      // 过滤掉辅助线
       return !(item instanceof fabric.GuideLine || item.id === "workspace");
     }),
   ]
@@ -152,8 +153,8 @@ const getList = () => {
 
 onMounted(() => {
   // 当选择画布中的对象时，该对象不出现在顶层。
-  canvas.c.preserveObjectStacking = true;
-  canvas.c.on("after:render", getList);
+  canvasEditor.canvas.preserveObjectStacking = true;
+  canvasEditor.canvas.on("after:render", getList);
 });
 </script>
 
