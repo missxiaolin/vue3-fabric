@@ -37,3 +37,6 @@ const i18n = createI18n({
 });
 
 export default i18n;
+export const t = (key: any) => {
+  return i18n.global.t(key);
+};
