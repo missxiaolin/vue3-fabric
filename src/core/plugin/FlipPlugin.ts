@@ -7,7 +7,7 @@ import { Ref, ref } from 'vue';
 import { t } from '@/language/index';
 import event from '@/utils/event/notifier';
 
-
+// 翻转
 export default class FlipPlugin {
   public canvas: fabric.Canvas;
   public editor: Editor;

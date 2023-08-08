@@ -9,6 +9,9 @@ declare type ExtCanvas = fabric.Canvas & {
   lastPosY: number;
 };
 
+/**
+ * 控制拖拽
+ */
 class DringPlugin {
   public canvas: fabric.Canvas;
   public editor: IEditor;

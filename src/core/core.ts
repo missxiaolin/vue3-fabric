@@ -5,6 +5,7 @@ import ContextMenu from "./ContextMenu.js";
 import ServersPlugin from "./ServersPlugin";
 import { AsyncSeriesHook } from "tapable";
 
+// 主业务
 class Editor extends EventEmitter {
   canvas: fabric.Canvas;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
