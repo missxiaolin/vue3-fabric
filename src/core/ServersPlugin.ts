@@ -1,15 +1,21 @@
 // @ts-nocheck # 忽略全文
 // 内部插件
-import { v4 as uuid } from 'uuid';
-import { selectFiles, clipboardText } from '@/utils/utils';
+import { v4 as uuid } from "uuid";
+import {
+  selectFiles,
+  clipboardText,
+  checkFileExt,
+  getImgStr,
+  parsePsdFile
+} from "@/utils/utils";
 // import { clipboardText } from '@/utils/utils.ts';
-import { fabric } from 'fabric';
-import Editor from '../core';
+import { fabric } from "fabric";
+import Editor from "../core";
 type IEditor = Editor;
 // import { v4 as uuid } from 'uuid';
 
 function downFile(fileStr, fileType) {
-  const anchorEl = document.createElement('a');
+  const anchorEl = document.createElement("a");
   anchorEl.href = fileStr;
   anchorEl.download = `${uuid()}.${fileType}`;
   document.body.appendChild(anchorEl); // required for firefox
@@ -20,19 +26,19 @@ function downFile(fileStr, fileType) {
 class ServersPlugin {
   public canvas: fabric.Canvas;
   public editor: IEditor;
-  static pluginName = 'ServersPlugin';
+  static pluginName = "ServersPlugin";
   static apis = [
-    'insert',
-    'insertPsd',
-    'insertSvgFile',
-    'getJson',
-    'dragAddItem',
-    'clipboard',
-    'saveJson',
-    'saveSvg',
-    'saveImg',
-    'clear',
-    'preview',
+    "insert",
+    "insertPsd",
+    "insertSvgFile",
+    "getJson",
+    "dragAddItem",
+    "clipboard",
+    "saveJson",
+    "saveSvg",
+    "saveImg",
+    "clear",
+    "preview",
   ];
   // public hotkeys: string[] = ['left', 'right', 'down', 'up'];
   constructor(canvas: fabric.Canvas, editor: IEditor) {
@@ -41,30 +47,56 @@ class ServersPlugin {
   }
 
   insert() {
-    console.log(1111)
-    selectFiles({ accept: '.json' }).then((files) => {
+    selectFiles({ accept: ".json" }).then((files) => {
       const [file] = files;
       const reader = new FileReader();
-      reader.readAsText(file, 'UTF-8');
+      reader.readAsText(file, "UTF-8");
       reader.onload = () => {
         this.insertSvgFile(reader.result);
       };
     });
   }
 
-  insertPsd(){
-    console.log(22222)
-    selectFiles({ accept: '.json' }).then((files) => {
-      console.log(files)
-    })
+  async insertPsd() {
+    selectFiles({ accept: ".psd", multiple: false }).then((fileList) => {
+      let oldAll = [];
+      for (const item of Array.from(fileList)) {
+        if (checkFileExt(item, ["psd"])) {
+          console.log("开始执行");
+          const onProcess = (result) => {};
+          // PSD文件
+          parsePsdFile(item, onProcess)
+            .then(async (value) => {
+              const { psd, layers } = value;
+              console.log(psd)
+              // canvas.contentFrame.clear();
+              // canvas.contentFrame.width = psd.width;
+              // canvas.contentFrame.height = psd.height;
+              console.log("layers=", layers);
+              // await parseLayers(layers);
+              // processTitle.value = "导入完成";
+              // processInfo.text = "已导入";
+              // setTimeout(() => {
+              //   canvas.childrenEffect();
+              // }, 200);
+            })
+            .catch((reason) => {
+              console.log('error', reason.message)
+            });
+        } else {
+          // 非PSD文件
+          getImgStr(item).then((file) => {
+            // insertImgFile(file)
+          });
+        }
+      }
+    });
   }
 
   insertSvgFile(jsonFile) {
     // 加载前钩子
     this.editor.hooksEntity.hookImportBefore.callAsync(jsonFile, () => {
-      console.log(jsonFile, '2222');
       this.canvas.loadFromJSON(jsonFile, () => {
-        console.log(jsonFile, '33333');
         this.canvas.renderAll();
         // 加载后钩子
         this.editor.hooksEntity.hookImportAfter.callAsync(jsonFile, () => {
@@ -75,7 +107,12 @@ class ServersPlugin {
   }
 
   getJson() {
-    return this.canvas.toJSON(['id', 'gradientAngle', 'selectable', 'hasControls']);
+    return this.canvas.toJSON([
+      "id",
+      "gradientAngle",
+      "selectable",
+      "hasControls",
+    ]);
   }
 
   /**
@@ -84,7 +121,9 @@ class ServersPlugin {
    * @param {Object} item
    */
   dragAddItem(event: DragEvent, item: fabric.Object) {
-    const { left, top } = this.canvas.getSelectionElement().getBoundingClientRect();
+    const { left, top } = this.canvas
+      .getSelectionElement()
+      .getBoundingClientRect();
     if (event.x < left || event.y < top || item.width === undefined) return;
 
     const point = {
@@ -100,42 +139,44 @@ class ServersPlugin {
 
   clipboard() {
     const jsonStr = this.getJson();
-    clipboardText(JSON.stringify(jsonStr, null, '\t'));
+    clipboardText(JSON.stringify(jsonStr, null, "\t"));
   }
 
   saveJson() {
     const dataUrl = this.getJson();
     const fileStr = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(dataUrl, null, '\t')
+      JSON.stringify(dataUrl, null, "\t")
     )}`;
-    downFile(fileStr, 'json');
+    downFile(fileStr, "json");
   }
 
   saveSvg() {
-    this.editor.hooksEntity.hookSaveBefore.callAsync('', () => {
+    this.editor.hooksEntity.hookSaveBefore.callAsync("", () => {
       const option = this._getSaveSvgOption();
       const dataUrl = this.canvas.toSVG(option);
-      const fileStr = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(dataUrl)}`;
+      const fileStr = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+        dataUrl
+      )}`;
       this.editor.hooksEntity.hookSaveAfter.callAsync(fileStr, () => {
-        downFile(fileStr, 'svg');
+        downFile(fileStr, "svg");
       });
     });
   }
 
   saveImg() {
-    this.editor.hooksEntity.hookSaveBefore.callAsync('', () => {
+    this.editor.hooksEntity.hookSaveBefore.callAsync("", () => {
       const option = this._getSaveOption();
       this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
       const dataUrl = this.canvas.toDataURL(option);
       this.editor.hooksEntity.hookSaveAfter.callAsync(dataUrl, () => {
-        downFile(dataUrl, 'png');
+        downFile(dataUrl, "png");
       });
     });
   }
 
   preview() {
     return new Promise((resolve, reject) => {
-      this.editor.hooksEntity.hookSaveBefore.callAsync('', () => {
+      this.editor.hooksEntity.hookSaveBefore.callAsync("", () => {
         const option = this._getSaveOption();
         this.canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
         this.canvas.renderAll();
@@ -148,7 +189,9 @@ class ServersPlugin {
   }
 
   _getSaveSvgOption() {
-    const workspace = this.canvas.getObjects().find((item) => item.id === 'workspace');
+    const workspace = this.canvas
+      .getObjects()
+      .find((item) => item.id === "workspace");
     const { left, top, width, height } = workspace;
     return {
       width,
@@ -165,11 +208,11 @@ class ServersPlugin {
   _getSaveOption() {
     const workspace = this.canvas
       .getObjects()
-      .find((item: fabric.Object) => item.id === 'workspace');
+      .find((item: fabric.Object) => item.id === "workspace");
     const { left, top, width, height } = workspace as fabric.Object;
     const option = {
-      name: 'New Image',
-      format: 'png',
+      name: "New Image",
+      format: "png",
       quality: 1,
       width,
       height,
@@ -181,7 +224,7 @@ class ServersPlugin {
 
   clear() {
     this.canvas.getObjects().forEach((obj) => {
-      if (obj.id !== 'workspace') {
+      if (obj.id !== "workspace") {
         this.canvas.remove(obj);
       }
     });
@@ -190,7 +233,7 @@ class ServersPlugin {
   }
 
   destroy() {
-    console.log('pluginDestroy');
+    console.log("pluginDestroy");
   }
 }
 
