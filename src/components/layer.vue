@@ -46,7 +46,8 @@
 </template>
 
 <script setup name="Layer">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, unref } from "vue";
+import { uniqBy } from "lodash-es";
 import useSelect from "@/hooks/select";
 const { canvas, canvasEditor, fabric, mixinState } = useSelect();
 
@@ -149,6 +150,7 @@ const getList = () => {
         text,
       };
     });
+  list.value = uniqBy(unref(list), "id");
 };
 
 onMounted(() => {

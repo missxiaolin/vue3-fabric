@@ -35,7 +35,7 @@
 </template>
 
 <script setup name="ColorSelector">
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, watch, onMounted } from "vue";
 import "color-gradient-picker-vue3/dist/style.css";
 import gradientColorPicker from "color-gradient-picker-vue3";
 import { fabric } from "fabric";
@@ -185,6 +185,8 @@ const fabricGradientToBar = (val) => {
 };
 // Fabric渐变转css
 const fabricGradientToCss = (val, activeObject) => {
+  // 渐变类型
+  if (!val) return;
   // 渐变类型
   currentGradient.type = val.type;
   currentGradient.degree = activeObject.get(props.angleKey, val.degree);
