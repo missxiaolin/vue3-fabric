@@ -31,7 +31,11 @@ export default {
   please_choose: "Please choose",
   string: "string",
   file: "file",
-  import_files: "Import files",
+  import_files: {
+    name: "files",
+    import_psd: "import psd",
+    import_json: "import json"
+  },
   select_json: "Select JSON",
   repleaceImg: "repleace Image",
   filters: {

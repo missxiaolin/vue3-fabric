@@ -9,7 +9,7 @@
           </a>
         </span>
         <!-- 导入 -->
-        <import-json></import-json>
+        <import-files></import-files>
         <Divider type="vertical" />
         <import-file></import-file>
         <Divider type="vertical" />
@@ -141,7 +141,7 @@ import lang from "@/components/lang.vue";
 import save from "@/components/save.vue";
 import history from "@/components/history.vue";
 // 导入元素
-import importJson from "@/components/importJson.vue";
+import importFiles from "@/components/importFiles.vue";
 import importFile from "@/components/importFile.vue";
 
 // 左侧组件

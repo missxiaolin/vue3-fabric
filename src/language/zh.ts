@@ -31,7 +31,11 @@ export default {
   please_choose: "请选择",
   string: "字符串",
   file: "文件",
-  import_files: "导入文件",
+  import_files: {
+    name: "文件",
+    import_psd: "导入PSD",
+    import_json: "导入JSON"
+  },
   select_json: "选择JSON文件",
   repleaceImg: "替换图片",
   filters: {

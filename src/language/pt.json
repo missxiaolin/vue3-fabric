@@ -31,7 +31,11 @@
     "please_choose": "Por favor, escolha",
     "string": "String",
     "file": "Arquivo",
-    "import_files": "Importar arquivos",
+    "import_files": {
+      "name": "Importar arquivos",
+      "import_psd": "Importar psd",
+      "import_json": "Importar json"
+    },
     "select_json": "Selecione o arquivo JSON",
     "insert": "Inserir",
     "insert_picture": "Inserir imagem",

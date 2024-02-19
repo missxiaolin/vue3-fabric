@@ -23,6 +23,7 @@ class ServersPlugin {
   static pluginName = 'ServersPlugin';
   static apis = [
     'insert',
+    'insertPsd',
     'insertSvgFile',
     'getJson',
     'dragAddItem',
@@ -40,6 +41,7 @@ class ServersPlugin {
   }
 
   insert() {
+    console.log(1111)
     selectFiles({ accept: '.json' }).then((files) => {
       const [file] = files;
       const reader = new FileReader();
@@ -48,6 +50,13 @@ class ServersPlugin {
         this.insertSvgFile(reader.result);
       };
     });
+  }
+
+  insertPsd(){
+    console.log(22222)
+    selectFiles({ accept: '.json' }).then((files) => {
+      console.log(files)
+    })
   }
 
   insertSvgFile(jsonFile) {
