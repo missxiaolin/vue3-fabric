@@ -187,31 +187,3 @@ export async function parsePsdFile(file: File, onProcess: Function) {
     reader.readAsArrayBuffer(file);
   });
 }
-
-/**
- * 导入psd 元素
- * @param value
- * @param canvasEditor
- */
-export function parseLayers(value: any, canvasEditor: any) {
-  const { psd, layers } = value;
-  canvasEditor.setSize(psd.width, psd.height);
-  return new Promise((resolve: any) => {
-    layers.reverse();
-    let group = [];
-    let i = 0;
-    let totalLayers = layers.length; // 总图层数量
-    let processedLayers = 0; // 已解析的图层数量
-    const processNextLayer = () => {
-      if (i >= totalLayers) {
-        // 使用 totalLayers 变量代替 layers.length
-        resolve(); // 解析完成后 resolve Promise
-        return;
-      }
-      let layer = layers[i];
-      console.log(layer.name + ':', layer);
-    };
-    totalLayers = layers.length; // 将总图层数量赋值给 totalLayers 变量
-    processNextLayer();
-  });
-}
