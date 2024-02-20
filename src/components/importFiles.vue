@@ -65,7 +65,7 @@ function parseLayers(value, canvasEditor) {
         return;
       }
       let layer = layers[i];
-      console.log(layer.name + ':', layer);
+      // console.log(layer.name + ':', layer);
       // 计算当前进度百分比
       // processedLayers++;
       // let progress = Math.floor(processedLayers / totalLayers * 100);
