@@ -1,9 +1,8 @@
-
-import FontFaceObserver from 'fontfaceobserver';
-import { useClipboard, useFileDialog, useBase64 } from '@vueuse/core';
-import { Message } from 'view-ui-plus';
-import downloadjs from 'downloadjs';
-import {Layer, readPsd} from "ag-psd";
+import FontFaceObserver from "fontfaceobserver";
+import { useClipboard, useFileDialog, useBase64 } from "@vueuse/core";
+import { Message } from "view-ui-plus";
+import downloadjs from "downloadjs";
+import { Layer, readPsd } from "ag-psd";
 
 interface Font {
   type: string;
@@ -15,7 +14,7 @@ interface Font {
  * @param {Blob|File} file 文件
  * @return {String}
  */
-export function getImgStr(file: File | Blob): Promise<FileReader['result']> {
+export function getImgStr(file: File | Blob): Promise<FileReader["result"]> {
   return useBase64(file).promise.value;
 }
 
@@ -25,13 +24,13 @@ export function getImgStr(file: File | Blob): Promise<FileReader['result']> {
  * @return {Promise}
  */
 export function downFontByJSON(str: string) {
-  const skipFonts = ['arial', 'Microsoft YaHei'];
+  const skipFonts = ["arial", "Microsoft YaHei"];
   const fontFamilies: string[] = JSON.parse(str)
     .objects.filter(
       (item: Font) =>
         // 为text 并且不为包含字体
         // eslint-disable-next-line implicit-arrow-linebreak
-        item.type.includes('text') && !skipFonts.includes(item.fontFamily)
+        item.type.includes("text") && !skipFonts.includes(item.fontFamily)
     )
     .map((item: Font) => item.fontFamily);
   const fontFamiliesAll = fontFamilies.map((fontName) => {
@@ -65,9 +64,9 @@ export function selectFiles(options: {
  * @param file 文件
  */
 export function getFileExt(file: File | Blob) {
-  let fileExtension = '';
-  if (file.name.lastIndexOf('.') > -1) {
-    fileExtension = file.name.slice(file.name.lastIndexOf('.') + 1);
+  let fileExtension = "";
+  if (file.name.lastIndexOf(".") > -1) {
+    fileExtension = file.name.slice(file.name.lastIndexOf(".") + 1);
   }
   return fileExtension;
 }
@@ -100,13 +99,18 @@ interface IDownLoadFile {
   fileExt?: string | undefined;
   strMimeType?: string | undefined;
 }
-export function downloadFile({ file, fileName, fileExt, strMimeType }: IDownLoadFile) {
-  if (!file) throw new Error('file is undefined');
+export function downloadFile({
+  file,
+  fileName,
+  fileExt,
+  strMimeType,
+}: IDownLoadFile) {
+  if (!file) throw new Error("file is undefined");
   const reg = /(http|https):\/\/([\w.]+\/?)\S*/;
-  const outFileName = fileName ? `${fileName}.${fileExt}` : '';
+  const outFileName = fileName ? `${fileName}.${fileExt}` : "";
   // download netword file
   if (reg.test(file)) {
-    if (fileName && !fileExt) throw new Error('fileExt is undefined');
+    if (fileName && !fileExt) throw new Error("fileExt is undefined");
     return downloadjs(file, outFileName);
   } else {
     return downloadjs(file, outFileName, strMimeType);
@@ -120,7 +124,7 @@ export function downloadFile({ file, fileName, fileExt, strMimeType }: IDownLoad
  */
 export function insertImgFile(str: string) {
   return new Promise((resolve) => {
-    const imgEl = document.createElement('img');
+    const imgEl = document.createElement("img");
     imgEl.src = str;
     // 插入页面
     document.body.appendChild(imgEl);
@@ -142,9 +146,9 @@ export const clipboardText = async (
 ) => {
   try {
     await useClipboard({ source, ...options }).copy();
-    Message.success('复制成功');
+    Message.success("复制成功");
   } catch (error) {
-    Message.error('复制失败');
+    Message.error("复制失败");
     throw error;
   }
 };
@@ -154,31 +158,60 @@ export const clipboardText = async (
  * @param file
  * @param onProcess
  */
-
 export async function parsePsdFile(file: File, onProcess: Function) {
   return new Promise((resolve, reject) => {
-      const reader = new FileReader();
+    const reader = new FileReader();
 
-      reader.onload = () => {
-          const arrayBuffer = reader.result;
-          try {
-              // @ts-ignore
-              const psd = readPsd(arrayBuffer);
-              onProcess()
-              // 更新图层列表
-              const layers = psd.children;
-              resolve({psd, layers})
-          } catch (e) {
-              console.error(e)
-              // @ts-ignore
-              if (e.message.indexOf('Color mode not supported: CMYK') > -1) {
-                  reject({message: '暂不支持CMYK色彩模式的文件，请先使用PS转换为RGB'})
-              } else {
-                  // @ts-ignore
-                  reject({message: e.message})
-              }
-          }
-      };
-      reader.readAsArrayBuffer(file);
-  })
+    reader.onload = () => {
+      const arrayBuffer = reader.result;
+      try {
+        // @ts-ignore
+        const psd = readPsd(arrayBuffer);
+        onProcess();
+        // 更新图层列表
+        const layers = psd.children;
+        resolve({ psd, layers });
+      } catch (e) {
+        console.error(e);
+        // @ts-ignore
+        if (e.message.indexOf("Color mode not supported: CMYK") > -1) {
+          reject({
+            message: "暂不支持CMYK色彩模式的文件，请先使用PS转换为RGB",
+          });
+        } else {
+          // @ts-ignore
+          reject({ message: e.message });
+        }
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+/**
+ * 导入psd 元素
+ * @param value
+ * @param canvasEditor
+ */
+export function parseLayers(value: any, canvasEditor: any) {
+  const { psd, layers } = value;
+  canvasEditor.setSize(psd.width, psd.height);
+  return new Promise((resolve: any) => {
+    layers.reverse();
+    let group = [];
+    let i = 0;
+    let totalLayers = layers.length; // 总图层数量
+    let processedLayers = 0; // 已解析的图层数量
+    const processNextLayer = () => {
+      if (i >= totalLayers) {
+        // 使用 totalLayers 变量代替 layers.length
+        resolve(); // 解析完成后 resolve Promise
+        return;
+      }
+      let layer = layers[i];
+      console.log(layer.name + ':', layer);
+    };
+    totalLayers = layers.length; // 将总图层数量赋值给 totalLayers 变量
+    processNextLayer();
+  });
 }

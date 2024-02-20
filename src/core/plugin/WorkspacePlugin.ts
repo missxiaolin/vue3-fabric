@@ -134,6 +134,7 @@ class WorkspacePlugin {
       .find((item) => item.id === "workspace") as fabric.Rect;
     this.workspace.set("width", width);
     this.workspace.set("height", height);
+    this.editor.emit('sizeChange', width, height);
     this.auto();
   }
 

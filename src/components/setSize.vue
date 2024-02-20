@@ -35,6 +35,7 @@
 </template>
 
 <script setup name="CanvasSize">
+// @ts-nocheck # 忽略全文
 import { Modal } from 'view-ui-plus';
 import { ref, onMounted, reactive } from "vue";
 import useSelect from "@/hooks/select";
@@ -66,9 +67,9 @@ let presetSize = reactive([
 
 onMounted(() => {
   canvasEditor.setSize(width.value, height.value);
-  canvasEditor.on('sizeChange', (width, height) => {
-    width.value = width;
-    height.value = height;
+  canvasEditor.on('sizeChange', (w, h) => {
+    width.value = w;
+    height.value = h;
   });
 });
 

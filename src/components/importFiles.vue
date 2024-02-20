@@ -22,23 +22,26 @@
 </template>
 
 <script name="ImportFiles" setup>
-import useSelect from '@/hooks/select';
+import useSelect from "@/hooks/select";
+import { parseLayers } from "@/utils/utils";
 const { canvasEditor } = useSelect();
 
 const HANDLEMAP = {
   // 导入json
   insertJson: function () {
-    insert()
+    insert();
   },
   // 导入psd文件
   insertPsd: function () {
-    canvasEditor.insertPsd()
-  }
-}
+    canvasEditor.insertPsd(async (valus) => {
+      await parseLayers(valus, canvasEditor);
+    });
+  },
+};
 
 const insertTypeHand = (type) => {
   const cb = HANDLEMAP[type];
-  cb && typeof cb === 'function' && cb();
+  cb && typeof cb === "function" && cb();
 };
 
 const insert = () => {

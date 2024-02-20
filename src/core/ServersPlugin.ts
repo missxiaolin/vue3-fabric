@@ -57,7 +57,11 @@ class ServersPlugin {
     });
   }
 
-  async insertPsd() {
+  /**
+   * psd 解析
+   * @param cb 
+   */
+  async insertPsd(cb: any) {
     selectFiles({ accept: ".psd", multiple: false }).then((fileList) => {
       let oldAll = [];
       for (const item of Array.from(fileList)) {
@@ -67,18 +71,10 @@ class ServersPlugin {
           // PSD文件
           parsePsdFile(item, onProcess)
             .then(async (value) => {
-              const { psd, layers } = value;
-              console.log(psd)
-              // canvas.contentFrame.clear();
-              // canvas.contentFrame.width = psd.width;
-              // canvas.contentFrame.height = psd.height;
-              console.log("layers=", layers);
-              // await parseLayers(layers);
-              // processTitle.value = "导入完成";
-              // processInfo.text = "已导入";
-              // setTimeout(() => {
-              //   canvas.childrenEffect();
-              // }, 200);
+              cb && typeof cb === 'function' && cb(value);
+              // const { psd, layers } = value;
+              // console.log(psd)
+              // console.log("layers=", layers);
             })
             .catch((reason) => {
               console.log('error', reason.message)
@@ -93,6 +89,9 @@ class ServersPlugin {
     });
   }
 
+  /**
+   * @param jsonFile 
+   */
   insertSvgFile(jsonFile) {
     // 加载前钩子
     this.editor.hooksEntity.hookImportBefore.callAsync(jsonFile, () => {
