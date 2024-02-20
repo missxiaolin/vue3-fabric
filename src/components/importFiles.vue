@@ -53,7 +53,7 @@ function parseLayers(value, canvasEditor) {
   const { psd, layers } = value;
   canvasEditor.setSize(psd.width, psd.height);
   return new Promise((resolve) => {
-    layers.reverse();
+    // layers.reverse();
     let group = [];
     let i = 0;
     let totalLayers = layers.length; // 总图层数量
@@ -88,7 +88,7 @@ function parseLayers(value, canvasEditor) {
               // addMask(index, group);
               group = [];
           } else {
-              const obj = addObj(layer, canvasEditor);
+            const obj = addObj(layer, canvasEditor);
           }
         }
       }

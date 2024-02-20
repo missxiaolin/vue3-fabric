@@ -16,34 +16,35 @@ export function parseImage(
     const imgEl = document.createElement("img");
     imgEl.src = url;
     // 插入页面
-    console.log(imgEl);
     document.body.appendChild(imgEl);
-    let obj: any = {
-      id: uuid(),
-      name: layer.name,
-      left: 10000,
-      top: 10,
+    imgEl.onload = () => {
+      let obj: any = {
+        id: uuid(),
+        name: layer.name,
+        zIndex: layer.zIndex
+      }
+      if (layer.left || layer.left == 0) {
+          obj.left = layer.left
+      }
+      if (layer.top || layer.top == 0) {
+          obj.top = layer.top
+      }
+      if (layer.right || layer.right == 0) {
+          obj.right = layer.right
+      }
+      if (layer.bottom || layer.bottom == 0) {
+          obj.bottom = layer.bottom
+      }
+      // 创建图片对象
+      const imgInstance = new fabric.Image(imgEl, obj);
+      imgInstance.scaleToWidth(layer.canvas.width)
+      imgInstance.scaleToHeight(layer.canvas.height)
+      canvasEditor.canvas.add(imgInstance);
+      canvasEditor.canvas.setActiveObject(imgInstance);
+      canvasEditor.canvas.renderAll();
+      // 删除页面中的图片元素
+      imgEl.remove();
     }
-    // if (layer.left || layer.left == 0) {
-    //     obj.left = layer.left
-    // }
-    // if (layer.top || layer.top == 0) {
-    //     obj.top = layer.top
-    // }
-    // if (layer.right || layer.right == 0) {
-    //     obj.right = layer.right
-    // }
-    // if (layer.bottom || layer.bottom == 0) {
-    //     obj.bottom = layer.bottom
-    // }
-    // 创建图片对象
-    const imgInstance = new fabric.Image(url, obj);
-    imgInstance.scaleToWidth(layer.canvas.width)
-    imgInstance.scaleToHeight(layer.canvas.height)
-    canvasEditor.canvas.add(imgInstance);
-    canvasEditor.canvas.setActiveObject(imgInstance);
-    canvasEditor.canvas.renderAll();
-    // 删除页面中的图片元素
-    // imgEl.remove();
+    
   }
 }
