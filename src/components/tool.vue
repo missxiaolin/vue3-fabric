@@ -71,7 +71,7 @@ function insertImgFile(file) {
     // 创建图片对象
     const imgInstance = new fabric.Image(imgEl, {
       id: uuid(),
-      name: "图片1",
+      name: "qrcode",
       left: 100,
       top: 100,
     });
@@ -104,7 +104,7 @@ const addBarcode = () => {
     // 创建图片对象
     const imgInstance = new fabric.Image(imgEl, {
       id: uuid(),
-      name: "图片1",
+      name: "barcode",
       left: 100,
       top: 100,
     });

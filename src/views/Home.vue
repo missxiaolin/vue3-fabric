@@ -110,11 +110,14 @@
             <group></group>
             <replaceImg></replaceImg>
             <filters></filters>
+            <!-- 二维码 && 条形码 -->
+            <codeInput></codeInput>
             <div class="attr-item">
               <lock></lock>
               <dele></dele>
               <clone></clone>
             </div>
+            
             <!-- 组对齐方式 -->
             <align></align>
             <!-- 居中对齐 -->
@@ -171,6 +174,7 @@ import flip from "@/components/flip.vue";
 import replaceImg from "@/components/replaceImg.vue";
 import filters from "@/components/filters.vue";
 import group from "@/components/group.vue";
+import codeInput from "@/components/codeInput.vue"
 
 // 主区域组件
 import dragMode from "@/components/dragMode.vue";
