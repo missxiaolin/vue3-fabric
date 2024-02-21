@@ -53,17 +53,17 @@
 </template>
 
 <script setup name="tool">
-import useSelect from '@/hooks/select';
-import { v4 as uuid } from 'uuid';
-import { getQrCodeUrl } from "@/utils/utils"
+import useSelect from "@/hooks/select";
+import { v4 as uuid } from "uuid";
+import { getQrCodeUrl } from "@/utils/utils";
+import JsBarcode from "jsbarcode";
 
 const { fabric, canvasEditor } = useSelect();
 
-
 // 插入图片文件
 function insertImgFile(file) {
-  if (!file) throw new Error('file is undefined');
-  const imgEl = document.createElement('img');
+  if (!file) throw new Error("file is undefined");
+  const imgEl = document.createElement("img");
   imgEl.src = file;
   // 插入页面
   document.body.appendChild(imgEl);
@@ -71,7 +71,7 @@ function insertImgFile(file) {
     // 创建图片对象
     const imgInstance = new fabric.Image(imgEl, {
       id: uuid(),
-      name: '图片1',
+      name: "图片1",
       left: 100,
       top: 100,
     });
@@ -85,14 +85,37 @@ function insertImgFile(file) {
 }
 
 const addQrcode = async () => {
-  let imgUrl = await getQrCodeUrl("https://github.com/missxiaolin")
-  insertImgFile(imgUrl)
-}
+  let imgUrl = await getQrCodeUrl("https://github.com/missxiaolin");
+  insertImgFile(imgUrl);
+};
 
 const addBarcode = () => {
-    
-}
+  // 创建一个空的图片元素用于渲染条形码
+  const imgEl = document.createElement("img");
+  // 调用 JsBarcode 库的方法生成条形码
+  JsBarcode(imgEl, "123456789");
 
+  // 将条形码图片 URL 赋值给图片元素的 src 属性
+  const barcodeImageUrl = imgEl.src;
+  console.log(barcodeImageUrl)
+  // 将图片元素添加到页面上的某个容器中
+  document.body.appendChild(imgEl);
+  imgEl.onload = () => {
+    // 创建图片对象
+    const imgInstance = new fabric.Image(imgEl, {
+      id: uuid(),
+      name: "图片1",
+      left: 100,
+      top: 100,
+    });
+    // 设置缩放
+    canvasEditor.canvas.add(imgInstance);
+    canvasEditor.canvas.setActiveObject(imgInstance);
+    canvasEditor.canvas.renderAll();
+    // 删除页面中的图片元素
+    imgEl.remove();
+  };
+};
 </script>
 
 <style scoped lang="scss">
