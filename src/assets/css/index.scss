@@ -1,1 +1,18 @@
 @import url(./resetViewUi.scss);
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.color-999 {
+    color: #999;
+}

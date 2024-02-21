@@ -44,30 +44,38 @@
             @on-select="showToolsBar"
             width="65px"
           >
-            <!-- <MenuItem :name="1" class="menu-item">
+            <MenuItem :name="1" class="menu-item">
               <Icon type="md-book" size="24" />
               <div>模版</div>
-            </MenuItem> -->
+            </MenuItem>
             <MenuItem :name="2" class="menu-item">
               <Icon type="md-images" size="24" />
               <div>元素</div>
             </MenuItem>
             <MenuItem :name="3" class="menu-item">
+              <Icon type="ios-keypad-outline" size="24" />
+              <div>工具</div>
+            </MenuItem>
+            <MenuItem :name="4" class="menu-item">
               <Icon type="md-reorder" size="24" />
               <div>图层</div>
             </MenuItem>
           </Menu>
           <div class="content" v-show="state.toolsBarShow">
             <!-- 生成模板 -->
-            <!-- <div v-show="menuActive === 1" class="left-panel">
-              1
-            </div> -->
+            <div v-show="state.menuActive === 1" class="left-panel">
+              <span class="flex justify-content-center mt-10 color-999">暂无模版</span>
+            </div>
             <!-- 常用元素 -->
             <div v-show="state.menuActive === 2" class="left-panel">
               <tools></tools>
             </div>
-            <!-- 背景设置 -->
+            <!-- 工具 -->
             <div v-show="state.menuActive === 3" class="left-panel">
+              <span class="flex justify-content-center mt-10 color-999">暂无工具</span>
+            </div>
+            <!-- 图层 -->
+            <div v-show="state.menuActive === 4" class="left-panel">
               <layer></layer>
             </div>
           </div>
@@ -195,7 +203,7 @@ const event = new CanvasEventEmitter();
 let canvas = {};
 
 const state = reactive({
-  menuActive: 2,
+  menuActive: 1,
   show: false,
   select: null,
   ruler: false,
