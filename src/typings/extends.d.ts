@@ -2,6 +2,8 @@ declare namespace fabric {
   export interface Canvas {
     contextTop: CanvasRenderingContext2D;
     lowerCanvasEl: HTMLElement;
+    wrapperEl: HTMLElement;
+    isDragging: boolean;
     _currentTransform: unknown;
     _centerObject: (obj: fabric.Object, center: fabric.Point) => fabric.Canvas;
   }

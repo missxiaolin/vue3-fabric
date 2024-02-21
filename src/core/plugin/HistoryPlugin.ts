@@ -29,16 +29,16 @@ class HistoryPlugin {
       capacity: 50,
     });
     this.canvas.on({
-      'object:added': (event) => this._save(event),
-      'object:modified': (event) => this._save(event),
-      'selection:updated': (event) => this._save(event),
+      'object:added': (event: fabric.IEvent) => this._save(event),
+      'object:modified': (event: fabric.IEvent) => this._save(event),
+      'selection:updated': (event: fabric.IEvent) => this._save(event),
     });
   }
 
   getHistory() {
     return this.history;
   }
-  _save(event) {
+  _save(event: fabric.IEvent) {
     // 过滤选择元素事件
     const isSelect = event.action === undefined && event.e;
     if (isSelect || !this.canvas) return;

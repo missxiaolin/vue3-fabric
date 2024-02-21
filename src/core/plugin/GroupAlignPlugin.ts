@@ -1,14 +1,23 @@
 // @ts-nocheck # 忽略全文
 // 组对齐插件
-import { fabric } from 'fabric';
-import Editor from '../core';
+import { fabric } from "fabric";
+import Editor from "../core";
 type IEditor = Editor;
 
 class GroupAlignPlugin {
   public canvas: fabric.Canvas;
   public editor: IEditor;
-  static pluginName = 'GroupAlignPlugin';
-  static apis = ['left', 'right', 'xcenter', 'ycenter', 'top', 'bottom', 'xequation', 'yequation'];
+  static pluginName = "GroupAlignPlugin";
+  static apis = [
+    "left",
+    "right",
+    "xcenter",
+    "ycenter",
+    "top",
+    "bottom",
+    "xequation",
+    "yequation",
+  ];
   // public hotkeys: string[] = ['space'];
   constructor(canvas: fabric.Canvas, editor: IEditor) {
     this.canvas = canvas;
@@ -17,193 +26,141 @@ class GroupAlignPlugin {
 
   left() {
     const { canvas } = this;
-    // const activeObject = canvas.getActiveObject();
-    // if (activeObject && activeObject.type === 'activeSelection') {
-    //   const activeSelection = activeObject;
-    //   const activeObjectLeft = -(activeObject.width / 2);
-    //   activeSelection.forEachObject((item) => {
-    //     item.set({
-    //       left: activeObjectLeft,
-    //     });
-    //     item.setCoords();
-    //     canvas.renderAll();
-    //   });
-    // }
-
     const activeObject = canvas.getActiveObject();
     const selectObjects = canvas.getActiveObjects();
-    const { left } = activeObject;
-    canvas.discardActiveObject();
-    selectObjects.forEach((item) => {
-      const bounding = item.getBoundingRect(true);
-      item.set({
-        left: left - bounding.left + item.left,
+    if (activeObject) {
+      const { left = 0 } = activeObject;
+      canvas.discardActiveObject();
+      selectObjects.forEach((item) => {
+        const bounding = item.getBoundingRect(true);
+        item.set({
+          left: left - bounding.left + Number(item.left),
+        });
+        item.setCoords();
       });
-      item.setCoords();
-    });
-    const activeSelection = new fabric.ActiveSelection(selectObjects, {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(activeSelection);
-    canvas.requestRenderAll();
+      const activeSelection = new fabric.ActiveSelection(selectObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(activeSelection);
+      canvas.requestRenderAll();
+    }
   }
 
   right() {
     const { canvas } = this;
-    // const activeObject = canvas.getActiveObject();
-    // if (activeObject && activeObject.type === 'activeSelection') {
-    //   const activeSelection = activeObject;
-    //   const activeObjectLeft = activeObject.width / 2;
-    //   activeSelection.forEachObject((item) => {
-    //     item.set({
-    //       left: activeObjectLeft - item.width * item.scaleX,
-    //     });
-    //     item.setCoords();
-    //     canvas.renderAll();
-    //   });
-    // }
 
     const activeObject = canvas.getActiveObject();
     const selectObjects = canvas.getActiveObjects();
-    const { left, width } = activeObject;
-    canvas.discardActiveObject();
-    selectObjects.forEach((item) => {
-      const bounding = item.getBoundingRect(true);
-      item.set({
-        left: left + width - (bounding.left + bounding.width) + item.left,
+    if (activeObject) {
+      const { left = 0, width = 0 } = activeObject;
+      canvas.discardActiveObject();
+      selectObjects.forEach((item) => {
+        const bounding = item.getBoundingRect(true);
+        item.set({
+          left:
+            left + width - (bounding.left + bounding.width) + Number(item.left),
+        });
       });
-    });
-    const activeSelection = new fabric.ActiveSelection(selectObjects, {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(activeSelection);
-    canvas.requestRenderAll();
+      const activeSelection = new fabric.ActiveSelection(selectObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(activeSelection);
+      canvas.requestRenderAll();
+    }
   }
 
   xcenter() {
     const { canvas } = this;
-    // const activeObject = canvas.getActiveObject();
-    // if (activeObject && activeObject.type === 'activeSelection') {
-    //   const activeSelection = activeObject;
-    //   activeSelection.forEachObject((item) => {
-    //     item.set({
-    //       left: 0 - (item.width * item.scaleX) / 2,
-    //     });
-    //     item.setCoords();
-    //     canvas.renderAll();
-    //   });
-    // }
 
     const activeObject = canvas.getActiveObject();
     const selectObjects = canvas.getActiveObjects();
-    const { left, width } = activeObject;
-    canvas.discardActiveObject();
-    selectObjects.forEach((item) => {
-      const bounding = item.getBoundingRect(true);
-      item.set({
-        left: left + width / 2 - (bounding.left + bounding.width / 2) + item.left,
+    if (activeObject) {
+      const { left = 0, width = 0 } = activeObject;
+      canvas.discardActiveObject();
+      selectObjects.forEach((item) => {
+        const bounding = item.getBoundingRect(true);
+        item.set({
+          left:
+            left +
+            width / 2 -
+            (bounding.left + bounding.width / 2) +
+            Number(item.left),
+        });
       });
-    });
-    const activeSelection = new fabric.ActiveSelection(selectObjects, {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(activeSelection);
-    canvas.requestRenderAll();
+      const activeSelection = new fabric.ActiveSelection(selectObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(activeSelection);
+      canvas.requestRenderAll();
+    }
   }
 
   ycenter() {
     const { canvas } = this;
-    // const activeObject = canvas.getActiveObject();
-    // if (activeObject && activeObject.type === 'activeSelection') {
-    //   const activeSelection = activeObject;
-    //   activeSelection.forEachObject((item) => {
-    //     item.set({
-    //       top: 0 - (item.height * item.scaleY) / 2,
-    //     });
-    //     item.setCoords();
-    //     canvas.renderAll();
-    //   });
-    // }
 
     const activeObject = canvas.getActiveObject();
     const selectObjects = canvas.getActiveObjects();
-    const { top, height } = activeObject;
-    canvas.discardActiveObject();
-    selectObjects.forEach((item) => {
-      const bounding = item.getBoundingRect(true);
-      item.set({
-        top: top + height / 2 - (bounding.top + bounding.height / 2) + item.top,
+    if (activeObject) {
+      const { top = 0, height = 0 } = activeObject;
+      canvas.discardActiveObject();
+      selectObjects.forEach((item) => {
+        const bounding = item.getBoundingRect(true);
+        item.set({
+          top:
+            top + height / 2 - (bounding.top + bounding.height / 2) + Number(item.top),
+        });
       });
-    });
-    const activeSelection = new fabric.ActiveSelection(selectObjects, {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(activeSelection);
-    canvas.requestRenderAll();
+      const activeSelection = new fabric.ActiveSelection(selectObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(activeSelection);
+      canvas.requestRenderAll();
+    }
   }
 
   top() {
     const { canvas } = this;
-    // const activeObject = canvas.getActiveObject();
-    // if (activeObject && activeObject.type === 'activeSelection') {
-    //   const activeSelection = activeObject;
-    //   const activeObjectTop = -(activeObject.height / 2);
-    //   activeSelection.forEachObject((item) => {
-    //     item.set({
-    //       top: activeObjectTop,
-    //     });
-    //     item.setCoords();
-    //     canvas.renderAll();
-    //   });
-    // }
 
     const activeObject = canvas.getActiveObject();
     const selectObjects = canvas.getActiveObjects();
-    const { top } = activeObject;
-    canvas.discardActiveObject();
-    selectObjects.forEach((item) => {
-      const bounding = item.getBoundingRect(true);
-      item.set({
-        top: top - bounding.top + item.top,
+    if (activeObject) {
+      const { top = 0 } = activeObject;
+      canvas.discardActiveObject();
+      selectObjects.forEach((item) => {
+        const bounding = item.getBoundingRect(true);
+        item.set({
+          top: top - bounding.top + Number(item.top),
+        });
       });
-    });
-    const activeSelection = new fabric.ActiveSelection(selectObjects, {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(activeSelection);
-    canvas.requestRenderAll();
+      const activeSelection = new fabric.ActiveSelection(selectObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(activeSelection);
+      canvas.requestRenderAll();
+    }
   }
 
   bottom() {
     const { canvas } = this;
-    // const activeObject = canvas.getActiveObject();
-    // if (activeObject && activeObject.type === 'activeSelection') {
-    //   const activeSelection = activeObject;
-    //   const activeObjectTop = activeObject.height / 2;
-    //   activeSelection.forEachObject((item) => {
-    //     item.set({
-    //       top: activeObjectTop - item.height * item.scaleY,
-    //     });
-    //     item.setCoords();
-    //     canvas.renderAll();
-    //   });
-    // }
 
     const activeObject = canvas.getActiveObject();
     const selectObjects = canvas.getActiveObjects();
-    const { top, height } = activeObject;
-    canvas.discardActiveObject();
-    selectObjects.forEach((item) => {
-      const bounding = item.getBoundingRect(true);
-      item.set({
-        top: top + height - (bounding.top + bounding.height) + item.top,
+    if (activeObject) {
+      const { top = 0, height = 0 } = activeObject;
+      canvas.discardActiveObject();
+      selectObjects.forEach((item) => {
+        const bounding = item.getBoundingRect(true);
+        item.set({
+          top: top + height - (bounding.top + bounding.height) + Number(item.top),
+        });
       });
-    });
-    const activeSelection = new fabric.ActiveSelection(selectObjects, {
-      canvas: canvas,
-    });
-    canvas.setActiveObject(activeSelection);
-    canvas.requestRenderAll();
+      const activeSelection = new fabric.ActiveSelection(selectObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(activeSelection);
+      canvas.requestRenderAll();
+    }
+    
   }
 
   xequation() {
@@ -240,7 +197,7 @@ class GroupAlignPlugin {
       return width;
     }
 
-    if (activeObject && activeObject.type === 'activeSelection') {
+    if (activeObject && activeObject.type === "activeSelection") {
       const activeSelection = activeObject;
       // 排序
       activeSelection._objects.sort((a, b) => a.left - b.left);
@@ -255,7 +212,7 @@ class GroupAlignPlugin {
         const preHeight = getItemLeft(i);
         // 顶部距离 间距 * 索引 + 之前元素高度 - 原点高度
         const top = itemSpac * i + preHeight - yHeight;
-        item.set('left', top);
+        item.set("left", top);
       });
       canvas.renderAll();
     }
@@ -293,7 +250,7 @@ class GroupAlignPlugin {
       return height;
     }
 
-    if (activeObject && activeObject.type === 'activeSelection') {
+    if (activeObject && activeObject.type === "activeSelection") {
       const activeSelection = activeObject;
       // 排序
       activeSelection._objects.sort((a, b) => a.top - b.top);
@@ -308,14 +265,14 @@ class GroupAlignPlugin {
         const preHeight = getItemTop(i);
         // 顶部距离 间距 * 索引 + 之前元素高度 - 原点高度
         const top = itemSpac * i + preHeight - yHeight;
-        item.set('top', top);
+        item.set("top", top);
       });
       canvas.renderAll();
     }
   }
 
   destroy() {
-    console.log('pluginDestroy');
+    console.log("pluginDestroy");
   }
 }
 
