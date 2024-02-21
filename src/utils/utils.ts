@@ -187,3 +187,48 @@ export async function parsePsdFile(file: File, onProcess: Function) {
     reader.readAsArrayBuffer(file);
   });
 }
+
+/**
+ * base 转 file
+ * @param {*} data base64图片格式字符串
+ * @param {*} fileName
+ */
+export function base64toFile(data: any, fileName: string = '') {
+  const dataArr = data.split(",");
+  const byteString = atob(dataArr[1]);
+  const options: object = {
+    type: "image/jpeg",
+    endings: "native"
+  };
+  const u8Arr = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) {
+    u8Arr[i] = byteString.charCodeAt(i);
+  }
+  return new File([u8Arr], fileName + ".jpg", options); //返回文件流
+}
+
+/**
+ * 返回网络图片base64
+ * @param {*} imgUrl
+ */
+export function getBase64(imgUrl: string) {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+    fetch(imgUrl, {
+      // @ts-ignore
+      responseType: "blob"
+    })
+      .then(response => {
+        return response.blob();
+      })
+      .then(blob => {
+        let oFileReader = new FileReader();
+        oFileReader.onloadend = function(e: any) {
+          // base64结果
+          const base64 = e.target.result;
+          resolve(base64);
+        };
+        oFileReader.readAsDataURL(blob);
+      });
+  });
+}

@@ -1,8 +1,10 @@
+// @ts-nocheck # 忽略全文
+
 /**
  * @param {*} filename 
  * @returns 
  */
-function get_suffix(filename) {
+function get_suffix(filename: string) {
     let pos = filename.lastIndexOf('.')
     let suffix = ''
     if (pos != -1) {
@@ -15,7 +17,7 @@ function get_suffix(filename) {
  * @param {*} len 
  * @returns 
  */
-function random_string(len) {
+function random_string(len: number): string {
   len = len || 32;
   let chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
   let maxPos = chars.length;
@@ -31,7 +33,7 @@ function random_string(len) {
  * @param {*} res
  * @param {*} file
  */
-export function getOptions(res, file) {
+export function getOptions(res: any, file: any) {
   let policyText = {
     expiration: res.data.Expiration, //设置该Policy的失效时间，超过这个失效时间之后，就没有办法通过这个policy上传文件了
     conditions: [
