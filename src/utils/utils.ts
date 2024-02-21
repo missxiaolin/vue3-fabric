@@ -232,3 +232,22 @@ export function getBase64(imgUrl: string) {
       });
   });
 }
+
+/**
+ * 加载网络字体
+ * @param fontFamily 
+ * @param fontUrl 
+ * @returns 
+ */
+export function loadFonts(fontFamily: string, fontUrl: string) {
+  return new Promise(async (resolve: any, reject: any) => {
+    try {
+      const font = new FontFace(fontFamily, `url(${fontUrl})`);
+      await font.load();
+      document.fonts.add(font);
+      resolve();
+    } catch (e) {
+      reject();
+    }
+  });
+}
