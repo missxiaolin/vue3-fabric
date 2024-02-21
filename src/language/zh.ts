@@ -34,10 +34,29 @@ export default {
   import_files: {
     name: "文件",
     import_psd: "导入PSD",
-    import_json: "导入JSON"
+    import_json: "导入JSON",
   },
   select_json: "选择JSON文件",
   repleaceImg: "替换图片",
+  waterMark: {
+    text: "水印",
+    modalTitle: "配置水印",
+    btnOkText: "确认",
+    btnOkCancel: "取消",
+    setting: {
+      name: "水印名称",
+      size: "水印大小",
+      angle: "水印角度",
+      position: {
+        label: "水印位置",
+        lt: "左上角",
+        rt: "右上角",
+        lb: "左下角",
+        rb: "右下角",
+        full: "平铺",
+      },
+    },
+  },
   filters: {
     simple: "简单滤镜",
     complex: "复杂滤镜",

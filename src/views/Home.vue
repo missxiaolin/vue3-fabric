@@ -27,6 +27,7 @@
         <div class="top-right">
           <!-- 预览 -->
           <previewCurrent />
+          <waterMark />
           <save></save>
           <lang></lang>
         </div>
@@ -143,6 +144,7 @@ import history from "@/components/history.vue";
 // 导入元素
 import importFiles from "@/components/importFiles.vue";
 import importFile from "@/components/importFile.vue";
+import waterMark from '@/components/waterMark';
 
 // 左侧组件
 import tools from "@/components/tools.vue";

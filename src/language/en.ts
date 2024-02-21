@@ -34,10 +34,29 @@ export default {
   import_files: {
     name: "files",
     import_psd: "import psd",
-    import_json: "import json"
+    import_json: "import json",
   },
   select_json: "Select JSON",
   repleaceImg: "repleace Image",
+  waterMark: {
+    text: "WaterMark",
+    btnOkText: "Confirm",
+    btnOkCancel: "Cancel",
+    modalTitle: "WaterMark Setting",
+    setting: {
+      name: "Mark Name",
+      size: "MarK Size",
+      angle: "Mark Angle",
+      position: {
+        label: "Mark Position",
+        lt: "Left Top",
+        rt: "Right Top",
+        lb: "Left Bottom",
+        rb: "Right Bottom",
+        full: "Full",
+      },
+    },
+  },
   filters: {
     simple: "Simple Filter",
     complex: "Complex Filter",
