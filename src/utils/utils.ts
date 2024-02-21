@@ -3,6 +3,7 @@ import { useClipboard, useFileDialog, useBase64 } from "@vueuse/core";
 import { Message } from "view-ui-plus";
 import downloadjs from "downloadjs";
 import { Layer, readPsd } from "ag-psd";
+import qrcode from "qrcode";
 
 interface Font {
   type: string;
@@ -193,12 +194,12 @@ export async function parsePsdFile(file: File, onProcess: Function) {
  * @param {*} data base64图片格式字符串
  * @param {*} fileName
  */
-export function base64toFile(data: any, fileName: string = '') {
+export function base64toFile(data: any, fileName: string = "") {
   const dataArr = data.split(",");
   const byteString = atob(dataArr[1]);
   const options: object = {
     type: "image/jpeg",
-    endings: "native"
+    endings: "native",
   };
   const u8Arr = new Uint8Array(byteString.length);
   for (let i = 0; i < byteString.length; i++) {
@@ -216,14 +217,14 @@ export function getBase64(imgUrl: string) {
     let xhr = new XMLHttpRequest();
     fetch(imgUrl, {
       // @ts-ignore
-      responseType: "blob"
+      responseType: "blob",
     })
-      .then(response => {
+      .then((response) => {
         return response.blob();
       })
-      .then(blob => {
+      .then((blob) => {
         let oFileReader = new FileReader();
-        oFileReader.onloadend = function(e: any) {
+        oFileReader.onloadend = function (e: any) {
           // base64结果
           const base64 = e.target.result;
           resolve(base64);
@@ -235,9 +236,9 @@ export function getBase64(imgUrl: string) {
 
 /**
  * 加载网络字体
- * @param fontFamily 
- * @param fontUrl 
- * @returns 
+ * @param fontFamily
+ * @param fontUrl
+ * @returns
  */
 export function loadFonts(fontFamily: string, fontUrl: string) {
   return new Promise(async (resolve: any, reject: any) => {
@@ -249,5 +250,30 @@ export function loadFonts(fontFamily: string, fontUrl: string) {
     } catch (e) {
       reject();
     }
+  });
+}
+
+/**
+ * 生成二维码
+ * @returns
+ */
+export function getQrCodeUrl(
+  url: string,
+  options: {
+    errorCorrectionLevel: "H";
+    margin: 4;
+    scale: 4;
+    color: {
+      dark: "#000000ff";
+      light: "#ffffffff";
+    };
+  },
+  width: 100
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    qrcode.toDataURL(url, { ...options, width: width }, (err, res) => {
+      if (err) throw err;
+      resolve(res);
+    });
   });
 }

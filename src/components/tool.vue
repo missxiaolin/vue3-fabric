@@ -52,7 +52,48 @@
   </div>
 </template>
 
-<script setup name="tool"></script>
+<script setup name="tool">
+import useSelect from '@/hooks/select';
+import { v4 as uuid } from 'uuid';
+import { getQrCodeUrl } from "@/utils/utils"
+
+const { fabric, canvasEditor } = useSelect();
+
+
+// 插入图片文件
+function insertImgFile(file) {
+  if (!file) throw new Error('file is undefined');
+  const imgEl = document.createElement('img');
+  imgEl.src = file;
+  // 插入页面
+  document.body.appendChild(imgEl);
+  imgEl.onload = () => {
+    // 创建图片对象
+    const imgInstance = new fabric.Image(imgEl, {
+      id: uuid(),
+      name: '图片1',
+      left: 100,
+      top: 100,
+    });
+    // 设置缩放
+    canvasEditor.canvas.add(imgInstance);
+    canvasEditor.canvas.setActiveObject(imgInstance);
+    canvasEditor.canvas.renderAll();
+    // 删除页面中的图片元素
+    imgEl.remove();
+  };
+}
+
+const addQrcode = async () => {
+  let imgUrl = await getQrCodeUrl("https://github.com/missxiaolin")
+  insertImgFile(imgUrl)
+}
+
+const addBarcode = () => {
+    
+}
+
+</script>
 
 <style scoped lang="scss">
 .wrap {
