@@ -72,7 +72,7 @@
             </div>
             <!-- 工具 -->
             <div v-show="state.menuActive === 3" class="left-panel">
-              <span class="flex justify-content-center mt-10 color-999">暂无工具</span>
+              <tool />
             </div>
             <!-- 图层 -->
             <div v-show="state.menuActive === 4" class="left-panel">
@@ -155,6 +155,7 @@ import importFile from "@/components/importFile.vue";
 import waterMark from '@/components/waterMark';
 
 // 左侧组件
+import tool from "@/components/tool.vue"
 import tools from "@/components/tools.vue";
 
 // 右侧组件
