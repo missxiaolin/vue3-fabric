@@ -188,6 +188,11 @@ export default {
   ok: "确认",
   cancel: "取消",
   codeType: {
-    rule: "码规则"
+    name: "工具",
+    rule: "码规则",
+    qrCodeName: "二维码",
+    qrCodeDesc: "可自定义二维码内容，随意生成",
+    barCodeName: "条形码",
+    barCodeDesc: "自定义一维码内容"
   }
 };

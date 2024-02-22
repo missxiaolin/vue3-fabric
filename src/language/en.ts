@@ -186,6 +186,11 @@ export default {
   ok: "ok",
   cancel: "cancel",
   codeType: {
-    rule: "code rule"
+    name: "tool",
+    rule: "code rule",
+    qrCodeName: "qr code name",
+    qrCodeDesc: "qr code description",
+    barCodeName: "bar code name",
+    barCodeDesc: "bar code description",
   }
 };

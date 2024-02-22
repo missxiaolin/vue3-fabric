@@ -1,6 +1,6 @@
 <template>
   <div class="wrap">
-    <div class="header">工具</div>
+    <div class="header">{{ $t("codeType.name") }}</div>
     <div class="item" @click="addQrcode">
       <div class="icon">
         <svg
@@ -21,8 +21,8 @@
         </svg>
       </div>
       <div class="text">
-        <span>二维码</span>
-        <!-- <span class="desc">可自定义二维码内容，随意生成</span> -->
+        <span>{{ $t("codeType.qrCodeName") }}</span>
+        <span class="desc">{{ $t("codeType.qrCodeDesc") }}</span>
       </div>
     </div>
     <div class="item" @click="addBarcode">
@@ -45,8 +45,8 @@
         </svg>
       </div>
       <div class="text">
-        <span>条形码</span>
-        <!-- <span class="desc">自定义一维码内容</span> -->
+        <span>{{ $t("codeType.barCodeName") }}</span>
+        <span class="desc">{{ $t("codeType.barCodeDesc") }}</span>
       </div>
     </div>
   </div>
@@ -164,14 +164,17 @@ const addBarcode = () => {
   position: relative;
   border-radius: 4px;
   font-size: 15px;
-  height: 72px;
   color: #33383e;
-  display: flex;
   align-items: center;
   cursor: pointer;
-  margin: 0 1rem 16px;
+  margin: 0 10px 16px;
   user-select: none;
   background-color: #f6f7f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+  padding: 10px;
 }
 .item:hover {
   opacity: 1;
@@ -185,8 +188,10 @@ const addBarcode = () => {
 .icon {
   margin-right: 5px;
   width: 50px;
+  height: 50px;
 }
 .text {
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
