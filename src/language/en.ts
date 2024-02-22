@@ -185,4 +185,7 @@ export default {
   clearTip: "Are you sure you want to clear it?",
   ok: "ok",
   cancel: "cancel",
+  codeType: {
+    rule: "code rule"
+  }
 };

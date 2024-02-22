@@ -7,7 +7,8 @@
     "
     class="box attr-item"
   >
-    <Input v-model="value" placeholder="请输入规则……" clearable />
+    <span class="label">{{ $t("codeType.rule") }}：</span>
+    <Input v-model="value" clearable @on-change="codeChange(value)" />
   </div>
 </template>
 
@@ -20,6 +21,8 @@ import {
   ref,
 } from "vue";
 import useSelect from "@/hooks/select";
+import Quagga from "quagga";
+import { base64ToBlob } from "@/utils/utils";
 
 const event = inject("event");
 const { mixinState, canvasEditor } = useSelect();
@@ -30,11 +33,18 @@ const value = ref("");
 
 const init = () => {
   const activeObject = canvasEditor.canvas.getActiveObjects()[0];
-  console.log("code input", activeObject);
   if (activeObject) {
     type.value = activeObject.type;
     name.value = activeObject.name;
+    value.value = activeObject.codeValue;
     update?.proxy?.$forceUpdate();
+  }
+};
+
+const codeChange = (v) => {
+  if (v == "") {
+    canvasEditor.del()
+    return;
   }
 };
 
@@ -47,3 +57,12 @@ onBeforeUnmount(() => {
 });
 </script>
 
+<style scoped lang="scss">
+.box {
+  display: flex;
+  flex-direction: row;
+  span {
+    white-space: nowrap;
+  }
+}
+</style>

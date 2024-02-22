@@ -85,15 +85,37 @@ function insertImgFile(file) {
 }
 
 const addQrcode = async () => {
-  let imgUrl = await getQrCodeUrl("https://github.com/missxiaolin");
-  insertImgFile(imgUrl);
+  let str = "https://github.com/missxiaolin"
+  let imgUrl = await getQrCodeUrl(str);
+  if (!imgUrl) throw new Error("file is undefined");
+  const imgEl = document.createElement("img");
+  imgEl.src = imgUrl;
+  // 插入页面
+  document.body.appendChild(imgEl);
+  imgEl.onload = () => {
+    // 创建图片对象
+    const imgInstance = new fabric.Image(imgEl, {
+      id: uuid(),
+      codeValue: str,
+      name: "qrcode",
+      left: 100,
+      top: 100,
+    });
+    // 设置缩放
+    canvasEditor.canvas.add(imgInstance);
+    canvasEditor.canvas.setActiveObject(imgInstance);
+    canvasEditor.canvas.renderAll();
+    // 删除页面中的图片元素
+    imgEl.remove();
+  };
 };
 
 const addBarcode = () => {
+  let str = '123456789'
   // 创建一个空的图片元素用于渲染条形码
   const imgEl = document.createElement("img");
   // 调用 JsBarcode 库的方法生成条形码
-  JsBarcode(imgEl, "123456789");
+  JsBarcode(imgEl, str);
 
   // 将条形码图片 URL 赋值给图片元素的 src 属性
   const barcodeImageUrl = imgEl.src;
@@ -104,9 +126,11 @@ const addBarcode = () => {
     // 创建图片对象
     const imgInstance = new fabric.Image(imgEl, {
       id: uuid(),
+      codeValue: str,
       name: "barcode",
       left: 100,
       top: 100,
+
     });
     // 设置缩放
     canvasEditor.canvas.add(imgInstance);

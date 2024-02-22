@@ -187,4 +187,7 @@ export default {
   clearTip: "确定要清空吗？",
   ok: "确认",
   cancel: "取消",
+  codeType: {
+    rule: "码规则"
+  }
 };
