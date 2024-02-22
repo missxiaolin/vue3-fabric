@@ -43,8 +43,9 @@ const init = () => {
 };
 
 // 替换图片
-const repleace = async (imgUrl) => {
+const repleace = async (imgUrl, str) => {
   const activeObject = canvasEditor.canvas.getActiveObjects()[0];
+  activeObject.codeValue = str
   if (activeObject && activeObject.type === "image") {
     // 字符串转El
     const imgEl = await insertImgFile(imgUrl);
@@ -69,7 +70,7 @@ const codeChange = async (v) => {
   switch (name.value) {
     case "qrcode":
       let imgUrl = await getQrCodeUrl(v);
-      repleace(imgUrl);
+      repleace(imgUrl, v);
       break;
     case "barcode":
       let str = "123456789";
@@ -80,7 +81,7 @@ const codeChange = async (v) => {
 
       // 将条形码图片 URL 赋值给图片元素的 src 属性
       const barcodeImageUrl = imgEl.src;
-      repleace(barcodeImageUrl);
+      repleace(barcodeImageUrl, v);
       break;
     default:
   }
