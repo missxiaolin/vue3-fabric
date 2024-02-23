@@ -209,7 +209,7 @@ const event = new CanvasEventEmitter();
 let canvas = {};
 
 const state = reactive({
-  menuActive: 1,
+  menuActive: 2,
   show: false,
   select: null,
   ruler: false,
