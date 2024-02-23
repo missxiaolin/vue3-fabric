@@ -193,6 +193,7 @@ export default {
     qrCodeName: "二维码",
     qrCodeDesc: "可自定义二维码内容，随意生成",
     barCodeName: "条形码",
-    barCodeDesc: "自定义一维码内容"
-  }
+    barCodeDesc: "自定义一维码内容",
+  },
+  replaceTip: "确定要添加到画布中吗？",
 };

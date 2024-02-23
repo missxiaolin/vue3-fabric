@@ -172,7 +172,7 @@ const addBarcode = () => {
   background-color: #f6f7f9;
   display: flex;
   flex-direction: column;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   padding: 10px;
 }
@@ -186,9 +186,11 @@ const addBarcode = () => {
   opacity: 0.85;
 }
 .icon {
-  margin-right: 5px;
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  svg {
+    width: 50px;
+    height: 50px;
+  }
 }
 .text {
   width: 100%;

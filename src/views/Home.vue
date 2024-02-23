@@ -64,7 +64,7 @@
           <div class="content" v-show="state.toolsBarShow">
             <!-- 生成模板 -->
             <div v-show="state.menuActive === 1" class="left-panel">
-              <span class="flex justify-content-center mt-10 color-999">暂无模版</span>
+              <import-tmpl></import-tmpl>
             </div>
             <!-- 常用元素 -->
             <div v-show="state.menuActive === 2" class="left-panel">
@@ -160,6 +160,7 @@ import waterMark from '@/components/waterMark';
 // 左侧组件
 import tool from "@/components/tool.vue"
 import tools from "@/components/tools.vue";
+import importTmpl from '@/components/importTmpl.vue';
 
 // 右侧组件
 import setSize from "@/components/setSize.vue";

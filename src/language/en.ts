@@ -192,5 +192,6 @@ export default {
     qrCodeDesc: "qr code description",
     barCodeName: "bar code name",
     barCodeDesc: "bar code description",
-  }
+  },
+  replaceTip: "Are you sure you want to add to the canvas?",
 };
