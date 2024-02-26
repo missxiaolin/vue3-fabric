@@ -38,6 +38,7 @@ export default {
   },
   select_json: "Select JSON",
   repleaceImg: "repleace Image",
+  croppingImg: 'cropping Image',
   waterMark: {
     text: "WaterMark",
     btnOkText: "Confirm",

@@ -4,6 +4,7 @@
     class="box attr-item"
   >
     <Button @click="repleace" type="text" long>{{ $t("repleaceImg") }}</Button>
+    <!-- <Button @click="cropping" type="text" long>{{ $t("croppingImg") }}</Button> -->
   </div>
 </template>
 
@@ -46,6 +47,11 @@ const repleace = async () => {
     imgEl.remove();
   }
 };
+
+// 裁剪
+const cropping = () => {
+  canvasEditor.isCropping()
+}
 
 const init = () => {
   const activeObject = canvasEditor.canvas.getActiveObjects()[0];

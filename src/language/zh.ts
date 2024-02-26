@@ -38,6 +38,7 @@ export default {
   },
   select_json: "选择JSON文件",
   repleaceImg: "替换图片",
+  croppingImg: '裁剪图片',
   waterMark: {
     text: "水印",
     modalTitle: "配置水印",

@@ -18,6 +18,7 @@ import DownFontPlugin from "./plugin/DownFontPlugin";
 import HistoryPlugin from "./plugin/HistoryPlugin";
 import FlipPlugin from "./plugin/FlipPlugin";
 import RulerPlugin from "./plugin/RulerPlugin";
+import ImagePlugin from './plugin/ImagePlugin';
 
 export {
   DringPlugin,
@@ -38,5 +39,6 @@ export {
   HistoryPlugin,
   FlipPlugin,
   RulerPlugin,
+  ImagePlugin
 };
 export default Editor;

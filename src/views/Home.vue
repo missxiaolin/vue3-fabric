@@ -201,6 +201,7 @@ import Editor, {
   HistoryPlugin,
   FlipPlugin,
   RulerPlugin,
+  ImagePlugin
 } from "@/core";
 
 // 功能组件
@@ -247,7 +248,7 @@ onMounted(() => {
   canvasEditor.use(HistoryPlugin);
   canvasEditor.use(FlipPlugin);
   canvasEditor.use(RulerPlugin);
-
+  canvasEditor.use(ImagePlugin)
   event.init(canvas);
   state.show = true;
 });
