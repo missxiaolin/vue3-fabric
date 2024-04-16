@@ -90,6 +90,9 @@ class WorkspacePlugin {
     this.canvas.renderAll();
 
     this.workspace = workspace;
+    if (this.canvas.clearHistory) {
+      this.canvas.clearHistory();
+    }
     this.auto();
   }
 
