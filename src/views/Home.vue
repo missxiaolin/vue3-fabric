@@ -97,7 +97,7 @@ import Editor, {
   FlipPlugin,
   RulerPlugin,
   MaterialPlugin,
-} from "@/packages/core/index";
+} from "xiaolin-core-fabric";
 
 
 // 创建编辑器

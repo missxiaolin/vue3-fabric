@@ -1,8 +1,8 @@
 {
   "name": "xiaolin-core-fabric",
   "private": false,
-  "version": "1.0.0",
-  "main": "/packages/core/index.ts",
+  "version": "1.0.2",
+  "main": "./core/index.ts",
   "scripts": {
     "build": "vite build"
   },

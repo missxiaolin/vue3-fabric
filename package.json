@@ -1,7 +1,7 @@
 {
   "name": "fabric",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -33,7 +33,8 @@
     "vue-router": "^4.0.3",
     "vue3-clipboard": "^1.0.0",
     "vue3-lazyload": "^0.3.6",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.0",
+    "xiaolin-core-fabric": "^1.0.2"
   },
   "devDependencies": {
     "@types/downloadjs": "^1.4.3",
