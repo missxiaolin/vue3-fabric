@@ -1,10 +1,12 @@
 {
-  "name": "@xiaolin/core-fabric",
+  "name": "xiaolin-core-fabric",
+  "private": false,
   "version": "1.0.0",
   "main": "/packages/core/index.ts",
   "scripts": {
     "build": "vite build"
   },
+ 
   "dependencies": {
     "events": "^3.3.0",
     "fabric-history": "^1.6.0",
