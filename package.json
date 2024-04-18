@@ -16,6 +16,7 @@
     "downloadjs": "^1.4.7",
     "events": "^3.3.0",
     "fabric": "^5.2.1",
+    "fabric-history": "^1.7.0",
     "fontfaceobserver": "^2.1.0",
     "hotkeys-js": "^3.8.8",
     "jsbarcode": "^3.11.6",

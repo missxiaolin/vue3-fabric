@@ -7,6 +7,7 @@ import Editor from '../core';
 import { ref } from 'vue';
 import { useRefHistory } from '@vueuse/core';
 type IEditor = Editor;
+import 'fabric-history';
 // import { v4 as uuid } from 'uuid';
 
 class HistoryPlugin {
@@ -21,11 +22,11 @@ class HistoryPlugin {
     this.canvas = canvas;
     this.editor = editor;
 
-    this._init();
     fabric.Canvas.prototype._historyNext = () => {
       return this.editor.getJson();
     };
 
+    this._init();
   }
 
   _init() {
