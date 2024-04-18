@@ -5,7 +5,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   resolve: {
     alias: {
-      '@xiaolin/core-fabric': '/src/packages/core', // 设置一个别名 '@'，对应路径为 '/src'
+      '@xiaolin/core-fabric': '/packages/core', // 设置一个别名 '@'，对应路径为 '/src'
     },
   },
 })
