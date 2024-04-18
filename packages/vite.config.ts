@@ -6,11 +6,11 @@ const config = () => {
     base: './',
     build: {
       lib: {
-        entry: resolve(__dirname, './index.ts'),
+        entry: resolve(__dirname, './core/index.ts'),
         name: 'CoreFabric',
         fileName: 'index',
       },
-      outDir: resolve(__dirname, '../dist'),
+      outDir: resolve(__dirname, './dist'),
     },
     plugins: []
   };

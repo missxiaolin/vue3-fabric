@@ -1,8 +1,7 @@
 {
   "name": "@xiaolin/core-fabric",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "main": "/packages/core/index.ts",
   "scripts": {
     "build": "vite build"
   },
@@ -21,5 +20,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": ""
 }
