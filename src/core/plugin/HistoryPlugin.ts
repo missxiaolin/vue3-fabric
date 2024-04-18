@@ -22,6 +22,10 @@ class HistoryPlugin {
     this.editor = editor;
 
     this._init();
+    fabric.Canvas.prototype._historyNext = () => {
+      return this.editor.getJson();
+    };
+
   }
 
   _init() {
