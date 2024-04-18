@@ -6,7 +6,7 @@ const config = () => {
     base: './',
     build: {
       lib: {
-        entry: resolve(__dirname, './core/index.ts'),
+        entry: resolve(__dirname, './src/index.ts'),
         name: 'CoreFabric',
         fileName: 'index',
       },

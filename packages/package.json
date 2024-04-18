@@ -2,23 +2,24 @@
   "name": "xiaolin-core-fabric",
   "private": false,
   "version": "1.0.2",
-  "main": "./core/index.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "vite build"
   },
- 
   "dependencies": {
     "events": "^3.3.0",
     "fabric-history": "^1.6.0",
     "fontfaceobserver": "^2.1.0",
     "hotkeys-js": "^3.8.8",
     "tapable": "^2.2.1",
+    "fabric": "^5.2.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vue-tsc": "^2.0.6"
+    "vue-tsc": "^2.0.6",
+    "@types/fabric": "^5.3.3"
   },
   "keywords": [],
   "author": "",
