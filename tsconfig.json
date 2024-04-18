@@ -35,6 +35,7 @@
     "tests/**/*.tsx",
     "src/core/objects/Arrow.js",
     "src/components/svgIcon/index.ts",
+    "typings/**/*.ts",
   ],
   "exclude": [
     "node_modules"
