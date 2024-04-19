@@ -43,6 +43,7 @@
 
 <script setup name="ImportFile">
 import { reactive } from 'vue'
+// import { Utils } from '../../packages/src/index';
 import { Utils } from 'xiaolin-core-fabric';
 const { getImgStr, selectFiles } = Utils;
 import useSelect from '@/hooks/select';

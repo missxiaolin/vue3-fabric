@@ -1,5 +1,6 @@
 import { inject, onBeforeMount, onMounted, reactive } from "vue";
 
+// import Editor, { EventType } from "../../packages/src/index";
 import Editor, { EventType } from "xiaolin-core-fabric";
 const { SelectEvent, SelectMode } = EventType;
 
@@ -24,19 +25,19 @@ export default function useSelect() {
   const fabric = inject("fabric");
   const canvasEditor = inject("canvasEditor") as Editor;
 
-  const selectOne = (e: [fabric.Object]) => {
+  const selectOne = (e: any) => {
     state.mSelectMode = SelectMode.ONE;
     if (e[0]) {
       state.mSelectId = e[0].id;
       state.mSelectOneType = e[0].type;
-      state.mSelectIds = e.map((item) => item.id);
+      state.mSelectIds = e.map((item: any) => item.id);
     }
   };
 
   const selectMulti = (e: fabric.Object[]) => {
     state.mSelectMode = SelectMode.MULTI;
     state.mSelectId = "";
-    state.mSelectIds = e.map((item) => item.id);
+    state.mSelectIds = e.map((item: any) => item.id);
   };
 
   const selectCancel = () => {

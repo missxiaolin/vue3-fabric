@@ -16,7 +16,9 @@ import {
   getCurrentInstance,
   ref,
 } from "vue";
+// import { Utils } from '../../packages/src/index';
 import { Utils } from 'xiaolin-core-fabric';
+
 import useSelect from "@/hooks/select";
 
 const { getImgStr, selectFiles, insertImgFile } = Utils;

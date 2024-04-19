@@ -205,6 +205,8 @@ import Editor, {
   RulerPlugin,
   MaterialPlugin,
 } from "xiaolin-core-fabric";
+// xiaolin-core-fabric
+// ../../packages/src/index
 
 // 创建编辑器
 const canvasEditor = new Editor();

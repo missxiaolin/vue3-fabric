@@ -8,9 +8,9 @@
       <template #list>
         <DropdownMenu>
           <!-- 文件 -->
-          <!-- <DropdownItem name="insertPsd">{{
+          <DropdownItem name="insertPsd">{{
             $t("import_files.import_psd")
-          }}</DropdownItem> -->
+          }}</DropdownItem>
           <!-- JSON -->
           <DropdownItem name="insertJson">{{
             $t("import_files.import_json")
@@ -24,6 +24,8 @@
 <script name="ImportFiles" setup>
 import useSelect from "@/hooks/select";
 const { fabric, canvasEditor } = useSelect();
+import { parseImage } from "@/utils/psd/image";
+import { parseText } from "@/utils/psd/text";
 
 /**
  * psd 对象处理

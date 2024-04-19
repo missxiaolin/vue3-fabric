@@ -135,9 +135,11 @@ const getList = () => {
   // 不改原数组 反转
   list.value = [
     ...canvasEditor.canvas.getObjects().filter((item) => {
-      // return item;
       // 过滤掉辅助线
-      return !(item instanceof fabric.GuideLine || item.id === "workspace");
+      return !(
+        item &&
+        (item instanceof fabric.GuideLine || item.id === "workspace")
+      );
     }),
   ]
     .reverse()
