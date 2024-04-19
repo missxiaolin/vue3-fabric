@@ -1,19 +1,12 @@
 <template>
-  <div
-    v-if="mixinState.mSelectMode === 'one' && state.type === 'image'"
-    class="box"
-  >
+  <div v-if="mixinState.mSelectMode === 'one' && state.type === 'image'" class="box">
     <Collapse>
       <Panel name="1">
-        {{ $t("filters.simple") }}
+        {{ $t('filters.simple') }}
         <template #content>
           <div class="filter-box">
             <!-- 无参数滤镜 -->
-            <div
-              class="filter-item"
-              v-for="(value, key) in state.noParamsFilters"
-              :key="key"
-            >
+            <div class="filter-item" v-for="(value, key) in state.noParamsFilters" :key="key">
               <img
                 :src="getImageUrl(key)"
                 alt=""
@@ -23,48 +16,31 @@
                 v-model="state.noParamsFilters[key]"
                 @on-change="(val) => changeFilters(key, val)"
               >
-                {{ $t("filters." + key) }}
+                {{ $t('filters.' + key) }}
               </Checkbox>
             </div>
           </div>
         </template>
       </Panel>
       <Panel name="2">
-        {{ $t("filters.complex") }}
+        {{ $t('filters.complex') }}
         <template #content>
           <!-- 有参数滤镜与组合参数滤镜 -->
           <div>
             <div
               class="filter-item has-params"
-              v-for="item in [
-                ...state.paramsFilters,
-                ...state.combinationFilters,
-              ]"
+              v-for="item in [...state.paramsFilters, ...state.combinationFilters]"
               :key="item.type"
             >
-              <Checkbox
-                v-model="item.status"
-                @on-change="changeFiltersByParams(item.type)"
-              >
-                {{ $t("filters." + item.type) }}
+              <Checkbox v-model="item.status" @on-change="changeFiltersByParams(item.type)">
+                {{ $t('filters.' + item.type) }}
               </Checkbox>
               <div v-if="item.status" class="content">
-                <div
-                  class="content slider-box"
-                  v-for="info in item.params"
-                  :key="info"
-                >
+                <div class="content slider-box" v-for="info in item.params" :key="info">
                   <div v-if="info.uiType === uiType.SELECT">
-                    <RadioGroup
-                      v-model="info.value"
-                      @on-change="changeFiltersByParams(item.type)"
-                    >
-                      <Radio
-                        :label="listItem"
-                        v-for="listItem in info.list"
-                        :key="listItem"
-                      >
-                        {{ $t("filters." + item.type + "List." + listItem) }}
+                    <RadioGroup v-model="info.value" @on-change="changeFiltersByParams(item.type)">
+                      <Radio :label="listItem" v-for="listItem in info.list" :key="listItem">
+                        {{ $t('filters.' + item.type + 'List.' + listItem) }}
                       </Radio>
                     </RadioGroup>
                   </div>
@@ -103,15 +79,11 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
-import useSelect from "@/hooks/select";
-import {
-  uiType,
-  paramsFilters,
-  combinationFilters,
-} from "@/config/constants/filter";
+
+import useSelect from '@/hooks/select';
+import { uiType, paramsFilters, combinationFilters } from '@/config/constants/filter';
 
 const { fabric, mixinState, canvasEditor } = useSelect();
-const event = inject("event");
 const update = getCurrentInstance();
 // 无参数滤镜
 const noParamsFilters = {
@@ -130,7 +102,7 @@ const state = reactive({
   noParamsFilters,
   paramsFilters: [...paramsFilters],
   combinationFilters: [...combinationFilters],
-  type: "",
+  type: '',
 });
 
 // 无参数滤镜修改状态
@@ -170,7 +142,7 @@ const handleSelectOne = () => {
   const activeObject = canvasEditor.canvas.getActiveObjects()[0];
   if (activeObject) {
     state.type = activeObject.type;
-    if (state.type === "image") {
+    if (state.type === 'image') {
       // 无参数滤镜回显
       Object.keys(noParamsFilters).forEach((type) => {
         state.noParamsFilters[type] = !!_getFilter(activeObject, type);
@@ -178,23 +150,17 @@ const handleSelectOne = () => {
       });
       // 有参数滤镜回显
       paramsFilters.forEach((filterItem) => {
-        const moduleInfo = state.paramsFilters.find(
-          (item) => item.type === filterItem.type
-        );
+        const moduleInfo = state.paramsFilters.find((item) => item.type === filterItem.type);
         const filterInfo = _getFilter(activeObject, filterItem.type);
         moduleInfo.status = !!filterInfo;
         moduleInfo.params.forEach((paramsItem) => {
-          paramsItem.value = filterInfo
-            ? filterInfo[paramsItem.key]
-            : paramsItem.value;
+          paramsItem.value = filterInfo ? filterInfo[paramsItem.key] : paramsItem.value;
         });
       });
 
       // 组合滤镜回显
       combinationFilters.forEach((filterItem) => {
-        const moduleInfo = state.combinationFilters.find(
-          (item) => item.type === filterItem.type
-        );
+        const moduleInfo = state.combinationFilters.find((item) => item.type === filterItem.type);
         const filterInfo = _getFilter(activeObject, filterItem.type);
         moduleInfo.status = !!filterInfo;
         // 不回显具体参数
@@ -205,11 +171,11 @@ const handleSelectOne = () => {
 };
 
 onMounted(() => {
-  event.on("selectOne", handleSelectOne);
+  canvasEditor.on('selectOne', handleSelectOne);
 });
 
 onBeforeUnmount(() => {
-  event.off("selectOne", handleSelectOne);
+  canvasEditor.off('selectOne', handleSelectOne);
 });
 
 // 图片地址拼接
@@ -296,9 +262,7 @@ function _getFilter(sourceImg, type) {
  */
 function _removeFilter(sourceImg, type) {
   const fabricType = _getFabricFilterType(type);
-  sourceImg.filters = sourceImg.filters.filter(
-    (value) => value.type !== fabricType
-  );
+  sourceImg.filters = sourceImg.filters.filter((value) => value.type !== fabricType);
   sourceImg.applyFilters();
   canvasEditor.canvas.renderAll();
 }

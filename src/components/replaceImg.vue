@@ -16,42 +16,37 @@ import {
   getCurrentInstance,
   ref,
 } from "vue";
+import { Utils } from 'xiaolin-core-fabric';
 import useSelect from "@/hooks/select";
 
-import { getImgStr, selectFiles, insertImgFile } from "@/utils/utils";
-
+const { getImgStr, selectFiles, insertImgFile } = Utils;
 const update = getCurrentInstance();
-const event = inject("event");
+// const canvasEditor = inject('canvasEditor');
 const { mixinState, canvasEditor } = useSelect();
-const type = ref("");
+const type = ref('');
 
 // 替换图片
 const repleace = async () => {
   const activeObject = canvasEditor.canvas.getActiveObjects()[0];
-  if (activeObject && activeObject.type === "image") {
+  if (activeObject && activeObject.type === 'image') {
     // 图片
-    const [file] = await selectFiles({ accept: "image/*", multiple: false });
+    const [file] = await selectFiles({ accept: 'image/*', multiple: false });
     // 转字符串
     const fileStr = await getImgStr(file);
     // 字符串转El
     const imgEl = await insertImgFile(fileStr);
-    const width = activeObject.get("width");
-    const height = activeObject.get("height");
-    const scaleX = activeObject.get("scaleX");
-    const scaleY = activeObject.get("scaleY");
+    const width = activeObject.get('width');
+    const height = activeObject.get('height');
+    const scaleX = activeObject.get('scaleX');
+    const scaleY = activeObject.get('scaleY');
     activeObject.setSrc(imgEl.src, () => {
-      activeObject.set("scaleX", (width * scaleX) / imgEl.width);
-      activeObject.set("scaleY", (height * scaleY) / imgEl.height);
+      activeObject.set('scaleX', (width * scaleX) / imgEl.width);
+      activeObject.set('scaleY', (height * scaleY) / imgEl.height);
       canvasEditor.canvas.renderAll();
     });
     imgEl.remove();
   }
 };
-
-// 裁剪
-const cropping = () => {
-  canvasEditor.isCropping()
-}
 
 const init = () => {
   const activeObject = canvasEditor.canvas.getActiveObjects()[0];
@@ -62,10 +57,10 @@ const init = () => {
 };
 
 onMounted(() => {
-  event.on("selectOne", init);
+  canvasEditor.on('selectOne', init);
 });
 
 onBeforeUnmount(() => {
-  event.off("selectOne", init);
+  canvasEditor.off('selectOne', init);
 });
 </script>

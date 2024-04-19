@@ -88,11 +88,11 @@ const codeChange = async (v) => {
 };
 
 onMounted(() => {
-  event.on("selectOne", init);
+  canvasEditor.on('selectOne', init);
 });
 
 onBeforeUnmount(() => {
-  event.off("selectOne", init);
+  canvasEditor.off('selectOne', init);
 });
 </script>
 
