@@ -14,19 +14,17 @@
       </Button>
     </Tooltip>
     <!-- <span class="time" v-if="history.length">
-    {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
-  </span> -->
+      {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
+    </span> -->
   </div>
 </template>
 
-<script setup lang="ts" name="History">
-import { inject, ref, onMounted, onUnmounted, reactive } from "vue";
-import { useDateFormat } from "@vueuse/core";
-import useSelect from "@/hooks/select";
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import useSelect from '@/hooks/select';
 const { canvasEditor } = useSelect() as { canvasEditor: any };
 const canUndo = ref(0);
 const canRedo = ref(0);
-
 // 后退
 const undo = () => {
   canvasEditor.undo();
@@ -34,5 +32,30 @@ const undo = () => {
 // 重做
 const redo = () => {
   canvasEditor.redo();
+};
+
+onMounted(() => {
+  canvasEditor.on('historyUpdate', (canUndoParam: number, canRedoParam: number) => {
+    canUndo.value = canUndoParam;
+    canRedo.value = canRedoParam;
+  });
+});
+</script>
+
+<style scoped lang="scss">
+span.active {
+  svg.icon {
+    fill: #2d8cf0;
+  }
+}
+
+.time {
+  color: #c1c1c1;
+}
+</style>
+
+<script lang="ts">
+export default {
+  name: 'ToolBar',
 };
 </script>

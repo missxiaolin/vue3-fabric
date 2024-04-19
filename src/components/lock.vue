@@ -63,11 +63,11 @@ const handleSelected = (items) => {
 };
 
 onMounted(() => {
-  event.on("selectOne", handleSelected);
+  canvasEditor.on("selectOne", handleSelected);
 });
 
 onBeforeUnmount(() => {
-  event.off("selectOne", handleSelected);
+  canvasEditor.off("selectOne", handleSelected);
 });
 </script>
 

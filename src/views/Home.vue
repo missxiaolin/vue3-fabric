@@ -114,19 +114,19 @@
             <!-- 二维码 && 条形码 -->
             <codeInput></codeInput>
             <div class="attr-item">
-              <!-- <lock></lock> -->
-              <!-- <dele></dele> -->
-              <!-- <clone></clone> -->
+              <lock></lock>
+              <dele></dele>
+              <clone></clone>
             </div>
 
             <!-- 组对齐方式 -->
-            <!-- <align></align> -->
+            <align></align>
             <!-- 居中对齐 -->
-            <!-- <center-align></center-align> -->
+            <center-align></center-align>
             <!-- 翻转 -->
-            <!-- <flip></flip> -->
+            <flip></flip>
           </div>
-          <!-- <attribute v-if="state.show"></attribute> -->
+          <attribute v-if="state.show"></attribute>
         </div>
         <!-- 右侧关闭按钮 -->
         <div

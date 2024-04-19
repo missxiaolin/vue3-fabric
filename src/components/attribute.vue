@@ -658,16 +658,16 @@ const init = () => {
   // 获取字体数据
   getFreeFontList();
 
-  event.on('selectCancel', selectCancel);
-  event.on('selectOne', getObjectAttr);
+  canvasEditor.on('selectCancel', selectCancel);
+  canvasEditor.on('selectOne', getObjectAttr);
   canvasEditor.canvas.on('object:modified', getObjectAttr);
 };
 
 onMounted(init);
 
 onBeforeUnmount(() => {
-  event.off('selectCancel', selectCancel);
-  event.off('selectOne', getObjectAttr);
+  canvasEditor.off('selectCancel', selectCancel);
+  canvasEditor.off('selectOne', getObjectAttr);
   canvasEditor.canvas.off('object:modified', getObjectAttr);
 });
 </script>
