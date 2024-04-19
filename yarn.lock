@@ -1942,9 +1942,9 @@
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
 
 "@vue/vue-loader-v15@npm:vue-loader@^15.9.7":
-  version "15.10.1"
-  resolved "https://registry.npmjs.org/vue-loader/-/vue-loader-15.10.1.tgz"
-  integrity sha512-SaPHK1A01VrNthlix6h1hq4uJu7S/z0kdLUb6klubo738NeQoLbS6V9/d8Pv19tU0XdQKju3D1HSKuI8wJ5wMA==
+  version "15.11.1"
+  resolved "https://registry.npmjs.org/vue-loader/-/vue-loader-15.11.1.tgz"
+  integrity sha512-0iw4VchYLePqJfJu9s62ACWUXeSqM30SQqlIftbYWM3C+jpPcEHKSPUZBLjSF9au4HTHQ/naF6OGnO3Q/qGR3Q==
   dependencies:
     "@vue/component-compiler-utils" "^3.1.0"
     hash-sum "^1.0.2"
@@ -7783,12 +7783,15 @@ ws@^8.2.3:
   resolved "https://registry.npmjs.org/ws/-/ws-8.13.0.tgz"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
-xiaolin-core-fabric@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/xiaolin-core-fabric/-/xiaolin-core-fabric-1.0.0.tgz"
-  integrity sha512-eBhPhxrsL9pvVBF0acP/5luI2EcicHm/xkIF32LKa3evGiBLtgMGvShLY3/op7OJImkJ7GQyrPiV7QjWaoIiMQ==
+xiaolin-core-fabric@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/xiaolin-core-fabric/-/xiaolin-core-fabric-1.0.5.tgz"
+  integrity sha512-YZx8hT+dabBaiPW+YEobbhh/IVahcm5dUfbtDh2iwjJk4STqO5nJvxRYQ2/Jwv7S2l9utvyMqSyXbdcqRKISyg==
   dependencies:
+    "@vueuse/core" "^10.1.0"
+    ag-psd "^17.0.6"
     events "^3.3.0"
+    fabric "^5.2.1"
     fabric-history "^1.6.0"
     fontfaceobserver "^2.1.0"
     hotkeys-js "^3.8.8"

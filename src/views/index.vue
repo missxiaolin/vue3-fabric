@@ -301,5 +301,5 @@ provide("canvasEditor", canvasEditor);
 </script>
 
 <style lang="scss" scoped>
-@import "./home.scss";
+@import "./index.scss";
 </style>

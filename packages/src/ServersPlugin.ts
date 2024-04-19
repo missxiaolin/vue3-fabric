@@ -1,6 +1,6 @@
 // 内部插件
 import { v4 as uuid } from "uuid";
-import { selectFiles, clipboardText } from "./utils/utils";
+import { selectFiles, clipboardText, getImgStr, parsePsdFile, checkFileExt } from "./utils/utils";
 import { fabric } from "fabric";
 import Editor from "./Editor";
 type IEditor = Editor;
@@ -34,6 +34,7 @@ class ServersPlugin {
   static pluginName = "ServersPlugin";
   static apis = [
     "insert",
+    "insertPsd",
     "insertSvgFile",
     "getJson",
     "dragAddItem",
@@ -92,6 +93,42 @@ class ServersPlugin {
         reader.onload = () => {
           this.insertSvgFile(reader.result as string);
         };
+      }
+    });
+  }
+
+  /**
+   * psd 解析
+   * @param cb 
+   */
+  async insertPsd(cb: any) {
+    selectFiles({ accept: ".psd", multiple: false }).then((fileList: any) => {
+      // @ts-ignore
+      let oldAll: any = [];
+      for (const item of Array.from(fileList)) {
+        if (checkFileExt(item, ["psd"])) {
+          console.log("开始执行");
+          // @ts-ignore
+          const onProcess = (result: any) => {};
+          // PSD文件
+          // @ts-ignore
+          parsePsdFile(item, onProcess)
+            .then(async (value: any) => {
+              cb && typeof cb === 'function' && cb(value);
+              // const { psd, layers } = value;
+              // console.log(psd)
+              // console.log("layers=", layers);
+            })
+            .catch((reason: any) => {
+              console.log('error', reason.message)
+            });
+        } else {
+          // 非PSD文件
+          // @ts-ignore
+          getImgStr(item).then((file: any) => {
+            // insertImgFile(file)
+          });
+        }
       }
     });
   }
