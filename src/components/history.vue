@@ -1,31 +1,31 @@
 <template>
   <div style="display: inline-block">
     <!-- 后退 -->
-    <Tooltip :content="$t('history.revocation') + `(${undoStack.length})`">
-      <Button @click="undo" type="text" size="small" :disabled="undoStack.length === 0">
+    <Tooltip :content="$t('history.revocation') + `(${canUndo})`">
+      <Button @click="undo" type="text" size="small" :disabled="!canUndo">
         <Icon type="ios-undo" size="20" />
       </Button>
     </Tooltip>
 
     <!-- 重做 -->
-    <Tooltip :content="$t('history.redo') + `(${redoStack.length})`">
-      <Button @click="redo" type="text" size="small" :disabled="redoStack.length === 0">
+    <Tooltip :content="$t('history.redo') + `(${canRedo})`">
+      <Button @click="redo" type="text" size="small" :disabled="!canRedo">
         <Icon type="ios-redo" size="20" />
       </Button>
     </Tooltip>
-
-    <span class="time" v-if="history.length">
-      {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
-    </span>
+    <!-- <span class="time" v-if="history.length">
+    {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
+  </span> -->
   </div>
 </template>
 
 <script setup lang="ts" name="History">
 import { inject, ref, onMounted, onUnmounted, reactive } from "vue";
-import { useDateFormat } from '@vueuse/core';
-import useSelect from '@/hooks/select';
-const { canvasEditor } = useSelect();
-const { history, redoStack, undoStack } = reactive(canvasEditor.getHistory());
+import { useDateFormat } from "@vueuse/core";
+import useSelect from "@/hooks/select";
+const { canvasEditor } = useSelect() as { canvasEditor: any };
+const canUndo = ref(0);
+const canRedo = ref(0);
 
 // 后退
 const undo = () => {

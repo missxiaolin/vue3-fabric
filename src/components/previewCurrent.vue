@@ -13,7 +13,8 @@ import vfe from 'vfe';
 
 const canvasEditor = inject('canvasEditor') as vfe.ICanvas;
 const preview = () => {
-  canvasEditor.preview().then((dataUrl) => {
+  // @ts-ignore
+  canvasEditor.preview().then((dataUrl: any) => {
     // const dataUrl = getImgUrl();
     ImagePreview.show({
       previewList: [dataUrl],

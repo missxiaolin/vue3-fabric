@@ -22,14 +22,14 @@
             @on-change="rulerSwitch"
           ></iSwitch>
         </Tooltip>
-        <!-- <Divider type="vertical" /> -->
-        <!-- <history></history> -->
+        <Divider type="vertical" />
+        <history></history>
         <div class="top-right">
           <!-- 预览 -->
-          <!-- <previewCurrent />
+          <previewCurrent />
           <waterMark />
           <save></save>
-          <lang></lang> -->
+          <lang></lang>
         </div>
       </Header>
       <Content style="display: flex; height: calc(100vh - 64px)">
@@ -64,19 +64,19 @@
           <div class="content" v-show="state.toolsBarShow">
             <!-- 生成模板 -->
             <div v-show="state.menuActive === 1" class="left-panel">
-              <!-- <import-tmpl></import-tmpl> -->
+              <import-tmpl></import-tmpl>
             </div>
             <!-- 常用元素 -->
             <div v-show="state.menuActive === 2" class="left-panel">
-              <!-- <tools></tools> -->
+              <tools></tools>
             </div>
             <!-- 工具 -->
             <div v-show="state.menuActive === 3" class="left-panel">
-              <!-- <tool /> -->
+              <tool />
             </div>
             <!-- 图层 -->
             <div v-show="state.menuActive === 4" class="left-panel">
-              <!-- <layer></layer> -->
+              <layer></layer>
             </div>
           </div>
 
@@ -98,35 +98,35 @@
               id="canvas"
               :class="state.ruler ? 'design-stage-grid' : ''"
             ></canvas>
-            <!-- <dragMode></dragMode> -->
-            <!-- <zoom></zoom> -->
+            <dragMode></dragMode>
+            <zoom></zoom>
           </div>
         </div>
 
         <!-- 属性区域 380-->
         <div class="right-bar" v-show="state.attrBarShow">
           <div v-if="state.show" style="padding-top: 10px">
-            <!-- <set-size></set-size> -->
-            <!-- <bg-bar></bg-bar> -->
-            <!-- <group></group> -->
-            <!-- <replaceImg></replaceImg> -->
-            <!-- <filters></filters> -->
+            <set-size></set-size>
+            <bg-bar></bg-bar>
+            <group></group>
+            <replaceImg></replaceImg>
+            <filters></filters>
             <!-- 二维码 && 条形码 -->
-            <!-- <codeInput></codeInput> -->
+            <codeInput></codeInput>
             <div class="attr-item">
-              <!-- <lock></lock> -->
-              <!-- <dele></dele> -->
-              <!-- <clone></clone> -->
+              <lock></lock>
+              <dele></dele>
+              <clone></clone>
             </div>
 
             <!-- 组对齐方式 -->
-            <!-- <align></align> -->
+            <align></align>
             <!-- 居中对齐 -->
-            <!-- <center-align></center-align> -->
+            <center-align></center-align>
             <!-- 翻转 -->
-            <!-- <flip></flip> -->
+            <flip></flip>
           </div>
-          <!-- <attribute v-if="state.show"></attribute> -->
+          <attribute v-if="state.show"></attribute>
         </div>
         <!-- 右侧关闭按钮 -->
         <div

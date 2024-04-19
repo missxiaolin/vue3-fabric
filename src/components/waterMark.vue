@@ -78,12 +78,12 @@ const waterMarkState = reactive({
 });
 
 const createCanvas = (width: number, height: number) => {
-  const waterCanvas = document.createElement('canvas');
+  const waterCanvas = document.createElement("canvas");
   waterCanvas.width = width;
   waterCanvas.height = height;
-  waterCanvas.style.position = 'fixed';
-  waterCanvas.style.opacity = '0';
-  waterCanvas.style.zIndex = '-1';
+  waterCanvas.style.position = "fixed";
+  waterCanvas.style.opacity = "0";
+  waterCanvas.style.zIndex = "-1";
   return waterCanvas;
 };
 
@@ -91,7 +91,7 @@ const drawWaterMark: Record<string, any> = {
   lt: (width: number, height: number, cb: (imgString: string) => void) => {
     let waterCanvas: HTMLCanvasElement | null = createCanvas(width, height);
     const w = waterCanvas.width || width;
-    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext('2d')!;
+    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext("2d")!;
     ctx.fillStyle = waterMarkState.color;
     ctx.font = `${waterMarkState.size}px ${waterMarkState.font}`;
     ctx.fillText(waterMarkState.text, 10, waterMarkState.size + 10, w - 20);
@@ -101,7 +101,7 @@ const drawWaterMark: Record<string, any> = {
   },
   rt: (width: number, height: number, cb: (imgString: string) => void) => {
     let waterCanvas: HTMLCanvasElement | null = createCanvas(width, height);
-    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext('2d')!;
+    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext("2d")!;
     const w = waterCanvas.width || width;
     ctx.fillStyle = waterMarkState.color;
     ctx.font = `${waterMarkState.size}px ${waterMarkState.font}`;
@@ -117,7 +117,7 @@ const drawWaterMark: Record<string, any> = {
   },
   lb: (width: number, height: number, cb: (imgString: string) => void) => {
     let waterCanvas: HTMLCanvasElement | null = createCanvas(width, height);
-    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext('2d')!;
+    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext("2d")!;
     const w = waterCanvas.width || width;
     const h = waterCanvas.height || height;
     ctx.fillStyle = waterMarkState.color;
@@ -129,7 +129,7 @@ const drawWaterMark: Record<string, any> = {
   },
   rb: (width: number, height: number, cb: (imgString: string) => void) => {
     let waterCanvas: HTMLCanvasElement | null = createCanvas(width, height);
-    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext('2d')!;
+    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext("2d")!;
     const w = waterCanvas.width || width;
     ctx.fillStyle = waterMarkState.color;
     ctx.font = `${waterMarkState.size}px ${waterMarkState.font}`;
@@ -145,16 +145,17 @@ const drawWaterMark: Record<string, any> = {
   },
   full: (width: number, height: number, cb: (imgString: string) => void) => {
     let waterCanvas: HTMLCanvasElement | null = createCanvas(width, height);
-    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext('2d')!;
+    let ctx: CanvasRenderingContext2D | null = waterCanvas.getContext("2d")!;
     const textW = ctx.measureText(waterMarkState.text).width + 40;
     let patternCanvas: HTMLCanvasElement | null = createCanvas(
       waterMarkState.isRotate === 0 ? textW : textW * 2, // 若有倾斜，那么斜边都会大于直角边 按30度算2倍(简单)
       waterMarkState.isRotate === 0 ? waterMarkState.size + 20 : textW + 20
     );
     document.body.appendChild(patternCanvas);
-    let ctxWater: CanvasRenderingContext2D | null = patternCanvas.getContext('2d')!;
-    ctxWater.textAlign = 'left';
-    ctxWater.textBaseline = 'top';
+    let ctxWater: CanvasRenderingContext2D | null =
+      patternCanvas.getContext("2d")!;
+    ctxWater.textAlign = "left";
+    ctxWater.textBaseline = "top";
     ctxWater.font = `${waterMarkState.size}px ${waterMarkState.font}`;
     ctxWater.fillStyle = `${waterMarkState.color}`;
     if (waterMarkState.isRotate === 0) {
@@ -164,7 +165,7 @@ const drawWaterMark: Record<string, any> = {
       ctxWater.rotate((-30 * Math.PI) / 180); // 简单例子 按30度算
       ctxWater.fillText(waterMarkState.text, 0, 0);
     }
-    ctx.fillStyle = ctx.createPattern(patternCanvas, 'repeat')!;
+    ctx.fillStyle = ctx.createPattern(patternCanvas, "repeat")!;
     ctx.fillRect(0, 0, width, height);
     cb && cb(waterCanvas.toDataURL());
     waterCanvas = null;
@@ -175,8 +176,10 @@ const drawWaterMark: Record<string, any> = {
 };
 
 const onModalOk = () => {
-  if (!waterMarkState.text) return Message.warning('水印名字不能为空');
-  const workspace = canvasEditor.canvas.getObjects().find((item: any) => item.id === 'workspace');
+  if (!waterMarkState.text) return Message.warning("水印名字不能为空");
+  const workspace = canvasEditor.canvas
+    .getObjects()
+    .find((item: any) => item.id === "workspace");
   const { width, height, left, top } = workspace;
   drawWaterMark[waterMarkState.position](width, height, (imgString: string) => {
     canvasEditor.canvas.overlayImage = null; // 清空覆盖层
@@ -186,8 +189,8 @@ const onModalOk = () => {
       {
         left: left || 0,
         top: top || 0,
-        originX: 'left',
-        originY: 'top',
+        originX: "left",
+        originY: "top",
       }
     );
   });
