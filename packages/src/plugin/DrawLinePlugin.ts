@@ -2,13 +2,12 @@
 
 import { v4 as uuid } from "uuid";
 import { fabric } from "fabric";
+// @ts-ignore
 import Arrow from "../objects/Arrow";
-import Editor from "../Editor";
-type IEditor = Editor;
 
 class DrawLinePlugin {
-  public canvas: fabric.Canvas;
-  public editor: IEditor;
+  public canvas: any;
+  public editor: any;
   static pluginName = "DrawLinePlugin";
   static apis = ["setArrow", "setMode"];
   isDrawingLineMode: boolean;
@@ -17,7 +16,7 @@ class DrawLinePlugin {
   pointer: any;
   pointerPoints: any;
   isDrawingLine: boolean;
-  constructor(canvas: fabric.Canvas, editor: IEditor) {
+  constructor(canvas: any, editor: any) {
     this.canvas = canvas;
     this.editor = editor;
 
@@ -32,10 +31,10 @@ class DrawLinePlugin {
 
   init() {
     const { canvas } = this;
-    canvas.on("mouse:down", (o) => {
+    canvas.on("mouse:down", (o: any) => {
       if (!this.isDrawingLineMode) return;
       canvas.discardActiveObject();
-      canvas.getObjects().forEach((obj) => {
+      canvas.getObjects().forEach((obj: any) => {
         obj.selectable = false;
         obj.hasControls = false;
       });
@@ -62,7 +61,7 @@ class DrawLinePlugin {
       canvas.add(this.lineToDraw);
     });
 
-    canvas.on("mouse:move", (o) => {
+    canvas.on("mouse:move", (o: any) => {
       if (!this.isDrawingLine) return;
       canvas.discardActiveObject();
       const activeObject = canvas.getActiveObject();
@@ -116,7 +115,7 @@ class DrawLinePlugin {
   }
 
   endRest() {
-    this.canvas.getObjects().forEach((obj) => {
+    this.canvas.getObjects().forEach((obj: any) => {
       if (obj.id !== "workspace") {
         obj.selectable = true;
         obj.hasControls = true;

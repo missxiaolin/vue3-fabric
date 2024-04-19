@@ -22,11 +22,12 @@
 </template>
 
 <script name="ImportFiles" setup>
+import { Utils } from '../../packages/src/index'
 
 const { getImgStr, selectFiles } = Utils;
 // import { parseImage } from "@/utils/psd/image";
 // import { parseText } from "@/utils/psd/text";
-// import useSelect from "@/hooks/select";
+import useSelect from "@/hooks/select";
 // const { canvasEditor, fabric } = useSelect();
 
 /**

@@ -1,6 +1,7 @@
 import EventEmitter from "events";
 import hotkeys from "hotkeys-js";
-import ContextMenu from "./ContextMenu.js";
+// @ts-ignore
+import ContextMenu from "./contextMenu.js";
 import ServersPlugin from "./ServersPlugin";
 import { AsyncSeriesHook } from "tapable";
 
@@ -35,14 +36,14 @@ class Editor extends EventEmitter {
   }
 
   // 引入组件
-  use(plugin: IPluginClass, options?: IPluginOption) {
+  use(plugin: any, options?: any) {
     if (this._checkPlugin(plugin)) {
       this._saveCustomAttr(plugin);
       const pluginRunTime = new plugin(
         this.canvas,
         this,
         options || {}
-      ) as IPluginClass;
+      ) as any;
       this.pluginMap[plugin.pluginName] = pluginRunTime;
       this._bindingHooks(pluginRunTime);
       this._bindingHotkeys(pluginRunTime);
@@ -58,7 +59,7 @@ class Editor extends EventEmitter {
   }
 
   // 检查组件
-  private _checkPlugin(plugin: IPluginClass) {
+  private _checkPlugin(plugin: any) {
     const { pluginName, events = [], apis = [] } = plugin;
     //名称检查
     if (this.pluginMap[pluginName]) {
@@ -105,7 +106,7 @@ class Editor extends EventEmitter {
   }
 
   // 保存组件自定义事件与API
-  private _saveCustomAttr(plugin: IPluginClass) {
+  private _saveCustomAttr(plugin: any) {
     const { events = [], apis = [] } = plugin;
     this.customApis = this.customApis.concat(apis);
     this.customEvents = this.customEvents.concat(events);

@@ -1,8 +1,5 @@
 // 拖拽插件
 
-import Editor from "../Editor";
-type IEditor = Editor;
-
 declare type ExtCanvas = fabric.Canvas & {
   isDragging: boolean;
   lastPosX: number;
@@ -10,15 +7,15 @@ declare type ExtCanvas = fabric.Canvas & {
 };
 
 class DringPlugin {
-  public canvas: fabric.Canvas;
-  public editor: IEditor;
+  public canvas: any;
+  public editor: any;
   public defautOption = {};
   static pluginName = "DringPlugin";
   static events = ["startDring", "endDring"];
   static apis = ["startDring", "endDring"];
   public hotkeys: string[] = ["space"];
   dragMode = false;
-  constructor(canvas: fabric.Canvas, editor: IEditor) {
+  constructor(canvas: fabric.Canvas, editor: any) {
     this.canvas = canvas;
     this.editor = editor;
     this.dragMode = false;
@@ -45,7 +42,7 @@ class DringPlugin {
   // 拖拽模式;
   _initDring() {
     const This = this;
-    this.canvas.on("mouse:down", function (this: ExtCanvas, opt) {
+    this.canvas.on("mouse:down", function (this: ExtCanvas, opt: any) {
       const evt = opt.e;
       if (evt.altKey || This.dragMode) {
         This.canvas.defaultCursor = "grabbing";
@@ -59,7 +56,7 @@ class DringPlugin {
       }
     });
 
-    this.canvas.on("mouse:move", function (this: ExtCanvas, opt) {
+    this.canvas.on("mouse:move", function (this: ExtCanvas, opt: any) {
       if (this.isDragging) {
         This.canvas.discardActiveObject();
         This.canvas.defaultCursor = "grabbing";
@@ -79,7 +76,7 @@ class DringPlugin {
       this.setViewportTransform(this.viewportTransform);
       this.isDragging = false;
       this.selection = true;
-      this.getObjects().forEach((obj) => {
+      this.getObjects().forEach((obj: any) => {
         if (obj.id !== "workspace" && obj.hasControls) {
           obj.selectable = true;
         }
@@ -92,7 +89,7 @@ class DringPlugin {
   _setDring() {
     this.canvas.selection = false;
     this.canvas.defaultCursor = "grab";
-    this.canvas.getObjects().forEach((obj) => {
+    this.canvas.getObjects().forEach((obj: any) => {
       obj.selectable = false;
     });
     this.canvas.requestRenderAll();
@@ -104,6 +101,7 @@ class DringPlugin {
 
   // 快捷键扩展回调
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // @ts-ignore
   hotkeyEvent(eventName: string, e: any) {
     if (e.code === "Space" && e.type === "keydown") {
       if (!this.dragMode) {

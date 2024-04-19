@@ -57,7 +57,7 @@ class GroupTextEditorPlugin {
   }
 
   // 获取点击区域内的组内文字元素
-  _getGroupTextObj(opt: fabric.IEvent<MouseEvent>) {
+  _getGroupTextObj(opt: any) {
     const pointer = this.canvas.getPointer(opt.e, true);
     const clickObj = this.canvas._searchPossibleTargets(
       opt.target?._objects,
@@ -69,7 +69,7 @@ class GroupTextEditorPlugin {
     return false;
   }
 
-  _getGroupObj(opt: fabric.IEvent<MouseEvent>) {
+  _getGroupObj(opt: any) {
     const pointer = this.canvas.getPointer(opt.e, true);
     const clickObj = this.canvas._searchPossibleTargets(
       opt.target?._objects,
@@ -80,8 +80,8 @@ class GroupTextEditorPlugin {
 
   // 通过组合重新组装来编辑文字，可能会耗性能。
   _bedingTextEditingEvent(
-    textObject: fabric.IText,
-    opt: fabric.IEvent<MouseEvent>
+    textObject: any,
+    opt: any
   ) {
     if (!opt.target) return;
     const textObjectJSON = textObject.toObject();
@@ -107,6 +107,7 @@ class GroupTextEditorPlugin {
     const newX = a * textObject.left + c * textObject.top + e;
     const newY = b * textObject.left + d * textObject.top + f;
 
+    // @ts-ignore
     const tempText = new fabric[eltype](textObject.text, {
       ...textObjectJSON,
       scaleX: textObjectJSON.scaleX * a,
@@ -155,12 +156,12 @@ class GroupTextEditorPlugin {
     const resetGroup = () => {
       const groupArr = this.canvas
         .getObjects()
-        .filter((item) => item.id && ids.includes(item.id));
+        .filter((item: any) => item.id && ids.includes(item.id));
       // 删除元素
-      groupArr.forEach((item) => this.canvas.remove(item));
+      groupArr.forEach((item: any) => this.canvas.remove(item));
 
       // 生成新组
-      const group = new fabric.Group([...groupArr]);
+      const group: any = new fabric.Group([...groupArr]);
       group.set("left", left);
       group.set("top", top);
       group.set("id", uuid());
@@ -177,7 +178,7 @@ class GroupTextEditorPlugin {
     const ids: string[] = [];
     const activeObj = this.canvas.getActiveObject() as fabric.Group;
     if (!activeObj) return;
-    activeObj.getObjects().forEach((item) => {
+    activeObj.getObjects().forEach((item: any) => {
       const id = uuid();
       ids.push(id);
       item.set("id", id);

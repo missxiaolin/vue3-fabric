@@ -27,7 +27,7 @@ class CopyPlugin {
     const canvas = this.canvas;
     activeObject?.clone((cloned: fabric.Object) => {
       // 再次进行克隆，处理选择多个对象的情况
-      cloned.clone((clonedObj: fabric.ActiveSelection) => {
+      cloned.clone((clonedObj: any) => {
         canvas.discardActiveObject();
         if (clonedObj.left === undefined || clonedObj.top === undefined) return;
         // 将克隆的画布重新赋值
@@ -39,7 +39,7 @@ class CopyPlugin {
           evented: true,
           id: uuid(),
         });
-        clonedObj.forEachObject((obj: fabric.Object) => {
+        clonedObj.forEachObject((obj: any) => {
           obj.id = uuid();
           canvas.add(obj);
         });
@@ -52,11 +52,11 @@ class CopyPlugin {
   }
 
   // 单个对象复制
-  _copyObject(activeObject: fabric.Object) {
+  _copyObject(activeObject: any) {
     // 间距设置
     const grid = 10;
     const canvas = this.canvas;
-    activeObject?.clone((cloned: fabric.Object) => {
+    activeObject?.clone((cloned: any) => {
       if (cloned.left === undefined || cloned.top === undefined) return;
       canvas.discardActiveObject();
       // 设置位置信息
@@ -73,7 +73,7 @@ class CopyPlugin {
   }
 
   // 复制元素
-  clone(paramsActiveObeject?: fabric.ActiveSelection | fabric.Object) {
+  clone(paramsActiveObeject?: any) {
     const activeObject = paramsActiveObeject || this.canvas.getActiveObject();
     if (!activeObject) return;
     if (activeObject?.type === "activeSelection") {
@@ -132,7 +132,7 @@ class CopyPlugin {
     const fileAccept = ".pdf,.psd,.cdr,.ai,.svg,.jpg,.jpeg,.png,.webp,.json";
     for (const item of items) {
       if (item.kind === "file") {
-        const file = item.getAsFile();
+        const file: any = item.getAsFile();
         const curFileSuffix: string | undefined = file.name.split(".").pop();
         if (!fileAccept.split(",").includes(`.${curFileSuffix}`)) return;
         if (curFileSuffix === "svg") {
@@ -161,7 +161,8 @@ class CopyPlugin {
           document.body.appendChild(imgEl);
           imgEl.onload = () => {
             // 创建图片对象
-            const imgInstance = new fabric.Image(imgEl, {
+            const imgInstance: any = new fabric.Image(imgEl, {
+              // @ts-ignore
               id: uuid(),
               name: "图片1",
               left: 100,
@@ -213,10 +214,11 @@ class CopyPlugin {
             activeObject.dirty = true;
             canvas.renderAll();
           } else {
-            const fabricText = new fabric.IText(text, {
+            const fabricText: any = new fabric.IText(text, {
               left: 100,
               top: 100,
               fontSize: 80,
+              // @ts-ignore
               id: uuid(),
             });
             canvas.add(fabricText);

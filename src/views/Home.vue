@@ -97,8 +97,7 @@ import Editor, {
   FlipPlugin,
   RulerPlugin,
   MaterialPlugin,
-} from "xiaolin-core-fabric";
-
+} from "../../packages/src/index";
 
 // 创建编辑器
 const canvasEditor = new Editor();

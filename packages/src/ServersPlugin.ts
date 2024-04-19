@@ -203,7 +203,7 @@ class ServersPlugin {
   _getSaveSvgOption() {
     const workspace = this.canvas
       .getObjects()
-      .find((item) => item.id === "workspace");
+      .find((item: any) => item.id === "workspace");
     const { left, top, width, height } = workspace as fabric.Object;
     return {
       width,
@@ -220,7 +220,7 @@ class ServersPlugin {
   _getSaveOption() {
     const workspace = this.canvas
       .getObjects()
-      .find((item: fabric.Object) => item.id === "workspace");
+      .find((item: any) => item.id === "workspace");
     const { left, top, width, height } = workspace as fabric.Object;
     const option = {
       name: "New Image",
@@ -235,7 +235,7 @@ class ServersPlugin {
   }
 
   clear() {
-    this.canvas.getObjects().forEach((obj) => {
+    this.canvas.getObjects().forEach((obj: any) => {
       if (obj.id !== "workspace") {
         this.canvas.remove(obj);
       }

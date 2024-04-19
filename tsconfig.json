@@ -36,9 +36,10 @@
     "src/core/objects/Arrow.js",
     "src/components/svgIcon/index.ts",
     "src/typings/**/*.ts",
+    "node_modules/xiaolin-core-fabric/typings/**/*.ts",
+    "typings/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "packages"
   ]
 }

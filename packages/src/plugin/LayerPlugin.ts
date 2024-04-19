@@ -15,7 +15,7 @@ class LayerPlugin {
   }
 
   _getWorkspace() {
-    return this.canvas.getObjects().find((item) => item.id === "workspace");
+    return this.canvas.getObjects().find((item: any) => item.id === "workspace");
   }
 
   _workspaceSendToBack() {

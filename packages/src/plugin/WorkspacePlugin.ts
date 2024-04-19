@@ -42,7 +42,7 @@ class WorkspacePlugin {
     return new Promise((resolve) => {
       const workspace = this.canvas
         .getObjects()
-        .find((item) => item.id === "workspace");
+        .find((item: any) => item.id === "workspace");
       if (workspace) {
         workspace.set("selectable", false);
         workspace.set("hasControls", false);
@@ -70,10 +70,11 @@ class WorkspacePlugin {
   // 初始化画布
   _initWorkspace() {
     const { width, height } = this.option;
-    const workspace = new fabric.Rect({
+    const workspace: any = new fabric.Rect({
       fill: "rgba(255,255,255,1)",
       width,
       height,
+      // @ts-ignore
       id: "workspace",
       strokeWidth: 0,
     });
@@ -129,7 +130,7 @@ class WorkspacePlugin {
     // 重新设置workspace
     this.workspace = this.canvas
       .getObjects()
-      .find((item) => item.id === "workspace") as fabric.Rect;
+      .find((item: any) => item.id === "workspace") as fabric.Rect;
     this.workspace.set("width", width);
     this.workspace.set("height", height);
     this.editor.emit("sizeChange", this.workspace.width, this.workspace.height);

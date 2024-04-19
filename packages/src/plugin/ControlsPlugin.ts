@@ -3,10 +3,14 @@ import Editor from "../Editor";
 type IEditor = Editor;
 
 import { fabric } from "fabric";
+// @ts-ignore
 import verticalImg from "../assets/middlecontrol.svg";
 // import verticalImg from './middlecontrol.svg';
+// @ts-ignore
 import horizontalImg from "../assets/middlecontrolhoz.svg";
+// @ts-ignore
 import edgeImg from "../assets/edgecontrol.svg";
+// @ts-ignore
 import rotateImg from "../assets/rotateicon.svg";
 
 /**

@@ -1,12 +1,10 @@
 // 组对齐插件
 
 import { fabric } from "fabric";
-import Editor from "../Editor";
-type IEditor = Editor;
 
 class GroupAlignPlugin {
-  public canvas: fabric.Canvas;
-  public editor: IEditor;
+  public canvas: any;
+  public editor: any;
   static pluginName = "GroupAlignPlugin";
   static apis = [
     "left",
@@ -19,7 +17,7 @@ class GroupAlignPlugin {
     "yequation",
   ];
   // public hotkeys: string[] = ['space'];
-  constructor(canvas: fabric.Canvas, editor: IEditor) {
+  constructor(canvas: any, editor: any) {
     this.canvas = canvas;
     this.editor = editor;
   }
@@ -44,7 +42,7 @@ class GroupAlignPlugin {
     if (activeObject) {
       const { left = 0 } = activeObject;
       canvas.discardActiveObject();
-      selectObjects.forEach((item) => {
+      selectObjects.forEach((item: any) => {
         const bounding = item.getBoundingRect(true);
         item.set({
           left: left - bounding.left + Number(item.left),
@@ -79,7 +77,7 @@ class GroupAlignPlugin {
     if (activeObject) {
       const { left = 0, width = 0 } = activeObject;
       canvas.discardActiveObject();
-      selectObjects.forEach((item) => {
+      selectObjects.forEach((item: any) => {
         const bounding = item.getBoundingRect(true);
         item.set({
           left:
@@ -113,7 +111,7 @@ class GroupAlignPlugin {
     if (activeObject) {
       const { left = 0, width = 0 } = activeObject;
       canvas.discardActiveObject();
-      selectObjects.forEach((item) => {
+      selectObjects.forEach((item: any) => {
         const bounding = item.getBoundingRect(true);
         item.set({
           left:
@@ -150,7 +148,7 @@ class GroupAlignPlugin {
     if (activeObject) {
       const { top = 0, height = 0 } = activeObject;
       canvas.discardActiveObject();
-      selectObjects.forEach((item) => {
+      selectObjects.forEach((item: any) => {
         const bounding = item.getBoundingRect(true);
         item.set({
           top:
@@ -188,7 +186,7 @@ class GroupAlignPlugin {
     if (activeObject) {
       const { top = 0 } = activeObject;
       canvas.discardActiveObject();
-      selectObjects.forEach((item) => {
+      selectObjects.forEach((item: any) => {
         const bounding = item.getBoundingRect(true);
         item.set({
           top: top - bounding.top + Number(item.top),
@@ -222,7 +220,7 @@ class GroupAlignPlugin {
     if (activeObject) {
       const { top = 0, height = 0 } = activeObject;
       canvas.discardActiveObject();
-      selectObjects.forEach((item) => {
+      selectObjects.forEach((item: any) => {
         const bounding = item.getBoundingRect(true);
         item.set({
           top:
@@ -241,7 +239,7 @@ class GroupAlignPlugin {
     const { canvas } = this;
     const activeObject = canvas.getActiveObject();
     // width属性不准确，需要坐标换算
-    function getItemWidth(item) {
+    function getItemWidth(item: any) {
       return item.aCoords.tr.x - item.aCoords.tl.x;
     }
 
@@ -249,7 +247,7 @@ class GroupAlignPlugin {
     function getAllItemHeight() {
       let count = 0;
       if (activeObject) {
-        activeObject.forEachObject((item) => {
+        activeObject.forEachObject((item: any) => {
           count += getItemWidth(item);
         });
       }
@@ -266,7 +264,7 @@ class GroupAlignPlugin {
     }
 
     // 获取当前元素之前所有元素的高度
-    function getItemLeft(i) {
+    function getItemLeft(i: any) {
       if (i === 0) return 0;
       let width = 0;
       if (activeObject) {
@@ -280,14 +278,14 @@ class GroupAlignPlugin {
     if (activeObject && activeObject.type === "activeSelection") {
       const activeSelection = activeObject;
       // 排序
-      activeSelection._objects.sort((a, b) => a.left - b.left);
+      activeSelection._objects.sort((a: any, b: any) => a.left - b.left);
 
       // 平均间距计算
-      const itemSpac = spacWidth();
+      const itemSpac: any = spacWidth();
       // 组原点高度
       const yHeight = Number(activeObject.width) / 2;
 
-      activeObject.forEachObject((item, i) => {
+      activeObject.forEachObject((item: any, i: any) => {
         // 获取当前元素之前所有元素的高度
         const preHeight = getItemLeft(i);
         // 顶部距离 间距 * 索引 + 之前元素高度 - 原点高度
@@ -302,13 +300,13 @@ class GroupAlignPlugin {
     const { canvas } = this;
     const activeObject = canvas.getActiveObject() || { top: 0, height: 0 };
     // width属性不准确，需要坐标换算
-    function getItemHeight(item) {
+    function getItemHeight(item: any) {
       return item.aCoords.bl.y - item.aCoords.tl.y;
     }
     // 获取所有元素高度
     function getAllItemHeight() {
       let count = 0;
-      activeObject.forEachObject((item) => {
+      activeObject.forEachObject((item: any) => {
         count += getItemHeight(item);
       });
       return count;
@@ -321,7 +319,7 @@ class GroupAlignPlugin {
     }
 
     // 获取当前元素之前所有元素的高度
-    function getItemTop(i) {
+    function getItemTop(i: any) {
       if (i === 0) return 0;
       let height = 0;
       for (let index = 0; index < i; index++) {
@@ -333,14 +331,14 @@ class GroupAlignPlugin {
     if (activeObject && activeObject.type === "activeSelection") {
       const activeSelection = activeObject;
       // 排序
-      activeSelection._objects.sort((a, b) => a.top - b.top);
+      activeSelection._objects.sort((a: any, b: any) => a.top - b.top);
 
       // 平均间距计算
       const itemSpac = spacHeight();
       // 组原点高度
       const yHeight = Number(activeObject.height) / 2;
 
-      activeObject.forEachObject((item: fabric.Object, i: number) => {
+      activeObject.forEachObject((item: any, i: number) => {
         // 获取当前元素之前所有元素的高度
         const preHeight = getItemTop(i);
         // 顶部距离 间距 * 索引 + 之前元素高度 - 原点高度

@@ -1,4 +1,6 @@
 import { inject, onBeforeMount, onMounted, reactive } from 'vue';
+
+import Editor, { EventType } from '../../packages/src/index';
 import { SelectEvent, SelectMode, SelectOneType } from '@/utils/event/types';
 
 interface Selector {

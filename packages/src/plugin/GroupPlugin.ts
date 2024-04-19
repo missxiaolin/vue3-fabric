@@ -23,6 +23,7 @@ class GroupPlugin {
     const activeObjectList = activeObject.getObjects();
     activeObject.toActiveSelection();
     for (const item of activeObjectList) {
+      // @ts-ignore
       item.set("id", uuid());
     }
     this.canvas.discardActiveObject().renderAll();
@@ -34,7 +35,7 @@ class GroupPlugin {
     if (!activeObj) return;
     const activegroup = activeObj.toGroup();
     const objectsInGroup = activegroup.getObjects();
-    activegroup.clone((newgroup: fabric.Group) => {
+    activegroup.clone((newgroup: any) => {
       newgroup.set("id", uuid());
       this.canvas.remove(activegroup);
       objectsInGroup.forEach((object) => {

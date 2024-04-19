@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "typings/**/*.ts",],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "typings/**/*.ts", "src/contextMenu.js",],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
