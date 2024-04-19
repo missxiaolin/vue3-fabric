@@ -1,65 +1,65 @@
-import { inject, onBeforeMount, onMounted, reactive } from 'vue';
+import { inject, onBeforeMount, onMounted, reactive } from "vue";
 
-import Editor, { EventType } from '../../packages/src/index';
-import { SelectEvent, SelectMode, SelectOneType } from '@/utils/event/types';
+import Editor, { EventType } from "xiaolin-core-fabric";
+const { SelectEvent, SelectMode } = EventType;
 
 interface Selector {
+  // @ts-ignore
   mSelectMode: SelectMode;
-  mSelectOneType: SelectOneType;
-  mSelectId: string[] | '';
-  mSelectIds: string[];
+  mSelectOneType: string | undefined;
+  mSelectId: string | undefined;
+  mSelectIds: (string | undefined)[];
   mSelectActive: unknown[];
 }
 
 export default function useSelect() {
   const state = reactive<Selector>({
     mSelectMode: SelectMode.EMPTY,
-    mSelectOneType: SelectOneType.EMPTY,
-    mSelectId: '', // 选择id
+    mSelectOneType: "",
+    mSelectId: "", // 选择id
     mSelectIds: [], // 选择id
     mSelectActive: [],
   });
 
-  const fabric = inject('fabric');
-  const canvas = inject('canvas');
-  const canvasEditor = inject('canvasEditor');
-  const event: any = inject('event');
+  const fabric = inject("fabric");
+  const canvasEditor = inject("canvasEditor") as Editor;
 
-  const selectOne = (e: any) => {
+  const selectOne = (e: [fabric.Object]) => {
     state.mSelectMode = SelectMode.ONE;
-    state.mSelectId = e[0].id;
-    state.mSelectOneType = e[0].type;
-    state.mSelectIds = e.map((item: any) => item.id);
+    if (e[0]) {
+      state.mSelectId = e[0].id;
+      state.mSelectOneType = e[0].type;
+      state.mSelectIds = e.map((item) => item.id);
+    }
   };
 
-  const selectMulti = (e: any) => {
+  const selectMulti = (e: fabric.Object[]) => {
     state.mSelectMode = SelectMode.MULTI;
-    state.mSelectId = '';
-    state.mSelectIds = e.map((item: any) => item.id);
+    state.mSelectId = "";
+    state.mSelectIds = e.map((item) => item.id);
   };
 
   const selectCancel = () => {
-    state.mSelectId = '';
+    state.mSelectId = "";
     state.mSelectIds = [];
     state.mSelectMode = SelectMode.EMPTY;
-    state.mSelectOneType = SelectOneType.EMPTY;
+    state.mSelectOneType = "";
   };
 
   onMounted(() => {
-    event.on(SelectEvent.ONE, selectOne);
-    event.on(SelectEvent.MULTI, selectMulti);
-    event.on(SelectEvent.CANCEL, selectCancel);
+    canvasEditor.on(SelectEvent.ONE, selectOne);
+    canvasEditor.on(SelectEvent.MULTI, selectMulti);
+    canvasEditor.on(SelectEvent.CANCEL, selectCancel);
   });
 
   onBeforeMount(() => {
-    event.off(SelectEvent.ONE, selectOne);
-    event.off(SelectEvent.MULTI, selectMulti);
-    event.off(SelectEvent.CANCEL, selectCancel);
+    canvasEditor.off(SelectEvent.ONE, selectOne);
+    canvasEditor.off(SelectEvent.MULTI, selectMulti);
+    canvasEditor.off(SelectEvent.CANCEL, selectCancel);
   });
 
   return {
     fabric,
-    canvas,
     canvasEditor,
     mixinState: state,
   };

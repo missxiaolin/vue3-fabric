@@ -26,6 +26,8 @@
     <Modal
       v-model="state.showModal"
       :title="$t('insertFile.modal_tittle')"
+      :ok-text="'确认'"
+      :cancel-text="'取消'"
       @on-ok="insertTypeHand('insertSvgStr')"
       @on-cancel="showModal = false"
     >
@@ -41,7 +43,8 @@
 
 <script setup name="ImportFile">
 import { reactive } from 'vue'
-import { getImgStr, selectFiles } from '@/utils/utils';
+import { Utils } from 'xiaolin-core-fabric';
+const { getImgStr, selectFiles } = Utils;
 import useSelect from '@/hooks/select';
 import { v4 as uuid } from 'uuid';
 
